@@ -80,29 +80,29 @@ function renderAdminTable(apps) {
     });
 
     return `
-      <tr class="hover:bg-white/5 transition-colors border-b border-[#f5d6b4]/10">
+      <tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-b border-[#865237]/15 dark:border-[#f5d6b4]/10">
         <td class="py-3 px-3">
-          <span class="font-mono text-[#f5d6b4] font-bold block">${app.id}</span>
-          <span class="text-[10px] text-[#f5d6b4]/50">${dateFormatted}</span>
+          <span class="font-mono text-[#6B3410] dark:text-[#f5d6b4] font-black block">${app.id}</span>
+          <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-medium">${dateFormatted}</span>
         </td>
         <td class="py-3 px-3">
-          <div class="font-bold text-white">${escapeHtml(app.startupName)}</div>
-          <div class="text-[11px] text-[#f5d6b4]/70">${escapeHtml(app.founderName)} • ${escapeHtml(app.country)}</div>
+          <div class="font-bold text-[#1A0F09] dark:text-white">${escapeHtml(app.startupName)}</div>
+          <div class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">${escapeHtml(app.founderName)} • ${escapeHtml(app.country)}</div>
         </td>
         <td class="py-3 px-3">
-          <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#865237]/40 text-[#f5d6b4] uppercase border border-[#f5d6b4]/20">${app.track}</span>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#F4EDE4] text-[#6B3410] dark:bg-[#865237]/40 dark:text-[#f5d6b4] uppercase border border-[#865237]/25 dark:border-[#f5d6b4]/20">${app.track}</span>
         </td>
-        <td class="py-3 px-3 font-semibold uppercase text-[10px] text-[#f5d6b4]/70">
+        <td class="py-3 px-3 font-semibold uppercase text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">
           ${app.stage}
         </td>
-        <td class="py-3 px-3 font-mono font-bold ${app.score ? 'text-[#dfa04e]' : 'text-stone-500'}">
+        <td class="py-3 px-3 font-mono font-black ${app.score ? 'text-[#8F4C15] dark:text-[#dfa04e]' : 'text-[#5C3D2E] dark:text-stone-400'}">
           ${app.score ? `${app.score}/100` : '—'}
         </td>
         <td class="py-3 px-3">
           <span class="status-badge status-${app.status}">${app.status.replace('_', ' ')}</span>
         </td>
         <td class="py-3 px-3 text-right">
-          <button class="px-3 py-1 rounded-lg bg-[#dfa04e]/20 hover:bg-[#dfa04e]/30 text-[#f5d6b4] font-bold text-xs transition-colors border border-[#dfa04e]/40" onclick="openDetailModal('${app.id}')">
+          <button class="px-3 py-1 rounded-lg btn-adabah-primary font-bold text-xs shadow-sm cursor-pointer" onclick="openDetailModal('${app.id}')">
             Review →
           </button>
         </td>
@@ -126,62 +126,62 @@ window.openDetailModal = function (appId) {
 
   if (body) {
     body.innerHTML = `
-      <div class="p-4 rounded-xl bg-black/50 border border-[#f5d6b4]/15 space-y-3">
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 border-b border-[#f5d6b4]/15 pb-3">
+      <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/15 space-y-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
           <div>
-            <span class="text-[#f5d6b4]/60 block">Track:</span>
-            <span class="font-bold text-[#dfa04e] uppercase">${app.track}</span>
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Track:</span>
+            <span class="font-bold text-[#8F4C15] dark:text-[#dfa04e] uppercase">${app.track}</span>
           </div>
           <div>
-            <span class="text-[#f5d6b4]/60 block">Stage:</span>
-            <span class="font-bold text-white uppercase">${app.stage}</span>
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Stage:</span>
+            <span class="font-bold text-[#1A0F09] dark:text-white uppercase">${app.stage}</span>
           </div>
           <div>
-            <span class="text-[#f5d6b4]/60 block">Team Size:</span>
-            <span class="font-bold text-white">${app.teamSize} members</span>
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Team Size:</span>
+            <span class="font-bold text-[#1A0F09] dark:text-white">${app.teamSize} members</span>
           </div>
           <div>
-            <span class="text-[#f5d6b4]/60 block">Lead Founder:</span>
-            <span class="font-bold text-white">${escapeHtml(app.founderName)}</span>
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Lead Founder:</span>
+            <span class="font-bold text-[#1A0F09] dark:text-white">${escapeHtml(app.founderName)}</span>
           </div>
           <div>
-            <span class="text-[#f5d6b4]/60 block">Contact:</span>
-            <span class="text-[#f5d6b4] font-mono">${escapeHtml(app.founderEmail)}</span>
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Contact:</span>
+            <span class="text-[#6B3410] dark:text-[#f5d6b4] font-mono font-bold">${escapeHtml(app.founderEmail)}</span>
           </div>
           <div>
-            <span class="text-[#f5d6b4]/60 block">Phone:</span>
-            <span class="text-[#f5d6b4] font-mono">${escapeHtml(app.founderPhone)}</span>
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Phone:</span>
+            <span class="text-[#6B3410] dark:text-[#f5d6b4] font-mono font-bold">${escapeHtml(app.founderPhone)}</span>
           </div>
         </div>
 
         <div>
-          <span class="text-[#f5d6b4]/60 block font-semibold mb-0.5">Tagline:</span>
-          <p class="text-white">${escapeHtml(app.tagline || 'N/A')}</p>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-bold mb-0.5 text-[11px]">Tagline:</span>
+          <p class="text-[#1A0F09] dark:text-white font-medium">${escapeHtml(app.tagline || 'N/A')}</p>
         </div>
 
         <div>
-          <span class="text-[#f5d6b4]/60 block font-semibold mb-0.5">Problem Statement:</span>
-          <p class="text-[#f5d6b4]/90 leading-relaxed">${escapeHtml(app.problem)}</p>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-bold mb-0.5 text-[11px]">Problem Statement:</span>
+          <p class="text-[#3B2215] dark:text-[#f5d6b4]/90 leading-relaxed font-normal">${escapeHtml(app.problem)}</p>
         </div>
 
         <div>
-          <span class="text-[#f5d6b4]/60 block font-semibold mb-0.5">Solution & Approach:</span>
-          <p class="text-[#f5d6b4]/90 leading-relaxed">${escapeHtml(app.solution)}</p>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-bold mb-0.5 text-[11px]">Solution & Approach:</span>
+          <p class="text-[#3B2215] dark:text-[#f5d6b4]/90 leading-relaxed font-normal">${escapeHtml(app.solution)}</p>
         </div>
 
         <div>
-          <span class="text-[#f5d6b4]/60 block font-semibold mb-0.5">Traction & Metrics:</span>
-          <p class="text-[#f5d6b4]/90 leading-relaxed">${escapeHtml(app.traction || 'Not provided')}</p>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-bold mb-0.5 text-[11px]">Traction & Metrics:</span>
+          <p class="text-[#3B2215] dark:text-[#f5d6b4]/90 leading-relaxed font-normal">${escapeHtml(app.traction || 'Not provided')}</p>
         </div>
 
         <div class="grid grid-cols-2 gap-3 pt-2">
           <div>
-            <span class="text-[#f5d6b4]/60 block">Pitch Deck:</span>
-            ${app.deckUrl ? `<a href="${escapeHtml(app.deckUrl)}" target="_blank" class="text-[#dfa04e] underline font-bold">Open Deck Link ↗</a>` : '<span class="text-stone-600">None</span>'}
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block text-[11px] font-semibold">Pitch Deck:</span>
+            ${app.deckUrl ? `<a href="${escapeHtml(app.deckUrl)}" target="_blank" class="text-[#8F4C15] dark:text-[#dfa04e] underline font-bold">Open Deck Link ↗</a>` : '<span class="text-[#5C3D2E] dark:text-stone-400 font-semibold">None</span>'}
           </div>
           <div>
-            <span class="text-[#f5d6b4]/60 block">Demo Video:</span>
-            ${app.videoUrl ? `<a href="${escapeHtml(app.videoUrl)}" target="_blank" class="text-[#f5d6b4] underline font-bold">Watch Video ↗</a>` : '<span class="text-stone-600">None</span>'}
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block text-[11px] font-semibold">Demo Video:</span>
+            ${app.videoUrl ? `<a href="${escapeHtml(app.videoUrl)}" target="_blank" class="text-[#8F4C15] dark:text-[#dfa04e] underline font-bold">Watch Video ↗</a>` : '<span class="text-[#5C3D2E] dark:text-stone-400 font-semibold">None</span>'}
           </div>
         </div>
       </div>
@@ -189,18 +189,18 @@ window.openDetailModal = function (appId) {
       <div class="space-y-3 pt-2">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-[#f5d6b4] font-semibold mb-1">Assign Committee Score (0-100):</label>
-            <input type="number" id="detail-score-input" min="0" max="100" class="w-full px-3 py-2 rounded-xl bg-black/60 border border-[#f5d6b4]/20 text-white font-mono" value="${app.score || ''}" placeholder="e.g. 92" />
+            <label class="block text-[#1A0F09] dark:text-[#f5d6b4] font-bold mb-1">Assign Committee Score (0-100):</label>
+            <input type="number" id="detail-score-input" min="0" max="100" class="w-full font-mono font-bold" value="${app.score || ''}" placeholder="e.g. 92" />
           </div>
           <div>
-            <label class="block text-[#f5d6b4] font-semibold mb-1">Funding History:</label>
-            <input type="text" class="w-full px-3 py-2 rounded-xl bg-black/30 border border-[#f5d6b4]/10 text-[#f5d6b4]/70" value="${escapeHtml(app.fundingRaised || 'Bootstrapped')}" disabled />
+            <label class="block text-[#1A0F09] dark:text-[#f5d6b4] font-bold mb-1">Funding History:</label>
+            <input type="text" class="w-full opacity-80" value="${escapeHtml(app.fundingRaised || 'Bootstrapped')}" disabled />
           </div>
         </div>
 
         <div>
-          <label class="block text-[#f5d6b4] font-semibold mb-1">Review Committee Notes:</label>
-          <textarea id="detail-notes-input" rows="2" class="w-full px-3 py-2 rounded-xl bg-black/60 border border-[#f5d6b4]/20 text-white placeholder-[#f5d6b4]/40 focus:outline-none focus:border-[#dfa04e]" placeholder="Notes explaining the score, website eligibility, or advancement...">${escapeHtml(app.statusNotes || '')}</textarea>
+          <label class="block text-[#1A0F09] dark:text-[#f5d6b4] font-bold mb-1">Review Committee Notes:</label>
+          <textarea id="detail-notes-input" rows="2" class="w-full" placeholder="Notes explaining the score, website eligibility, or advancement...">${escapeHtml(app.statusNotes || '')}</textarea>
         </div>
       </div>
     `;

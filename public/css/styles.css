@@ -2,31 +2,31 @@
 /* Supports Default Light Theme with Dark Theme Toggle */
 
 :root {
-  /* Default Light Theme (Warm Sand / Ivory Linen & Rich Cocoa) */
+  /* Default Light Theme (Warm Sand / Ivory Linen & Deep Rich Cocoa - High Visibility) */
   --adabah-bg: #faf7f2;
   --adabah-surface: #ffffff;
   --adabah-surface-subtle: #f4ede4;
   --adabah-surface-muted: #eae0d3;
-  --adabah-border: rgba(134, 82, 55, 0.16);
-  --adabah-border-hover: rgba(134, 82, 55, 0.4);
+  --adabah-border: rgba(134, 82, 55, 0.25);
+  --adabah-border-hover: rgba(134, 82, 55, 0.6);
   
   --adabah-text: #1a0f09;
-  --adabah-text-muted: #5c3d2e;
-  --adabah-text-subtle: #865237;
+  --adabah-text-muted: #4a2e1f;
+  --adabah-text-subtle: #7a3e1d;
 
   --adabah-brown: #865237;
-  --adabah-brown-light: #9e6445;
-  --adabah-sand: #f5d6b4;
-  --adabah-sand-light: #fbf1e6;
-  --adabah-gold: #c47d2b;
-  --adabah-gold-bright: #dfa04e;
+  --adabah-brown-light: #6b3410;
+  --adabah-sand: #7a4624;
+  --adabah-sand-light: #5c3015;
+  --adabah-gold: #8f4c15;
+  --adabah-gold-bright: #a0521e;
 
   --adabah-select-bg: #ffffff;
   --adabah-select-text: #1a0f09;
   --adabah-input-bg: #ffffff;
   --adabah-input-text: #1a0f09;
-  --adabah-input-placeholder: rgba(92, 61, 46, 0.5);
-  --adabah-input-border: rgba(134, 82, 55, 0.22);
+  --adabah-input-placeholder: #7a5843;
+  --adabah-input-border: rgba(134, 82, 55, 0.32);
 }
 
 /* Dark Theme Overrides */
@@ -305,8 +305,8 @@ html.dark input[type="checkbox"]:focus {
 
 .adabah-field-hint {
   font-size: 0.8rem;
-  color: var(--adabah-text-muted);
-  font-weight: 400;
+  color: #4a2e1f;
+  font-weight: 500;
   margin-top: 0.35rem;
 }
 
@@ -320,8 +320,8 @@ html.dark .hero-glow {
 }
 
 .card-glow:hover {
-  border-color: rgba(134, 82, 55, 0.35);
-  box-shadow: 0 10px 25px -8px rgba(134, 82, 55, 0.18);
+  border-color: rgba(134, 82, 55, 0.45);
+  box-shadow: 0 10px 25px -8px rgba(134, 82, 55, 0.22);
 }
 
 html.dark .card-glow:hover {
@@ -330,8 +330,8 @@ html.dark .card-glow:hover {
 }
 
 .gold-glow:hover {
-  border-color: rgba(196, 125, 43, 0.5);
-  box-shadow: 0 10px 25px -8px rgba(196, 125, 43, 0.2);
+  border-color: rgba(143, 76, 21, 0.6);
+  box-shadow: 0 10px 25px -8px rgba(143, 76, 21, 0.25);
 }
 
 html.dark .gold-glow:hover {
@@ -341,10 +341,10 @@ html.dark .gold-glow:hover {
 
 /* Glassmorphism surfaces */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--adabah-border);
+  border: 1.5px solid var(--adabah-border);
 }
 
 html.dark .glass-panel {
@@ -352,9 +352,9 @@ html.dark .glass-panel {
 }
 
 .glass-panel-light {
-  background: rgba(244, 237, 228, 0.7);
+  background: rgba(244, 237, 228, 0.9);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(134, 82, 55, 0.12);
+  border: 1px solid rgba(134, 82, 55, 0.2);
 }
 
 html.dark .glass-panel-light {
@@ -362,9 +362,9 @@ html.dark .glass-panel-light {
   border: 1px solid rgba(245, 214, 180, 0.1);
 }
 
-/* Brand Text Gradients */
+/* Brand Text Gradients (Rich and high contrast on light backgrounds) */
 .text-gradient-adabah {
-  background: linear-gradient(135deg, #1a0f09 0%, #865237 50%, #c47d2b 100%);
+  background: linear-gradient(135deg, #1a0f09 0%, #683b23 50%, #8f4c15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -376,7 +376,7 @@ html.dark .text-gradient-adabah {
 }
 
 .text-gradient-sand {
-  background: linear-gradient(135deg, #5c3d2e 0%, #865237 50%, #c47d2b 100%);
+  background: linear-gradient(135deg, #1a0f09 0%, #5c3015 50%, #8f4c15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -388,7 +388,7 @@ html.dark .text-gradient-sand {
 }
 
 .text-gradient-gold {
-  background: linear-gradient(135deg, #865237 0%, #c47d2b 60%, #5c3d2e 100%);
+  background: linear-gradient(135deg, #5c3015 0%, #8f4c15 60%, #1a0f09 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -533,9 +533,10 @@ html.dark .step-circle.completed {
 }
 
 .status-submitted {
-  background: rgba(134, 82, 55, 0.12);
-  color: #865237;
-  border: 1px solid rgba(134, 82, 55, 0.25);
+  background: #f5ece5;
+  color: #5c3015;
+  border: 1.5px solid #865237;
+  font-weight: 800;
 }
 
 html.dark .status-submitted {
@@ -545,9 +546,10 @@ html.dark .status-submitted {
 }
 
 .status-under_review {
-  background: rgba(196, 125, 43, 0.15);
-  color: #b86b1e;
-  border: 1px solid rgba(196, 125, 43, 0.35);
+  background: #fef3c7;
+  color: #92400e;
+  border: 1.5px solid #d97706;
+  font-weight: 800;
 }
 
 html.dark .status-under_review {
@@ -557,9 +559,10 @@ html.dark .status-under_review {
 }
 
 .status-shortlisted {
-  background: rgba(134, 82, 55, 0.2);
-  color: #5c3d2e;
-  border: 1px solid rgba(134, 82, 55, 0.35);
+  background: #ede9fe;
+  color: #5b21b6;
+  border: 1.5px solid #7c3aed;
+  font-weight: 800;
 }
 
 html.dark .status-shortlisted {
@@ -569,9 +572,10 @@ html.dark .status-shortlisted {
 }
 
 .status-finalist {
-  background: rgba(196, 125, 43, 0.2);
-  color: #865237;
-  border: 1px solid #c47d2b;
+  background: #ffedd5;
+  color: #9a3412;
+  border: 1.5px solid #ea580c;
+  font-weight: 800;
 }
 
 html.dark .status-finalist {
@@ -581,9 +585,10 @@ html.dark .status-finalist {
 }
 
 .status-accepted {
-  background: linear-gradient(135deg, rgba(134, 82, 55, 0.25), rgba(196, 125, 43, 0.3));
-  color: #1a0f09;
-  border: 1.5px solid #865237;
+  background: #dcfce7;
+  color: #166534;
+  border: 1.5px solid #16a34a;
+  font-weight: 800;
 }
 
 html.dark .status-accepted {
@@ -593,9 +598,10 @@ html.dark .status-accepted {
 }
 
 .status-rejected {
-  background: rgba(185, 28, 28, 0.12);
+  background: #fee2e2;
   color: #991b1b;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1.5px solid #dc2626;
+  font-weight: 800;
 }
 
 html.dark .status-rejected {

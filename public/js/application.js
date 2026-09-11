@@ -72,9 +72,9 @@ window.goToStep = function (step) {
       if (i === currentStep) {
         lblEl.className = 'step-label text-[#1a0f09] dark:text-white font-black';
       } else if (i < currentStep) {
-        lblEl.className = 'step-label text-[#865237] dark:text-[#dfa04e] font-semibold';
+        lblEl.className = 'step-label text-[#8F4C15] dark:text-[#dfa04e] font-bold';
       } else {
-        lblEl.className = 'step-label text-[#865237]/45 dark:text-[#f5d6b4]/40 font-medium';
+        lblEl.className = 'step-label text-[#5C3D2E] dark:text-[#f5d6b4]/60 font-semibold';
       }
     }
   }
@@ -243,12 +243,12 @@ function renderReviewSummary() {
     <div class="p-5 rounded-2xl bg-[#faf7f2] dark:bg-[#1a0f09] border border-[#865237]/25 dark:border-[#dfa04e]/30 space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
         <div>
-          <span class="text-[11px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e] block">Executive Pitch Summary</span>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-[#8F4C15] dark:text-[#dfa04e] block">Executive Pitch Summary</span>
           <h4 class="font-display font-black text-xl sm:text-2xl text-[#1a0f09] dark:text-white mt-0.5">${escapeHtml(data.startupName || 'Untitled Venture')}</h4>
           <p class="text-xs text-[#5c3d2e] dark:text-[#f5d6b4]/80 italic mt-0.5">"${escapeHtml(data.tagline || 'No elevator pitch provided')}"</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <span class="px-3 py-1 rounded-full text-xs font-bold bg-[#865237]/10 text-[#865237] dark:bg-[#dfa04e]/20 dark:text-[#dfa04e] border border-[#865237]/20 dark:border-[#dfa04e]/40">
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-[#8F4C15]/10 text-[#8F4C15] dark:bg-[#dfa04e]/20 dark:text-[#dfa04e] border border-[#8F4C15]/25 dark:border-[#dfa04e]/40">
             ${escapeHtml(trackLabel)}
           </span>
           <span class="px-3 py-1 rounded-full text-xs font-bold bg-black/5 text-[#1a0f09] dark:bg-white/10 dark:text-white border border-black/10 dark:border-white/15">
@@ -260,19 +260,19 @@ function renderReviewSummary() {
       <!-- Founder & Team Info -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
         <div class="p-3 rounded-xl bg-white dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10 shadow-sm">
-          <span class="text-[#7a5843] dark:text-[#f5d6b4]/60 block text-[11px] font-semibold">Lead Founder</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block text-[11px] font-semibold">Lead Founder</span>
           <span class="font-bold text-[#1a0f09] dark:text-white text-sm">${escapeHtml(data.founderName || 'N/A')}</span>
-          <span class="block text-[11px] text-[#865237] dark:text-[#dfa04e] mt-0.5">${escapeHtml(data.founderRole || 'Founder')} • ${escapeHtml(data.academicLevel || 'Student')}</span>
+          <span class="block text-[11px] text-[#8F4C15] dark:text-[#dfa04e] font-medium mt-0.5">${escapeHtml(data.founderRole || 'Founder')} • ${escapeHtml(data.academicLevel || 'Student')}</span>
         </div>
         <div class="p-3 rounded-xl bg-white dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10 shadow-sm">
-          <span class="text-[#7a5843] dark:text-[#f5d6b4]/60 block text-[11px] font-semibold">Contact Details</span>
-          <span class="font-bold text-[#865237] dark:text-[#f5d6b4] font-mono block truncate">${escapeHtml(data.founderEmail || 'N/A')}</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block text-[11px] font-semibold">Contact Details</span>
+          <span class="font-bold text-[#8F4C15] dark:text-[#f5d6b4] font-mono block truncate">${escapeHtml(data.founderEmail || 'N/A')}</span>
           <span class="text-[11px] text-[#5c3d2e] dark:text-white/80 block mt-0.5 font-mono">${escapeHtml(data.founderPhone || 'N/A')}</span>
         </div>
         <div class="p-3 rounded-xl bg-white dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10 shadow-sm">
-          <span class="text-[#7a5843] dark:text-[#f5d6b4]/60 block text-[11px] font-semibold">Campus & Location</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block text-[11px] font-semibold">Campus & Location</span>
           <span class="font-bold text-[#1a0f09] dark:text-white text-sm block">${escapeHtml(data.city || 'Campus')}, ${escapeHtml(data.country || 'Ghana')}</span>
-          <span class="text-[11px] text-[#865237] dark:text-[#dfa04e] mt-0.5 block">Team: ${escapeHtml(data.teamSize || '2 Co-Founders')}</span>
+          <span class="text-[11px] text-[#8F4C15] dark:text-[#dfa04e] font-medium mt-0.5 block">Team: ${escapeHtml(data.teamSize || '2 Co-Founders')}</span>
         </div>
       </div>
     </div>
@@ -281,8 +281,8 @@ function renderReviewSummary() {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="p-4 rounded-2xl bg-[#faf7f2] dark:bg-[#1a0f09] border border-[#865237]/20 dark:border-[#f5d6b4]/15 space-y-1.5">
         <div class="flex items-center justify-between">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e]">The Problem Being Solved</span>
-          <button type="button" onclick="goToStep(3)" class="text-[11px] text-[#865237] dark:text-[#f5d6b4]/60 hover:text-[#c47d2b] dark:hover:text-[#dfa04e] underline font-semibold">Edit</button>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-[#8F4C15] dark:text-[#dfa04e]">The Problem Being Solved</span>
+          <button type="button" onclick="goToStep(3)" class="text-[11px] text-[#8F4C15] dark:text-[#f5d6b4]/70 hover:text-[#6B3410] dark:hover:text-[#dfa04e] underline font-semibold">Edit</button>
         </div>
         <p class="text-xs text-[#5c3d2e] dark:text-[#f5d6b4]/85 leading-relaxed bg-white dark:bg-black/30 p-3 rounded-xl border border-[#865237]/10 dark:border-white/5 shadow-sm">
           ${escapeHtml(data.problem || 'No description entered')}
@@ -291,8 +291,8 @@ function renderReviewSummary() {
 
       <div class="p-4 rounded-2xl bg-[#faf7f2] dark:bg-[#1a0f09] border border-[#865237]/20 dark:border-[#f5d6b4]/15 space-y-1.5">
         <div class="flex items-center justify-between">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e]">The Proposed Solution</span>
-          <button type="button" onclick="goToStep(3)" class="text-[11px] text-[#865237] dark:text-[#f5d6b4]/60 hover:text-[#c47d2b] dark:hover:text-[#dfa04e] underline font-semibold">Edit</button>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-[#8F4C15] dark:text-[#dfa04e]">The Proposed Solution</span>
+          <button type="button" onclick="goToStep(3)" class="text-[11px] text-[#8F4C15] dark:text-[#f5d6b4]/70 hover:text-[#6B3410] dark:hover:text-[#dfa04e] underline font-semibold">Edit</button>
         </div>
         <p class="text-xs text-[#5c3d2e] dark:text-[#f5d6b4]/85 leading-relaxed bg-white dark:bg-black/30 p-3 rounded-xl border border-[#865237]/10 dark:border-white/5 shadow-sm">
           ${escapeHtml(data.solution || 'No description entered')}
@@ -304,12 +304,12 @@ function renderReviewSummary() {
     <div class="p-4 rounded-2xl bg-[#faf7f2] dark:bg-[#1a0f09] border border-[#865237]/20 dark:border-[#f5d6b4]/15 space-y-2 text-xs">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <span class="text-[#7a5843] dark:text-[#f5d6b4]/60 text-[11px] font-semibold block">Traction & Progress:</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px] font-semibold block">Traction & Progress:</span>
           <span class="text-[#1a0f09] dark:text-white font-medium">${escapeHtml(data.traction || 'Early development stage')}</span>
         </div>
         <div class="sm:text-right">
-          <span class="text-[#7a5843] dark:text-[#f5d6b4]/60 text-[11px] font-semibold block">Pitch Deck / Summary:</span>
-          <a href="${escapeHtml(data.deckUrl || '#')}" target="_blank" class="inline-flex items-center gap-1.5 text-[#865237] dark:text-[#dfa04e] font-bold hover:underline">
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px] font-semibold block">Pitch Deck / Summary:</span>
+          <a href="${escapeHtml(data.deckUrl || '#')}" target="_blank" class="inline-flex items-center gap-1.5 text-[#8F4C15] dark:text-[#dfa04e] font-bold hover:underline">
             <span>Open Link ↗</span>
           </a>
         </div>
@@ -579,25 +579,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!receipt) return;
 
       receipt.innerHTML = `
-        <div style="font-family: sans-serif; padding: 35px; max-width: 720px; margin: 0 auto; border: 3px solid #865237; background: #fff; color: #180e08; border-radius: 12px;">
-          <div style="text-align: center; border-bottom: 2px solid #dfa04e; padding-bottom: 18px; margin-bottom: 20px;">
-            <h1 style="margin: 0; color: #865237; font-size: 26px; font-weight: 900;">THE ADABAH STARTUP CHALLENGE 2026</h1>
-            <p style="margin: 6px 0 0 0; font-size: 14px; font-weight: 700; color: #dfa04e; text-transform: uppercase;">Official Submission Confirmation & Receipt</p>
+        <div style="font-family: sans-serif; padding: 35px; max-width: 720px; margin: 0 auto; border: 3px solid #8F4C15; background: #fff; color: #180e08; border-radius: 12px;">
+          <div style="text-align: center; border-bottom: 2px solid #8F4C15; padding-bottom: 18px; margin-bottom: 20px;">
+            <h1 style="margin: 0; color: #1A0F09; font-size: 26px; font-weight: 900;">THE ADABAH STARTUP CHALLENGE 2026</h1>
+            <p style="margin: 6px 0 0 0; font-size: 14px; font-weight: 800; color: #8F4C15; text-transform: uppercase;">Official Submission Confirmation & Receipt</p>
           </div>
-          <div style="background: #fbf1e6; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="margin: 4px 0;"><strong>Application Reference ID:</strong> <span style="font-family: monospace; font-size: 18px; font-weight: bold; color: #865237;">${app.id}</span></p>
-            <p style="margin: 4px 0;"><strong>Submission Timestamp:</strong> ${new Date(app.submittedAt).toUTCString()}</p>
+          <div style="background: #FAF7F2; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid rgba(143, 76, 21, 0.2);">
+            <p style="margin: 4px 0;"><strong>Application Reference ID:</strong> <span style="font-family: monospace; font-size: 18px; font-weight: bold; color: #8F4C15;">${app.id}</span></p>
+            <p style="margin: 4px 0; color: #4A2E1F;"><strong>Submission Timestamp:</strong> ${new Date(app.submittedAt).toUTCString()}</p>
           </div>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #666;">Startup / Venture:</td><td style="padding: 8px 0; font-weight: bold;">${app.startupName}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #666;">Challenge Track:</td><td style="padding: 8px 0; font-weight: bold;">${(app.track || '').toUpperCase()}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #666;">Current Stage:</td><td style="padding: 8px 0; font-weight: bold;">${(app.stage || '').toUpperCase()}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #666;">Lead Founder:</td><td style="padding: 8px 0; font-weight: bold;">${app.founderName} (${app.founderEmail})</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #666;">Institution / Campus:</td><td style="padding: 8px 0; font-weight: bold;">${app.city || 'N/A'}, ${app.country || 'Ghana'}</td></tr>
-            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #666;">Initial Review Status:</td><td style="padding: 8px 0; font-weight: bold; color: #dfa04e;">SUBMITTED (IN REVIEW)</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #5C3D2E; font-weight: 600;">Startup / Venture:</td><td style="padding: 8px 0; font-weight: bold; color: #1A0F09;">${app.startupName}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #5C3D2E; font-weight: 600;">Challenge Track:</td><td style="padding: 8px 0; font-weight: bold; color: #1A0F09;">${(app.track || '').toUpperCase()}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #5C3D2E; font-weight: 600;">Current Stage:</td><td style="padding: 8px 0; font-weight: bold; color: #1A0F09;">${(app.stage || '').toUpperCase()}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #5C3D2E; font-weight: 600;">Lead Founder:</td><td style="padding: 8px 0; font-weight: bold; color: #1A0F09;">${app.founderName} (${app.founderEmail})</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #5C3D2E; font-weight: 600;">Institution / Campus:</td><td style="padding: 8px 0; font-weight: bold; color: #1A0F09;">${app.city || 'N/A'}, ${app.country || 'Ghana'}</td></tr>
+            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 0; color: #5C3D2E; font-weight: 600;">Initial Review Status:</td><td style="padding: 8px 0; font-weight: 800; color: #8F4C15;">SUBMITTED (IN REVIEW)</td></tr>
           </table>
-          <hr style="margin: 20px 0; border: 0; border-top: 1px solid #dfa04e;" />
-          <p style="font-size: 12px; color: #555; line-height: 1.6;">
+          <hr style="margin: 20px 0; border: 0; border-top: 2px solid #8F4C15;" />
+          <p style="font-size: 12px; color: #4A2E1F; line-height: 1.6;">
             This receipt officially verifies that your startup has been entered into consideration for The ADABAH Startup Challenge 2026. Selected participants will advance to the 3-week mentorship programme beginning 2 November 2026 and compete for the <strong>GH₵3,000 winning cash prize</strong> on Final Pitch Day (21 November 2026).
           </p>
         </div>

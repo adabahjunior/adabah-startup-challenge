@@ -102,14 +102,14 @@ function initEligibilityQuiz() {
   options.forEach(opt => {
     const input = opt.querySelector('input[type="radio"]');
     if (input.checked) {
-      opt.classList.add('border-[#dfa04e]', 'bg-[#865237]/30', 'text-[#f5d6b4]');
+      opt.classList.add('border-[#865237]', 'bg-[#F4EDE4]', 'text-[#1A0F09]', 'font-bold', 'dark:border-[#dfa04e]', 'dark:bg-[#865237]/40', 'dark:text-[#f5d6b4]');
     }
     opt.addEventListener('click', () => {
       const name = input.name;
       document.querySelectorAll(`input[name="${name}"]`).forEach(sibling => {
-        sibling.closest('.eligibility-option').classList.remove('border-[#dfa04e]', 'bg-[#865237]/30', 'text-[#f5d6b4]');
+        sibling.closest('.eligibility-option').classList.remove('border-[#865237]', 'bg-[#F4EDE4]', 'text-[#1A0F09]', 'font-bold', 'dark:border-[#dfa04e]', 'dark:bg-[#865237]/40', 'dark:text-[#f5d6b4]', 'border-[#dfa04e]', 'bg-[#865237]/30', 'text-[#f5d6b4]');
       });
-      opt.classList.add('border-[#dfa04e]', 'bg-[#865237]/30', 'text-[#f5d6b4]');
+      opt.classList.add('border-[#865237]', 'bg-[#F4EDE4]', 'text-[#1A0F09]', 'font-bold', 'dark:border-[#dfa04e]', 'dark:bg-[#865237]/40', 'dark:text-[#f5d6b4]');
       input.checked = true;
     });
   });
@@ -141,17 +141,17 @@ function initEligibilityQuiz() {
     badge.innerText = `${score}%`;
 
     if (score >= 80) {
-      badge.className = 'w-16 h-16 rounded-2xl bg-[#865237]/40 text-[#f5d6b4] font-display font-black text-2xl flex items-center justify-center border border-[#dfa04e]';
+      badge.className = 'w-16 h-16 rounded-2xl bg-[#F4EDE4] dark:bg-[#865237]/40 text-[#6B3410] dark:text-[#f5d6b4] font-display font-black text-2xl flex items-center justify-center border-2 border-[#865237] dark:border-[#dfa04e] shadow-sm';
       title.innerText = 'High Match: Ready For Cohort 2026!';
       text.innerText = `Your startup scored ${score}%. Your stage, team structure, and commitment strongly align with the Adabah Challenge criteria.`;
       applyBtn.innerText = 'Proceed to Application Form →';
     } else if (score >= 65) {
-      badge.className = 'w-16 h-16 rounded-2xl bg-[#2b1910] text-[#dfa04e] font-display font-black text-2xl flex items-center justify-center border border-[#dfa04e]/60';
+      badge.className = 'w-16 h-16 rounded-2xl bg-[#F4EDE4] dark:bg-[#2b1910] text-[#8F4C15] dark:text-[#dfa04e] font-display font-black text-2xl flex items-center justify-center border-2 border-[#8F4C15] dark:border-[#dfa04e]/60 shadow-sm';
       title.innerText = 'Strong Contender with Growth Potential';
       text.innerText = `Your startup scored ${score}%. We welcome your submission—ensure your pitch highlights your execution plan.`;
       applyBtn.innerText = 'Apply to Challenge →';
     } else {
-      badge.className = 'w-16 h-16 rounded-2xl bg-[#2b1910] text-[#f5d6b4] font-display font-black text-2xl flex items-center justify-center border border-[#f5d6b4]/30';
+      badge.className = 'w-16 h-16 rounded-2xl bg-[#F4EDE4] dark:bg-[#2b1910] text-[#5C3D2E] dark:text-[#f5d6b4] font-display font-black text-2xl flex items-center justify-center border border-[#865237]/40 dark:border-[#f5d6b4]/30 shadow-sm';
       title.innerText = 'Early-Stage / Additional Prep Advised';
       text.innerText = `Your startup scored ${score}%. Consider strengthening your prototype. You are still fully eligible to submit!`;
       applyBtn.innerText = 'Submit Application Anyway →';
@@ -168,6 +168,17 @@ function initEligibilityQuiz() {
   }
 }
 
+// HTML Escape Helper
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 // Application Status Tracker
 function initStatusTracker() {
   const form = document.getElementById('tracker-form');
@@ -178,23 +189,25 @@ function initStatusTracker() {
   document.querySelectorAll('.sample-id-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.id;
-      input.value = id;
-      lookupStatus(id);
+      if (input) {
+        input.value = id;
+        lookupApplication(id);
+      }
     });
   });
 
-  if (!form) return;
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const query = input.value.trim();
+      if (!query) return;
+      lookupApplication(query);
+    });
+  }
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const query = input.value.trim();
-    if (!query) return;
-    lookupStatus(query);
-  });
-
-  async function lookupStatus(query) {
-    resultDiv.classList.add('hidden');
+  async function lookupApplication(query) {
     errorDiv.classList.add('hidden');
+    resultDiv.classList.add('hidden');
 
     try {
       const res = await fetch(`/api/applications/${encodeURIComponent(query)}`);
@@ -225,33 +238,33 @@ function initStatusTracker() {
 
     const stages = [
       { key: 'submitted', label: '1. Submitted' },
-      { key: 'under_review', label: '2. Technical Review' },
-      { key: 'shortlisted', label: '3. Top 50 Semifinals' },
-      { key: 'finalist', label: '4. Top 15 Finalist' },
-      { key: 'accepted', label: '5. Demo Day Winner' }
+      { key: 'under_review', label: '2. Review' },
+      { key: 'shortlisted', label: '3. Top 50' },
+      { key: 'finalist', label: '4. Finalist' },
+      { key: 'accepted', label: '5. Winner' }
     ];
 
     const currentOrder = ['submitted', 'under_review', 'shortlisted', 'finalist', 'accepted'].indexOf(app.status);
 
     let progressHtml = `
       <div class="space-y-2">
-        <div class="flex items-center justify-between text-xs text-[#f5d6b4]/70 font-semibold">
+        <div class="flex items-center justify-between text-xs text-[#4A2E1F] dark:text-[#f5d6b4]/70 font-bold">
           <span>Application Progress</span>
-          <span class="text-[#dfa04e] capitalize font-bold">${app.status.replace('_', ' ')}</span>
+          <span class="text-[#8F4C15] dark:text-[#dfa04e] capitalize font-black">${app.status.replace('_', ' ')}</span>
         </div>
-        <div class="grid grid-cols-5 gap-1.5">
+        <div class="grid grid-cols-5 gap-1 sm:gap-1.5">
     `;
 
     stages.forEach((st, idx) => {
       const isPastOrCurrent = currentOrder >= idx;
       const isCurrent = currentOrder === idx;
       progressHtml += `
-        <div class="p-2 rounded-lg text-center text-[10px] font-bold ${
+        <div class="p-1.5 sm:p-2 rounded-lg text-center text-[10px] font-bold ${
           isCurrent
-            ? 'btn-adabah-primary text-[#120904] ring-2 ring-[#dfa04e]'
+            ? 'btn-adabah-primary text-white ring-2 ring-[#865237] dark:ring-[#dfa04e]'
             : isPastOrCurrent
-            ? 'bg-[#865237]/40 text-[#f5d6b4] border border-[#dfa04e]/50'
-            : 'bg-black/30 text-stone-500 border border-white/5'
+            ? 'bg-[#F4EDE4] dark:bg-[#865237]/40 text-[#6B3410] dark:text-[#f5d6b4] border border-[#865237]/40 dark:border-[#dfa04e]/50'
+            : 'bg-[#F4EDE4]/60 dark:bg-black/30 text-[#5C3D2E] dark:text-[#f5d6b4]/50 border border-[#865237]/20 dark:border-white/10 font-semibold'
         }">
           ${st.label}
         </div>
@@ -260,51 +273,51 @@ function initStatusTracker() {
     progressHtml += `</div></div>`;
 
     resultDiv.innerHTML = `
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#f5d6b4]/15 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#865237]/20 dark:border-[#f5d6b4]/15 pb-4">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="font-mono text-sm font-bold text-[#120904] bg-[#f5d6b4] px-2.5 py-0.5 rounded-md border border-[#dfa04e]">${app.id}</span>
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="font-mono text-sm font-black text-white bg-[#865237] px-2.5 py-0.5 rounded-md border border-[#865237] shadow-sm">${app.id}</span>
             <span class="status-badge status-${app.status}">${app.status.replace('_', ' ')}</span>
           </div>
-          <h3 class="font-display font-extrabold text-2xl text-white">${app.startupName}</h3>
-          <p class="text-xs text-[#f5d6b4]/70 mt-0.5">${app.tagline || 'Innovative venture'}</p>
+          <h3 class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white">${escapeHtml(app.startupName)}</h3>
+          <p class="text-xs text-[#4A2E1F] dark:text-[#f5d6b4]/70 mt-0.5">${escapeHtml(app.tagline || 'Innovative venture')}</p>
         </div>
         <div class="text-left sm:text-right">
-          <div class="text-[11px] text-[#f5d6b4]/50 uppercase font-semibold">Submitted On</div>
-          <div class="text-xs text-[#f5d6b4] font-medium">${dateFormatted}</div>
-          ${app.score ? `<div class="mt-1 inline-block px-2.5 py-0.5 rounded bg-[#865237]/50 text-[#f5d6b4] font-bold text-xs border border-[#dfa04e]/40">Jury Score: ${app.score}/100</div>` : ''}
+          <div class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 uppercase font-bold">Submitted On</div>
+          <div class="text-xs text-[#1A0F09] dark:text-[#f5d6b4] font-bold font-mono">${dateFormatted}</div>
+          ${app.score ? `<div class="mt-1 inline-block px-2.5 py-0.5 rounded bg-[#F4EDE4] dark:bg-[#865237]/50 text-[#6B3410] dark:text-[#f5d6b4] font-black text-xs border border-[#865237]/30 dark:border-[#dfa04e]/40">Jury Score: ${app.score}/100</div>` : ''}
         </div>
       </div>
 
       ${progressHtml}
 
-      <div class="p-4 rounded-xl bg-black/40 border border-[#f5d6b4]/15 space-y-1.5">
-        <div class="text-[11px] font-bold uppercase tracking-wider text-[#dfa04e]">Jury Committee Note:</div>
-        <div class="text-xs text-[#f5d6b4]">${app.statusNotes || 'Your application is progressing normally through the evaluation pipeline.'}</div>
+      <div class="p-4 rounded-xl bg-white dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/15 space-y-1.5 shadow-sm">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-[#8F4C15] dark:text-[#dfa04e]">Jury Committee Note:</div>
+        <div class="text-xs text-[#2E180D] dark:text-[#f5d6b4] leading-relaxed font-medium">${escapeHtml(app.statusNotes || 'Your application is progressing normally through the evaluation pipeline.')}</div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-        <div>
-          <span class="text-[#f5d6b4]/60 block">Assigned Track</span>
-          <span class="font-bold text-white capitalize">${app.track}</span>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-xs">
+        <div class="p-2.5 rounded-lg bg-white dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Assigned Track</span>
+          <span class="font-bold text-[#1A0F09] dark:text-white capitalize">${escapeHtml(app.track)}</span>
         </div>
-        <div>
-          <span class="text-[#f5d6b4]/60 block">Stage</span>
-          <span class="font-bold text-white uppercase">${app.stage}</span>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Stage</span>
+          <span class="font-bold text-[#1A0F09] dark:text-white uppercase">${escapeHtml(app.stage)}</span>
         </div>
-        <div>
-          <span class="text-[#f5d6b4]/60 block">Location</span>
-          <span class="font-bold text-white">${app.city ? `${app.city}, ` : ''}${app.country}</span>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Location</span>
+          <span class="font-bold text-[#1A0F09] dark:text-white truncate block">${escapeHtml(app.city ? `${app.city}, ` : '')}${escapeHtml(app.country)}</span>
         </div>
-        <div>
-          <span class="text-[#f5d6b4]/60 block">Lead Founder</span>
-          <span class="font-bold text-white">${app.founderName}</span>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 block font-semibold text-[11px]">Lead Founder</span>
+          <span class="font-bold text-[#1A0F09] dark:text-white truncate block">${escapeHtml(app.founderName)}</span>
         </div>
       </div>
 
       ${app.deckUrl ? `
         <div class="pt-2 flex items-center justify-between">
-          <a href="${app.deckUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-[#dfa04e] hover:underline font-bold">
+          <a href="${escapeHtml(app.deckUrl)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-[#8F4C15] dark:text-[#dfa04e] hover:underline font-bold">
             <span>View Submitted Pitch Materials</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
           </a>
