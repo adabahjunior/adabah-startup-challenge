@@ -362,21 +362,21 @@ html.dark .glass-panel-light {
   border: 1px solid rgba(245, 214, 180, 0.1);
 }
 
-/* Brand Text Gradients (Rich and high contrast on light backgrounds) */
+/* Brand Text Gradients (Radiant Amber Gold - matching the 2026 hero gradient) */
 .text-gradient-adabah {
-  background: linear-gradient(135deg, #1a0f09 0%, #683b23 50%, #8f4c15 100%);
+  background: linear-gradient(135deg, #865237 0%, #b86b24 35%, #c47d2b 70%, #8f4c15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 html.dark .text-gradient-adabah {
-  background: linear-gradient(135deg, #ffffff 0%, #f5d6b4 60%, #dfa04e 100%);
+  background: linear-gradient(135deg, #f5d6b4 0%, #ebb364 50%, #dfa04e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-sand {
-  background: linear-gradient(135deg, #1a0f09 0%, #5c3015 50%, #8f4c15 100%);
+  background: linear-gradient(135deg, #865237 0%, #a46543 50%, #c47d2b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -388,13 +388,13 @@ html.dark .text-gradient-sand {
 }
 
 .text-gradient-gold {
-  background: linear-gradient(135deg, #5c3015 0%, #8f4c15 60%, #1a0f09 100%);
+  background: linear-gradient(135deg, #865237 0%, #c47d2b 50%, #8f4c15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 html.dark .text-gradient-gold {
-  background: linear-gradient(135deg, #fce9d2 0%, #dfa04e 60%, #9e6445 100%);
+  background: linear-gradient(135deg, #fce9d2 0%, #dfa04e 60%, #ebb364 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
