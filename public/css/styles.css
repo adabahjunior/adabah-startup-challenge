@@ -1,0 +1,624 @@
+/* styles.css - The ADABAH Startup Challenge Brand Stylesheet */
+/* Supports Default Light Theme with Dark Theme Toggle */
+
+:root {
+  /* Default Light Theme (Warm Sand / Ivory Linen & Rich Cocoa) */
+  --adabah-bg: #faf7f2;
+  --adabah-surface: #ffffff;
+  --adabah-surface-subtle: #f4ede4;
+  --adabah-surface-muted: #eae0d3;
+  --adabah-border: rgba(134, 82, 55, 0.16);
+  --adabah-border-hover: rgba(134, 82, 55, 0.4);
+  
+  --adabah-text: #1a0f09;
+  --adabah-text-muted: #5c3d2e;
+  --adabah-text-subtle: #865237;
+
+  --adabah-brown: #865237;
+  --adabah-brown-light: #9e6445;
+  --adabah-sand: #f5d6b4;
+  --adabah-sand-light: #fbf1e6;
+  --adabah-gold: #c47d2b;
+  --adabah-gold-bright: #dfa04e;
+
+  --adabah-select-bg: #ffffff;
+  --adabah-select-text: #1a0f09;
+  --adabah-input-bg: #ffffff;
+  --adabah-input-text: #1a0f09;
+  --adabah-input-placeholder: rgba(92, 61, 46, 0.5);
+  --adabah-input-border: rgba(134, 82, 55, 0.22);
+}
+
+/* Dark Theme Overrides */
+html.dark {
+  --adabah-bg: #180e08;
+  --adabah-surface: #24140b;
+  --adabah-surface-subtle: #1f120a;
+  --adabah-surface-muted: #120904;
+  --adabah-border: rgba(245, 214, 180, 0.16);
+  --adabah-border-hover: rgba(245, 214, 180, 0.45);
+  
+  --adabah-text: #fbf1e6;
+  --adabah-text-muted: rgba(245, 214, 180, 0.8);
+  --adabah-text-subtle: #dfa04e;
+
+  --adabah-select-bg: #1f120a;
+  --adabah-select-text: #fbf1e6;
+  --adabah-input-bg: #1a0f09;
+  --adabah-input-text: #ffffff;
+  --adabah-input-placeholder: rgba(245, 214, 180, 0.45);
+  --adabah-input-border: rgba(245, 214, 180, 0.22);
+}
+
+/* ======================================================== */
+/* STRICT MOBILE OVERFLOW PREVENTION & VIEWPORT LOCK */
+/* ======================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+img, svg, video, iframe {
+  max-width: 100%;
+}
+
+/* Custom Base Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--adabah-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbbab0;
+  border-radius: 5px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #3e2417;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #865237;
+}
+
+/* ======================================================== */
+/* BRANDED DROPDOWN MENUS (ALL SELECT ELEMENTS) */
+/* ======================================================== */
+select, .adabah-select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: var(--adabah-select-bg) !important;
+  color: var(--adabah-select-text) !important;
+  border: 1.5px solid var(--adabah-input-border) !important;
+  border-radius: 1rem !important;
+  padding: 0.95rem 3rem 0.95rem 1.25rem !important;
+  font-size: 0.975rem !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23865237'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1.25rem center !important;
+  background-size: 1.25rem !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 2px 8px rgba(134, 82, 55, 0.08) !important;
+  width: 100%;
+}
+
+html.dark select, html.dark .adabah-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23dfa04e'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+select:hover, .adabah-select:hover {
+  border-color: #c47d2b !important;
+  background-color: #faf7f2 !important;
+  box-shadow: 0 4px 14px rgba(134, 82, 55, 0.12) !important;
+}
+
+html.dark select:hover, html.dark .adabah-select:hover {
+  border-color: rgba(223, 160, 78, 0.7) !important;
+  background-color: #27160d !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
+}
+
+select:focus, .adabah-select:focus {
+  outline: none !important;
+  border-color: #c47d2b !important;
+  box-shadow: 0 0 0 3px rgba(196, 125, 43, 0.25), 0 4px 16px rgba(134, 82, 55, 0.12) !important;
+  background-color: #ffffff !important;
+}
+
+html.dark select:focus, html.dark .adabah-select:focus {
+  border-color: #dfa04e !important;
+  box-shadow: 0 0 0 3px rgba(223, 160, 78, 0.3), 0 6px 20px rgba(0, 0, 0, 0.5) !important;
+  background-color: #2c190f !important;
+}
+
+select option {
+  background-color: #ffffff !important;
+  color: #1a0f09 !important;
+  font-size: 0.95rem !important;
+  padding: 14px 16px !important;
+}
+
+html.dark select option {
+  background-color: #1a0f09 !important;
+  color: #fbf1e6 !important;
+}
+
+select option:checked, select option:hover {
+  background-color: #865237 !important;
+  color: #ffffff !important;
+}
+
+/* ======================================================== */
+/* BRANDED INPUTS & TEXTAREAS */
+/* ======================================================== */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+textarea {
+  background-color: var(--adabah-input-bg) !important;
+  color: var(--adabah-input-text) !important;
+  border: 1.5px solid var(--adabah-input-border) !important;
+  border-radius: 1rem !important;
+  padding: 0.95rem 1.25rem !important;
+  font-size: 0.975rem !important;
+  line-height: 1.5 !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 2px 8px rgba(134, 82, 55, 0.06) !important;
+  width: 100%;
+}
+
+html.dark input[type="text"],
+html.dark input[type="email"],
+html.dark input[type="tel"],
+html.dark input[type="url"],
+html.dark input[type="number"],
+html.dark textarea {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="url"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+  color: var(--adabah-input-placeholder) !important;
+  font-size: 0.9rem !important;
+}
+
+input:hover, textarea:hover {
+  border-color: rgba(134, 82, 55, 0.45) !important;
+}
+
+html.dark input:hover, html.dark textarea:hover {
+  border-color: rgba(245, 214, 180, 0.45) !important;
+}
+
+input:focus, textarea:focus {
+  outline: none !important;
+  border-color: #c47d2b !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(196, 125, 43, 0.2), 0 4px 14px rgba(134, 82, 55, 0.1) !important;
+}
+
+html.dark input:focus, html.dark textarea:focus {
+  border-color: #dfa04e !important;
+  background-color: #22130b !important;
+  box-shadow: 0 0 0 3px rgba(223, 160, 78, 0.3), 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  min-width: 1.35rem;
+  border-radius: 0.375rem;
+  border: 2px solid rgba(134, 82, 55, 0.35);
+  background-color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #865237;
+  border-color: #865237;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  width: 0.4rem;
+  height: 0.7rem;
+  border: solid #ffffff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(134, 82, 55, 0.25);
+}
+
+html.dark input[type="checkbox"] {
+  border-color: rgba(245, 214, 180, 0.4);
+  background-color: #120904;
+}
+
+html.dark input[type="checkbox"]:checked {
+  background-color: #dfa04e;
+  border-color: #dfa04e;
+}
+
+html.dark input[type="checkbox"]:checked::after {
+  border: solid #120904;
+  border-width: 0 2.5px 2.5px 0;
+}
+
+html.dark input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 3px rgba(223, 160, 78, 0.35);
+}
+
+/* Form Labels & Section Badges */
+.adabah-field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: var(--adabah-text);
+  margin-bottom: 0.5rem;
+}
+
+.adabah-field-hint {
+  font-size: 0.8rem;
+  color: var(--adabah-text-muted);
+  font-weight: 400;
+  margin-top: 0.35rem;
+}
+
+/* Ambient glow backgrounds in brand colors */
+.hero-glow {
+  background: radial-gradient(circle at 50% 20%, rgba(223, 160, 78, 0.08) 0%, rgba(134, 82, 55, 0.05) 40%, transparent 75%);
+}
+
+html.dark .hero-glow {
+  background: radial-gradient(circle at 50% 20%, rgba(223, 160, 78, 0.16) 0%, rgba(134, 82, 55, 0.14) 40%, transparent 75%);
+}
+
+.card-glow:hover {
+  border-color: rgba(134, 82, 55, 0.35);
+  box-shadow: 0 10px 25px -8px rgba(134, 82, 55, 0.18);
+}
+
+html.dark .card-glow:hover {
+  border-color: rgba(245, 214, 180, 0.45);
+  box-shadow: 0 12px 35px -10px rgba(134, 82, 55, 0.35);
+}
+
+.gold-glow:hover {
+  border-color: rgba(196, 125, 43, 0.5);
+  box-shadow: 0 10px 25px -8px rgba(196, 125, 43, 0.2);
+}
+
+html.dark .gold-glow:hover {
+  border-color: rgba(223, 160, 78, 0.6);
+  box-shadow: 0 12px 35px -10px rgba(223, 160, 78, 0.35);
+}
+
+/* Glassmorphism surfaces */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--adabah-border);
+}
+
+html.dark .glass-panel {
+  background: rgba(38, 22, 14, 0.85);
+}
+
+.glass-panel-light {
+  background: rgba(244, 237, 228, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(134, 82, 55, 0.12);
+}
+
+html.dark .glass-panel-light {
+  background: rgba(58, 34, 22, 0.65);
+  border: 1px solid rgba(245, 214, 180, 0.1);
+}
+
+/* Brand Text Gradients */
+.text-gradient-adabah {
+  background: linear-gradient(135deg, #1a0f09 0%, #865237 50%, #c47d2b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .text-gradient-adabah {
+  background: linear-gradient(135deg, #ffffff 0%, #f5d6b4 60%, #dfa04e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-sand {
+  background: linear-gradient(135deg, #5c3d2e 0%, #865237 50%, #c47d2b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .text-gradient-sand {
+  background: linear-gradient(135deg, #fbf1e6 0%, #f5d6b4 50%, #ebb364 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #865237 0%, #c47d2b 60%, #5c3d2e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .text-gradient-gold {
+  background: linear-gradient(135deg, #fce9d2 0%, #dfa04e 60%, #9e6445 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Brand Button Styles */
+.btn-adabah-primary {
+  background: linear-gradient(135deg, #865237 0%, #a46543 50%, #c47d2b 100%);
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 4px 16px rgba(134, 82, 55, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-adabah-primary:hover {
+  box-shadow: 0 6px 22px rgba(134, 82, 55, 0.38);
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #965c3e 0%, #b36e49 50%, #d48731 100%);
+}
+
+html.dark .btn-adabah-primary {
+  background: linear-gradient(135deg, #f5d6b4 0%, #dfa04e 100%);
+  color: #120904;
+  box-shadow: 0 4px 20px rgba(223, 160, 78, 0.3);
+}
+
+html.dark .btn-adabah-primary:hover {
+  box-shadow: 0 6px 25px rgba(223, 160, 78, 0.45);
+  background: linear-gradient(135deg, #fce9d2 0%, #ebb364 100%);
+}
+
+.btn-adabah-brown {
+  background: linear-gradient(135deg, #865237 0%, #5d3622 100%);
+  color: #ffffff;
+  border: 1px solid rgba(134, 82, 55, 0.3);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-adabah-brown:hover {
+  background: linear-gradient(135deg, #9e6445 0%, #73432b 100%);
+  color: #ffffff;
+}
+
+html.dark .btn-adabah-brown {
+  color: #f5d6b4;
+  border: 1px solid rgba(245, 214, 180, 0.3);
+}
+
+html.dark .btn-adabah-brown:hover {
+  border-color: rgba(245, 214, 180, 0.6);
+}
+
+/* Modal styling */
+.modal-overlay {
+  background: rgba(26, 15, 9, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+html.dark .modal-overlay {
+  background: rgba(18, 9, 4, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+/* Step Badges */
+.step-circle {
+  width: 2.25rem;
+  height: 2.25rem;
+  min-width: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 2px solid rgba(134, 82, 55, 0.2);
+  background: #f4ede4;
+  color: #865237;
+}
+
+@media (min-width: 640px) {
+  .step-circle {
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    font-size: 1.05rem;
+  }
+}
+
+.step-circle.active {
+  background: linear-gradient(135deg, #865237 0%, #a46543 50%, #c47d2b 100%);
+  color: #ffffff;
+  border-color: #865237;
+  box-shadow: 0 0 16px rgba(134, 82, 55, 0.35);
+  transform: scale(1.08);
+}
+
+.step-circle.completed {
+  background: #865237;
+  color: #ffffff;
+  border-color: #865237;
+  box-shadow: 0 0 8px rgba(134, 82, 55, 0.25);
+}
+
+html.dark .step-circle {
+  border-color: rgba(245, 214, 180, 0.25);
+  background: #180e08;
+  color: rgba(245, 214, 180, 0.5);
+}
+
+html.dark .step-circle.active {
+  background: linear-gradient(135deg, #f5d6b4 0%, #dfa04e 100%);
+  color: #120904;
+  border-color: #dfa04e;
+  box-shadow: 0 0 20px rgba(223, 160, 78, 0.45);
+}
+
+html.dark .step-circle.completed {
+  background: #865237;
+  color: #ffffff;
+  border-color: #dfa04e;
+  box-shadow: 0 0 10px rgba(134, 82, 55, 0.4);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-submitted {
+  background: rgba(134, 82, 55, 0.12);
+  color: #865237;
+  border: 1px solid rgba(134, 82, 55, 0.25);
+}
+
+html.dark .status-submitted {
+  background: rgba(245, 214, 180, 0.15);
+  color: #f5d6b4;
+  border-color: rgba(245, 214, 180, 0.35);
+}
+
+.status-under_review {
+  background: rgba(196, 125, 43, 0.15);
+  color: #b86b1e;
+  border: 1px solid rgba(196, 125, 43, 0.35);
+}
+
+html.dark .status-under_review {
+  background: rgba(223, 160, 78, 0.15);
+  color: #ebb364;
+  border-color: rgba(223, 160, 78, 0.35);
+}
+
+.status-shortlisted {
+  background: rgba(134, 82, 55, 0.2);
+  color: #5c3d2e;
+  border: 1px solid rgba(134, 82, 55, 0.35);
+}
+
+html.dark .status-shortlisted {
+  background: rgba(134, 82, 55, 0.35);
+  color: #fbf1e6;
+  border-color: rgba(245, 214, 180, 0.4);
+}
+
+.status-finalist {
+  background: rgba(196, 125, 43, 0.2);
+  color: #865237;
+  border: 1px solid #c47d2b;
+}
+
+html.dark .status-finalist {
+  background: rgba(223, 160, 78, 0.25);
+  color: #fce9d2;
+  border-color: #dfa04e;
+}
+
+.status-accepted {
+  background: linear-gradient(135deg, rgba(134, 82, 55, 0.25), rgba(196, 125, 43, 0.3));
+  color: #1a0f09;
+  border: 1.5px solid #865237;
+}
+
+html.dark .status-accepted {
+  background: linear-gradient(135deg, rgba(223, 160, 78, 0.35), rgba(134, 82, 55, 0.4));
+  color: #ffffff;
+  border-color: #ebb364;
+}
+
+.status-rejected {
+  background: rgba(185, 28, 28, 0.12);
+  color: #991b1b;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+html.dark .status-rejected {
+  background: rgba(185, 28, 28, 0.2);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Print Receipt Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-receipt, #printable-receipt * {
+    visibility: visible;
+  }
+  #printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    color: black !important;
+    padding: 20px !important;
+  }
+}

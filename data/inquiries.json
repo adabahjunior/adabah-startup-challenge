@@ -1,0 +1,17 @@
+{
+  "messages": [
+    {
+      "id": "INQ-1789111192499",
+      "name": "Acumen Africa Ventures",
+      "email": "partnerships@acumen-africa.org",
+      "type": "Mentorship",
+      "message": "We would love to provide 2 senior investment analysts as mentors and judges for the final pitch."
+    }
+  ],
+  "newsletter": [
+    {
+      "email": "investor-relations@alts-ventures.mock",
+      "subscribedAt": "2026-09-01T08:00:00.000Z"
+    }
+  ]
+}

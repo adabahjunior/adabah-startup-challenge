@@ -1,0 +1,23 @@
+{
+  "name": "adabah-startup-challenge",
+  "version": "1.0.0",
+  "description": "The Official Web Platform and Application Portal for The ADABAH Startup Challenge",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "startup-challenge",
+    "adabah",
+    "accelerator",
+    "pitch-competition",
+    "venture-capital"
+  ],
+  "author": "The Adabah Challenge Team",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "dotenv": "^17.4.2"
+  }
+}

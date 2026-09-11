@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>THE ADABAH STARTUP CHALLENGE 2026 | Build. Pitch. Grow.</title>
+  
+  <!-- Early Theme Init to avoid flash of wrong theme -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('adabah_theme');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            adabah: {
+              darkest: '#120904',
+              bg: '#180e08',
+              surface: '#24140b',
+              card: '#2f190e',
+              brown: '#865237',
+              lightbrown: '#a46543',
+              sand: '#f5d6b4',
+              sandlight: '#fbf1e6',
+              gold: '#dfa04e',
+              goldbright: '#ebb364',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="bg-[#FAF7F2] text-[#1A0F09] dark:bg-[#180e08] dark:text-[#fbf1e6] font-sans antialiased selection:bg-[#dfa04e] selection:text-[#180e08] min-h-screen relative w-full max-w-full overflow-x-hidden transition-colors duration-200">
+
+  <!-- Subtle Warm Ambient Backdrop (Strictly clipped with overflow-hidden) -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[750px] max-w-full h-[450px] bg-[#865237]/8 dark:bg-[#865237]/15 rounded-full blur-[160px]"></div>
+    <div class="absolute bottom-20 right-0 w-[550px] max-w-full h-[400px] bg-[#dfa04e]/6 dark:bg-[#dfa04e]/10 rounded-full blur-[160px]"></div>
+  </div>
+
+  <!-- MINIMAL, SPACIOUS HEADER -->
+  <header class="sticky top-0 z-40 w-full border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2]/90 dark:bg-[#180e08]/90 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between py-3">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[1.5px] shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+          <div class="w-full h-full bg-[#120904] rounded-[9px] flex items-center justify-center font-display font-black text-lg sm:text-xl text-[#f5d6b4]">
+            A
+          </div>
+        </div>
+        <div class="min-w-0">
+          <span class="font-display font-black text-base sm:text-lg tracking-tight text-[#1A0F09] dark:text-white block leading-none truncate">THE ADABAH</span>
+          <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#865237] dark:text-[#dfa04e] block">Startup Challenge</span>
+        </div>
+      </a>
+
+      <!-- Clean Header Links (Desktop) -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+        <a href="#about" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">About</a>
+        <a href="#who-it-is-for" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Who It's For</a>
+        <a href="#how-it-works" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">How It Works</a>
+        <a href="#criteria" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Judging</a>
+        <a href="#prize" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Prize</a>
+        <a href="#faq" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">FAQ</a>
+        <a href="#tracker" class="text-[#865237] dark:text-[#dfa04e] hover:underline flex items-center gap-1">
+          <svg class="w-3.5 h-3.5 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          Status
+        </a>
+      </nav>
+
+      <!-- Primary Action & Theme Switcher -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        <!-- Theme Toggle Button -->
+        <button type="button" class="theme-toggle-btn px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-white dark:bg-white/10 border border-[#865237]/20 dark:border-white/15 text-xs font-semibold flex items-center gap-1.5 shadow-sm hover:border-[#865237] transition-all cursor-pointer" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <svg class="w-4 h-4 text-[#865237]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          <span class="text-xs font-semibold text-[#5c3d2e] hidden sm:inline">Dark</span>
+        </button>
+
+        <button id="nav-apply-btn" class="hidden sm:inline-flex px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs shadow-md hover:scale-[1.02] transition-transform">
+          Apply Now
+        </button>
+
+        <!-- Mobile Hamburger -->
+        <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-lg text-[#1A0F09] dark:text-[#f5d6b4] hover:bg-black/5 dark:hover:bg-white/5" aria-label="Toggle Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2] dark:bg-[#120904] px-5 py-4 space-y-3 shadow-lg">
+      <a href="#about" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">About Challenge</a>
+      <a href="#who-it-is-for" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Who It's For</a>
+      <a href="#how-it-works" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">How It Works</a>
+      <a href="#criteria" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Judging Criteria</a>
+      <a href="#prize" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Prize (GH₵3,000)</a>
+      <a href="#faq" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">FAQ</a>
+      <a href="#tracker" class="block py-2 text-sm text-[#865237] dark:text-[#dfa04e] font-bold">Application Tracker</a>
+      <div class="pt-3 flex flex-col gap-2">
+        <button id="mobile-apply-btn" class="w-full py-3 rounded-xl btn-adabah-primary font-bold text-sm text-center">
+          Apply for Challenge
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="relative z-10 w-full max-w-full overflow-x-hidden">
+
+    <!-- HERO SECTION -->
+    <section class="pt-10 pb-14 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 hero-glow text-center px-4">
+      <div class="max-w-4xl mx-auto px-2 sm:px-6">
+        
+        <!-- Applications Open Pill -->
+        <div class="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white dark:bg-[#120904] border border-[#865237]/25 dark:border-[#dfa04e]/30 text-xs font-semibold mb-6 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-[#dfa04e] animate-ping flex-shrink-0"></span>
+          <span class="text-[#865237] dark:text-[#dfa04e] font-bold uppercase tracking-wider text-[11px] sm:text-xs">Applications Open</span>
+          <span class="text-[#865237]/40 dark:text-[#f5d6b4]/40 hidden xs:inline">•</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/90 text-[10px] sm:text-[11px]">3-Week Programme Starts 2 Nov 2026</span>
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-7xl text-[#1A0F09] dark:text-white tracking-tight leading-[1.1] mb-3 break-words">
+          THE ADABAH <br />
+          <span class="text-gradient-adabah">STARTUP CHALLENGE 2026</span>
+        </h1>
+
+        <!-- Bold Tagline -->
+        <div class="font-display font-black text-lg sm:text-2xl text-[#865237] dark:text-[#dfa04e] tracking-wide mb-4 sm:mb-5">
+          Build. Pitch. Grow.
+        </div>
+
+        <!-- Exact Hero Subhead -->
+        <p class="text-sm sm:text-xl text-[#5C3D2E] dark:text-[#f5d6b4]/85 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
+          A 3-week startup mentorship and pitch competition designed to help student entrepreneurs turn their ideas and businesses into stronger, more investable ventures.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto mb-8 sm:mb-10 w-full">
+          <button id="hero-apply-btn" class="w-full sm:w-auto px-8 py-3.5 rounded-xl btn-adabah-primary font-display font-extrabold text-sm flex items-center justify-center gap-2">
+            <span>Apply Now</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+          <a href="#about" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 hover:border-[#865237] dark:hover:border-[#dfa04e] text-[#1A0F09] dark:text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm">
+            <span>Learn More</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </a>
+        </div>
+
+        <!-- Sleek Countdown to 2 November 2026 -->
+        <div class="inline-flex max-w-full flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white/95 dark:bg-[#120904]/90 border border-[#865237]/20 dark:border-[#f5d6b4]/15 shadow-sm">
+          <span class="text-xs text-[#865237] dark:text-[#dfa04e] font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Programme Starts:
+          </span>
+          <div class="flex items-center gap-1.5 sm:gap-2 text-xs font-mono font-bold text-[#1A0F09] dark:text-white" id="countdown-timer">
+            <span><strong id="count-days">52</strong>d</span> :
+            <span><strong id="count-hours">14</strong>h</span> :
+            <span><strong id="count-mins">30</strong>m</span> :
+            <span class="text-[#865237] dark:text-[#dfa04e]"><strong id="count-secs">00</strong>s</span>
+          </div>
+        </div>
+
+        <!-- 3 Key Highlights -->
+        <div class="mt-10 sm:mt-12 grid grid-cols-3 gap-2 sm:gap-6 max-w-3xl mx-auto border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 pt-6 sm:pt-8 text-center">
+          <div class="px-1">
+            <div class="font-display font-black text-xl sm:text-3xl text-[#1A0F09] dark:text-white">3 Weeks</div>
+            <div class="text-[10px] sm:text-xs text-[#865237] dark:text-[#dfa04e] font-semibold mt-0.5">Mentorship</div>
+          </div>
+          <div class="border-x border-[#865237]/15 dark:border-[#f5d6b4]/10 px-1">
+            <div class="font-display font-black text-xl sm:text-3xl text-[#1A0F09] dark:text-white">GH₵3,000</div>
+            <div class="text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold mt-0.5">Cash Prize</div>
+          </div>
+          <div class="px-1">
+            <div class="font-display font-black text-xl sm:text-3xl text-[#1A0F09] dark:text-white">Live Pitch</div>
+            <div class="text-[10px] sm:text-xs text-[#865237] dark:text-[#dfa04e] font-semibold mt-0.5">Industry Panel</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WHAT IS THE ADABAH STARTUP CHALLENGE? -->
+    <section id="about" class="py-14 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-8">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Programme Overview</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">
+          What is The ADABAH Startup Challenge?
+        </h2>
+      </div>
+
+      <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-4 text-sm sm:text-base text-[#5C3D2E] dark:text-[#f5d6b4]/85 leading-relaxed">
+        <p>
+          The <strong class="text-[#1A0F09] dark:text-white">ADABAH Startup Challenge</strong> is a student-focused entrepreneurship programme that gives aspiring founders and student entrepreneurs the opportunity to develop their businesses, learn from experienced entrepreneurs, receive practical mentorship, and compete for a cash prize.
+        </p>
+        <p>
+          The programme will culminate in a live pitch competition where selected participants will present their ventures to a panel of judges, entrepreneurs and industry professionals.
+        </p>
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#dfa04e]/30 text-[#1A0F09] dark:text-white font-medium text-sm space-y-1">
+          <p class="text-[#865237] dark:text-[#dfa04e] font-bold">This is not just about having a great idea.</p>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+            It is about building something real, knowing your numbers, understanding your customers, and learning how to communicate why your business deserves to grow.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IS IT FOR? -->
+    <section id="who-it-is-for" class="py-14 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-8">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Eligibility</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">
+          Who Is It For?
+        </h2>
+        <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-2">
+          The challenge is designed for students who are:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 mb-6">
+        <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-[#F4EDE4] text-[#865237] dark:bg-[#865237]/40 dark:text-[#dfa04e] flex items-center justify-center font-bold text-sm flex-shrink-0">✓</div>
+          <span class="text-xs font-semibold text-[#1A0F09] dark:text-white">Building a startup</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-[#F4EDE4] text-[#865237] dark:bg-[#865237]/40 dark:text-[#dfa04e] flex items-center justify-center font-bold text-sm flex-shrink-0">✓</div>
+          <span class="text-xs font-semibold text-[#1A0F09] dark:text-white">Running an existing business</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-[#F4EDE4] text-[#865237] dark:bg-[#865237]/40 dark:text-[#dfa04e] flex items-center justify-center font-bold text-sm flex-shrink-0">✓</div>
+          <span class="text-xs font-semibold text-[#1A0F09] dark:text-white">Developing a promising idea</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-[#F4EDE4] text-[#865237] dark:bg-[#865237]/40 dark:text-[#dfa04e] flex items-center justify-center font-bold text-sm flex-shrink-0">✓</div>
+          <span class="text-xs font-semibold text-[#1A0F09] dark:text-white">Looking to validate or improve</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm flex items-center gap-3 sm:col-span-2 lg:col-span-2">
+          <div class="w-8 h-8 rounded-lg bg-[#F4EDE4] text-[#865237] dark:bg-[#865237]/40 dark:text-[#dfa04e] flex items-center justify-center font-bold text-sm flex-shrink-0">✓</div>
+          <span class="text-xs font-semibold text-[#1A0F09] dark:text-white">Interested in entrepreneurship and innovation</span>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-[#F4EDE4] dark:bg-[#865237]/30 border border-[#865237]/20 dark:border-[#f5d6b4]/20 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">
+        Whether you are already making sales or still developing your venture, the challenge is designed to help you take the next step.
+      </div>
+    </section>
+
+    <!-- WHAT PARTICIPANTS GET -->
+    <section class="py-14 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Key Benefits</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">
+          What Participants Get
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2 card-glow">
+          <div class="w-9 h-9 rounded-xl bg-[#F4EDE4] dark:bg-[#865237]/40 text-base flex items-center justify-center">🤝</div>
+          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">MENTORSHIP</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Practical sessions led by entrepreneurs and industry professionals.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2 card-glow">
+          <div class="w-9 h-9 rounded-xl bg-[#F4EDE4] dark:bg-[#dfa04e]/20 text-base flex items-center justify-center">🎯</div>
+          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">PITCH DEVELOPMENT</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Learn how to structure, communicate and confidently present your venture.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2 card-glow">
+          <div class="w-9 h-9 rounded-xl bg-[#F4EDE4] dark:bg-[#865237]/40 text-base flex items-center justify-center">📈</div>
+          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">BUSINESS DEVELOPMENT</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Work on your business model, customers, branding, positioning and growth strategy.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2 card-glow">
+          <div class="w-9 h-9 rounded-xl bg-[#F4EDE4] dark:bg-[#dfa04e]/20 text-base flex items-center justify-center">🌐</div>
+          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">ENTREPRENEURIAL EXPOSURE</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Connect with founders, professionals and other ambitious student entrepreneurs.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2 card-glow">
+          <div class="w-9 h-9 rounded-xl bg-[#F4EDE4] dark:bg-[#865237]/40 text-base flex items-center justify-center">🎤</div>
+          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">LIVE PITCH OPPORTUNITY</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Present your startup before a panel of judges at the final event.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border-2 border-[#865237] dark:border-[#dfa04e]/50 shadow-md space-y-2 card-glow">
+          <div class="w-9 h-9 rounded-xl bg-[#865237] text-white text-base flex items-center justify-center font-bold">🏆</div>
+          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">CASH PRIZE</h3>
+          <p class="text-xs text-[#865237] dark:text-[#dfa04e] font-bold leading-relaxed">
+            The winning venture will receive a GH₵3,000 cash prize.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (4 STEPS) -->
+    <section id="how-it-works" class="py-14 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">The Process</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">
+          How It Works
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        
+        <!-- Step 1 -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2">
+          <div class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e]">01 — APPLY</div>
+          <h3 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Submit Your Venture</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Submit your startup or business for consideration through the online application. Applications will be reviewed based on the strength and potential of each venture.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2">
+          <div class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e]">02 — GET SELECTED</div>
+          <h3 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Cohort Onboarding</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            A group of promising student entrepreneurs will be selected to participate in the programme. Selected participants will receive further information about the mentorship programme and final pitch.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-3 md:col-span-2">
+          <div class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e]">03 — MENTORSHIP</div>
+          <h3 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">3-Week Structured Curriculum</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Participants will take part in a structured three-week programme designed to strengthen their ventures and prepare them for the final pitch. Sessions will cover:
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pt-1 text-xs">
+            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+              <span class="font-bold text-[#1A0F09] dark:text-white block mb-0.5">Pitch Development</span>
+              <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px]">How to communicate your idea clearly and convincingly.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+              <span class="font-bold text-[#1A0F09] dark:text-white block mb-0.5">Business & Branding</span>
+              <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px]">How to position your venture and build a stronger brand.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+              <span class="font-bold text-[#1A0F09] dark:text-white block mb-0.5">Customers & Market</span>
+              <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px]">Understanding who you serve and why they should choose you.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+              <span class="font-bold text-[#1A0F09] dark:text-white block mb-0.5">Revenue & Business Model</span>
+              <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px]">Understanding how your business makes money and grows.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/10 sm:col-span-2 lg:col-span-2">
+              <span class="font-bold text-[#1A0F09] dark:text-white block mb-0.5">Finding Opportunities & Investors</span>
+              <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px]">How entrepreneurs can position themselves for partnerships, funding and growth.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2 md:col-span-2">
+          <div class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e]">04 — THE FINAL PITCH</div>
+          <h3 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Live Stage Competition</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            After the mentorship programme, finalists will pitch their ventures live before a panel of judges. Participants will have a limited amount of time to present their businesses and defend their ideas before the judges. The final pitch will assess the strength, potential and viability of each venture.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- THE FINAL PITCH CALLOUT -->
+    <section class="py-12 max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#F4EDE4] via-white to-[#FAF7F2] dark:from-[#865237]/30 dark:via-[#24140b] dark:to-[#120904] border border-[#865237]/25 dark:border-[#dfa04e]/30 shadow-md text-center space-y-4 sm:space-y-5">
+        <span class="text-xs font-mono font-bold uppercase tracking-widest text-[#865237] dark:text-[#dfa04e]">The Climax</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white">
+          THIS IS WHERE IDEAS MEET THE REAL WORLD.
+        </h2>
+        <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-2xl mx-auto leading-relaxed">
+          Finalists will be challenged to clearly communicate their problem, solution, target market, business model, competitive advantage, progress, growth potential, and why they deserve to win.
+        </p>
+        <p class="text-xs text-[#865237] dark:text-[#dfa04e] font-bold">
+          The judges will not only be looking for impressive presentations. They will be looking for businesses worth betting on.
+        </p>
+      </div>
+    </section>
+
+    <!-- JUDGING CRITERIA (8 PILLARS) -->
+    <section id="criteria" class="py-14 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Evaluation</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">
+          Judging Criteria
+        </h2>
+        <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1">Participants will be evaluated based on 8 key areas:</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Problem</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">How important and clearly defined is the problem being addressed?</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Solution</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">How effectively does the product or service solve the problem?</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Market</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">Is there a clear and meaningful market for the venture?</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Business Model</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">How does the business make money, and is the model sustainable?</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Traction</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">What progress has the venture made so far?</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Innovation</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">What makes the solution different or valuable?</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Scalability</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">Does the venture have the potential to grow?</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1">
+          <div class="font-display font-bold text-[#865237] dark:text-[#dfa04e] text-xs uppercase tracking-wider">Pitch</div>
+          <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">How clearly and convincingly does the founder communicate the opportunity?</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- THE PRIZE (GH₵3,000) -->
+    <section id="prize" class="py-14 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="p-6 sm:p-10 rounded-3xl bg-gradient-to-b from-[#F4EDE4] to-white dark:from-[#865237]/40 dark:to-[#24140b] border-2 border-[#865237] dark:border-[#dfa04e] text-center space-y-4 shadow-xl">
+        <span class="text-xs uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest">Award Package</span>
+        <h2 class="font-display font-black text-3xl sm:text-5xl text-[#1A0F09] dark:text-white">
+          GH₵3,000 CASH PRIZE
+        </h2>
+        <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/90 max-w-xl mx-auto leading-relaxed">
+          The winning startup will receive <strong class="text-[#1A0F09] dark:text-white">GH₵3,000</strong> alongside the opportunity to gain exposure, connections and continued support through the ADABAH Startup Challenge ecosystem.
+        </p>
+        <p class="text-[11px] text-[#7A5843] dark:text-[#f5d6b4]/60">
+          Additional opportunities and benefits may be announced as partnerships are confirmed.
+        </p>
+        <div class="pt-2">
+          <button class="apply-trigger-btn px-8 py-3.5 rounded-xl btn-adabah-primary font-display font-black text-xs">
+            Apply For Challenge →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE JOURNEY (WEEK-BY-WEEK) -->
+    <section class="py-14 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Timeline</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">
+          The Journey
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2">
+          <span class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e] block">WEEK 1</span>
+          <h3 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">BUILD YOUR PITCH</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Understand your problem, solution, customer and story.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2">
+          <span class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e] block">WEEK 2</span>
+          <h3 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">BUILD YOUR BUSINESS</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Strengthen your business model, branding, market strategy and customer proposition.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2">
+          <span class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e] block">WEEK 3</span>
+          <h3 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">PREPARE TO PITCH</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
+            Refine your presentation, understand your numbers and prepare to defend your venture.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border-2 border-[#865237] dark:border-[#dfa04e]/60 shadow-md space-y-2">
+          <span class="text-xs font-mono font-bold text-[#865237] dark:text-[#dfa04e] block">FINAL DAY</span>
+          <h3 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">PITCH DAY</h3>
+          <p class="text-xs text-[#865237] dark:text-[#dfa04e] font-bold leading-relaxed">
+            The best ventures take the stage.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WHY THE ADABAH STARTUP CHALLENGE? -->
+    <section class="py-14 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-4">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest block">The Purpose</span>
+        <h2 class="font-display font-black text-2xl sm:text-3xl text-[#1A0F09] dark:text-white">
+          Why The ADABAH Startup Challenge?
+        </h2>
+        <p class="text-sm sm:text-base text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed">
+          University is not only a place to prepare for employment. It is also a place to build, experiment, create and start.
+        </p>
+        <p class="text-sm sm:text-base text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed">
+          The ADABAH Startup Challenge exists to give student entrepreneurs a platform to take their ideas seriously, develop practical business skills and connect with people who can help them move forward.
+        </p>
+        <p class="text-sm font-bold text-[#865237] dark:text-[#dfa04e]">
+          We believe students should not have to wait until graduation to start building something meaningful.
+        </p>
+      </div>
+    </section>
+
+    <!-- FOR PARTNERS -->
+    <section id="partners" class="py-14 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="p-6 sm:p-8 rounded-3xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5 text-center sm:text-left">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest block mb-1">Collaboration</span>
+            <h2 class="font-display font-black text-2xl sm:text-3xl text-[#1A0F09] dark:text-white">
+              HELP US BUILD THE NEXT GENERATION OF FOUNDERS.
+            </h2>
+          </div>
+          <button id="open-partner-modal-btn" class="px-6 py-3 rounded-xl btn-adabah-primary font-bold text-xs whitespace-nowrap flex-shrink-0">
+            Partner With Us →
+          </button>
+        </div>
+
+        <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+          The ADABAH Startup Challenge provides businesses, entrepreneurs and organizations with an opportunity to engage directly with ambitious student entrepreneurs.
+        </p>
+
+        <div class="pt-2 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <div class="text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase mb-2">Partnership opportunities include:</div>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">Sponsorship</span>
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">Mentorship</span>
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">Speaking</span>
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">Judging</span>
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">Training</span>
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">Media partnerships</span>
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">Business support</span>
+            <span class="px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[#1A0F09] dark:text-white">In-kind contributions</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPORTANT DATES -->
+    <section class="py-12 sm:py-14 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-8">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Calendar</span>
+        <h2 class="font-display font-black text-2xl sm:text-3xl text-[#1A0F09] dark:text-white mt-1">Important Dates</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm">
+          <span class="text-[11px] font-semibold text-[#7A5843] dark:text-[#f5d6b4]/60 uppercase">Programme Start</span>
+          <div class="font-display font-black text-xl text-[#1A0F09] dark:text-white mt-1">2 November 2026</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm">
+          <span class="text-[11px] font-semibold text-[#865237] dark:text-[#dfa04e] uppercase">Mentorship</span>
+          <div class="font-display font-black text-xl text-[#865237] dark:text-[#dfa04e] mt-1">3-Week Programme</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm">
+          <span class="text-[11px] font-semibold text-[#7A5843] dark:text-[#f5d6b4]/60 uppercase">Final Pitch</span>
+          <div class="font-display font-black text-xl text-[#1A0F09] dark:text-white mt-1">21 November 2026</div>
+        </div>
+      </div>
+
+      <p class="text-center text-[11px] text-[#7A5843] dark:text-[#f5d6b4]/60 mt-4">
+        Specific session dates and times will be communicated to selected participants.
+      </p>
+    </section>
+
+    <!-- FREQUENTLY ASKED QUESTIONS -->
+    <section id="faq" class="py-14 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Clarifications</span>
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="space-y-3" id="faq-accordion">
+        
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>Who can apply?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            Students with an existing business, startup or promising venture may apply.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>Do I need to have a registered company?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            Not necessarily. The focus is on the strength and potential of the venture.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>Is there an application fee?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            No. Applying is completely free.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>Is the programme free?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            Yes. Selected participants will participate in the programme at no cost.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>What can I win?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            The winner will receive a GH₵3,000 cash prize, alongside the exposure and opportunities provided through the programme.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>Do I need to already be making money?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            No. However, existing businesses and ventures with demonstrated progress are encouraged to apply.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>How will participants be selected?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            Applications will be reviewed based on factors including the problem, solution, market opportunity, business model, traction, innovation and growth potential.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>Can I apply with a business I am already running?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            Yes. Existing student-owned businesses are welcome to apply.
+          </div>
+        </div>
+
+        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
+            <span>What happens after I apply?</span>
+            <svg class="w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+            Your application will be reviewed. Selected applicants will be contacted with information about the next stage of the programme.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LIVE APPLICATION TRACKER -->
+    <section id="tracker" class="py-12 sm:py-14 max-w-3xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-md">
+        <div class="text-center mb-6">
+          <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Real-Time Lookup</span>
+          <h2 class="font-display font-black text-2xl text-[#1A0F09] dark:text-white mt-1">Track Application Status</h2>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1">Check the current review stage of your submission</p>
+        </div>
+
+        <form id="tracker-form" class="flex flex-col sm:flex-row gap-2.5">
+          <input
+            type="text"
+            id="tracker-input"
+            placeholder="Application ID (ADB-2026-1042) or founder email"
+            class="flex-1 px-4 py-3 rounded-xl bg-[#FAF7F2] dark:bg-black/50 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white placeholder-[#865237]/50 dark:placeholder-[#f5d6b4]/40 text-xs focus:outline-none focus:border-[#865237] dark:focus:border-[#dfa04e] font-mono"
+            required
+          />
+          <button type="submit" class="px-6 py-3 rounded-xl btn-adabah-primary font-bold text-xs whitespace-nowrap">
+            Check Status
+          </button>
+        </form>
+
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-[#7A5843] dark:text-[#f5d6b4]/60">
+          <span>Sample IDs:</span>
+          <button class="sample-id-btn px-2 py-0.5 rounded bg-[#F4EDE4] dark:bg-black/40 text-[#865237] dark:text-[#f5d6b4] font-mono" data-id="ADB-2026-1042">ADB-2026-1042</button>
+          <button class="sample-id-btn px-2 py-0.5 rounded bg-[#F4EDE4] dark:bg-black/40 text-[#865237] dark:text-[#dfa04e] font-mono" data-id="ADB-2026-1088">ADB-2026-1088</button>
+        </div>
+
+        <div id="tracker-result" class="hidden mt-6 p-5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 space-y-4"></div>
+        <div id="tracker-error" class="hidden mt-4 p-3 rounded-xl bg-red-50 dark:bg-red-950/80 border border-red-300 dark:border-red-500/40 text-red-800 dark:text-red-300 text-xs"></div>
+      </div>
+    </section>
+
+    <!-- READY? (CALL TO ACTION) -->
+    <section class="py-16 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <div class="p-6 sm:p-12 rounded-3xl bg-gradient-to-br from-[#F4EDE4] via-white to-[#FAF7F2] dark:from-[#865237]/40 dark:via-[#24140b] dark:to-[#120904] border border-[#865237]/30 dark:border-[#dfa04e]/50 shadow-xl space-y-5">
+        <span class="text-xs uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest">Ready?</span>
+        <h2 class="font-display font-black text-2xl sm:text-5xl text-[#1A0F09] dark:text-white">
+          YOUR BUSINESS DESERVES A SHOT.
+        </h2>
+        <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-lg mx-auto leading-relaxed">
+          You don't need to have everything figured out. You need a problem worth solving, a solution worth building, and the courage to put it to the test.
+        </p>
+        <div class="pt-2">
+          <button class="apply-trigger-btn px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl btn-adabah-primary font-display font-black text-xs sm:text-sm shadow-xl hover:scale-[1.02] transition-transform">
+            APPLY FOR THE ADABAH STARTUP CHALLENGE 2026
+          </button>
+          <div class="text-xs text-[#865237] dark:text-[#dfa04e] font-bold mt-2">Build. Pitch. Grow.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER (Deep Luxury Espresso Anchor) -->
+  <footer class="border-t border-[#865237]/30 dark:border-[#f5d6b4]/10 bg-[#180E08] py-10 text-xs text-[#f5d6b4]/80">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div>
+        <div class="font-bold text-white text-sm">THE ADABAH STARTUP CHALLENGE</div>
+        <div class="text-[11px] text-[#dfa04e] font-semibold mt-0.5">Empowering student entrepreneurs to build what comes next.</div>
+        <div class="text-[10px] text-stone-400 mt-1">ORGANIZED BY ADABAH • 2026</div>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-5 text-stone-300">
+        <a href="#about" class="hover:text-white">About</a>
+        <a href="#how-it-works" class="hover:text-white">How It Works</a>
+        <a href="#prize" class="hover:text-white">Prize</a>
+        <a href="#faq" class="hover:text-white">FAQ</a>
+        <a href="#tracker" class="hover:text-white">Tracker</a>
+        <a href="/apply" class="text-[#dfa04e] hover:underline font-bold">Apply Portal ↗</a>
+        <button id="open-admin-btn" class="text-[#dfa04e] hover:underline font-bold cursor-pointer">Reviewer Portal</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MULTI-STEP APPLICATION MODAL -->
+  <div id="application-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-6">
+    <div class="relative w-full max-w-4xl bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl overflow-hidden my-6 max-h-[92vh] flex flex-col" id="application-modal-content">
+      
+      <!-- Modal Header -->
+      <div class="px-5 sm:px-6 py-4 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-center justify-between bg-[#FAF7F2] dark:bg-[#120904] flex-shrink-0">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[1.5px] flex items-center justify-center flex-shrink-0">
+            <div class="w-full h-full bg-[#120904] rounded-[6px] flex items-center justify-center font-display font-black text-xs text-[#f5d6b4]">A</div>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e]">Cohort 2026</span>
+              <span class="text-[#865237]/40 dark:text-[#f5d6b4]/40">•</span>
+              <span class="text-[10px] font-semibold text-[#5C3D2E] dark:text-white">GH₵3,000 Cash Prize</span>
+            </div>
+            <h3 class="font-display font-bold text-sm sm:text-lg text-[#1A0F09] dark:text-white truncate">The ADABAH Startup Challenge Application</h3>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <a href="/apply" class="hidden sm:inline-flex items-center gap-1 text-[11px] text-[#865237] dark:text-[#dfa04e] hover:underline font-semibold">
+            Full Screen ↗
+          </a>
+          <button id="close-app-modal-btn" class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 flex items-center justify-center text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#1A0F09] dark:hover:text-white transition-colors text-sm cursor-pointer">✕</button>
+        </div>
+      </div>
+
+      <!-- Stepper Indicator Header -->
+      <div id="wizard-stepper-header" class="px-4 sm:px-6 py-3 sm:py-4 bg-[#F4EDE4]/60 dark:bg-black/30 border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 flex-shrink-0 space-y-2.5 sm:space-y-3">
+        
+        <!-- Large Step Circles -->
+        <div class="grid grid-cols-5 gap-1 sm:gap-2 text-center items-center">
+          
+          <div class="flex flex-col items-center gap-1 sm:gap-1.5 cursor-pointer" onclick="goToStep(1)">
+            <div class="step-circle active" id="step-circle-1">1</div>
+            <span class="step-label text-[11px] font-black text-[#1A0F09] dark:text-white hidden sm:block" id="step-lbl-1">Founder</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1 sm:gap-1.5 cursor-pointer" onclick="goToStep(2)">
+            <div class="step-circle" id="step-circle-2">2</div>
+            <span class="step-label text-[11px] font-medium text-[#865237]/45 dark:text-[#f5d6b4]/40 hidden sm:block" id="step-lbl-2">Venture</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1 sm:gap-1.5 cursor-pointer" onclick="goToStep(3)">
+            <div class="step-circle" id="step-circle-3">3</div>
+            <span class="step-label text-[11px] font-medium text-[#865237]/45 dark:text-[#f5d6b4]/40 hidden sm:block" id="step-lbl-3">Pitch</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1 sm:gap-1.5 cursor-pointer" onclick="goToStep(4)">
+            <div class="step-circle" id="step-circle-4">4</div>
+            <span class="step-label text-[11px] font-medium text-[#865237]/45 dark:text-[#f5d6b4]/40 hidden sm:block" id="step-lbl-4">Deck</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1 sm:gap-1.5 cursor-pointer" onclick="goToStep(5)">
+            <div class="step-circle" id="step-circle-5">5</div>
+            <span class="step-label text-[11px] font-medium text-[#865237]/45 dark:text-[#f5d6b4]/40 hidden sm:block" id="step-lbl-5">Review</span>
+          </div>
+
+        </div>
+
+        <!-- Connecting Progress Bar -->
+        <div class="relative w-full bg-[#E5DACD] dark:bg-[#120904] h-1.5 rounded-full overflow-hidden border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <div id="step-progress-bar" class="h-full bg-gradient-to-r from-[#865237] via-[#dfa04e] to-[#f5d6b4] transition-all duration-300 w-1/5"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs pt-1">
+          <div>
+            <span class="font-bold text-[#1A0F09] dark:text-white text-xs" id="current-step-title">Step 1 of 5: Founder Profile</span>
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/60 text-[11px] ml-1.5 hidden sm:inline" id="current-step-desc">— Lead founder & student status</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="autosave-indicator" class="text-[10px] text-[#865237] dark:text-[#dfa04e] font-mono font-bold">✓ Draft ready</span>
+            <button type="button" id="save-draft-btn" class="px-2 py-0.5 rounded bg-black/5 dark:bg-white/10 text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4] hover:bg-black/10 dark:hover:bg-white/15">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Body -->
+      <form id="application-form" class="p-5 sm:p-8 space-y-6 flex-1 overflow-y-auto">
+        
+        <!-- STEP 1: FOUNDER -->
+        <div class="app-step space-y-5" id="app-step-1">
+          <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 pb-3">
+            <h4 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Lead Founder Information</h4>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">Who is leading this venture?</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="adabah-field-label">
+                <span>Founder Full Name <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <input type="text" name="founderName" placeholder="e.g. Kwame Mensah" required />
+            </div>
+            <div>
+              <label class="adabah-field-label">
+                <span>Email Address <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <input type="email" name="founderEmail" placeholder="founder@example.com" required />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="adabah-field-label">
+                <span>Phone / WhatsApp Number <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <input type="tel" name="founderPhone" placeholder="+233 24 123 4567" required />
+            </div>
+            <div>
+              <label class="adabah-field-label">
+                <span>Student Academic Level <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <select name="academicLevel" class="adabah-select" required>
+                <option value="Undergraduate (Year 1 - 2)">Undergraduate (Year 1 - 2)</option>
+                <option value="Undergraduate (Year 3 - 4)">Undergraduate (Year 3 - 4 / Final Year)</option>
+                <option value="Postgraduate / Masters">Postgraduate / Masters Student</option>
+                <option value="Recent Graduate (Within 12 months)">Recent Graduate (Within 12 months)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="adabah-field-label">
+                <span>University / Institution / Campus <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <input type="text" name="city" placeholder="e.g. University of Ghana / KNUST / Ashesi" required />
+            </div>
+            <div>
+              <label class="adabah-field-label">
+                <span>Country <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <input type="text" name="country" value="Ghana" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: VENTURE & TRACK -->
+        <div class="app-step hidden space-y-5" id="app-step-2">
+          <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 pb-3">
+            <h4 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Startup Profile & Sector</h4>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">Tell us about your venture.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="adabah-field-label">
+                <span>Startup / Venture Name <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <input type="text" name="startupName" placeholder="e.g. AgriFlow Dynamics" required />
+            </div>
+            <div>
+              <label class="adabah-field-label">
+                <span>Team Size <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <select name="teamSize" class="adabah-select" required>
+                <option value="Solo Founder">Solo Founder (1 person)</option>
+                <option value="2 Co-Founders" selected>2 Co-Founders</option>
+                <option value="3 - 4 Team Members">3 - 4 Team Members</option>
+                <option value="5+ Team Members">5+ Team Members</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="adabah-field-label">
+              <span>One-Sentence Elevator Pitch <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+            </label>
+            <input type="text" name="tagline" placeholder="e.g. AI-powered inventory and credit scoring for small campus retailers" required />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="adabah-field-label">
+                <span>Sector Track <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <select name="track" class="adabah-select" required>
+                <option value="">Select Sector Track...</option>
+                <option value="fintech">💳 FinTech & Digital Payments</option>
+                <option value="agritech">🌾 AgriTech & Food Security</option>
+                <option value="healthtech">🏥 HealthTech & BioCare</option>
+                <option value="climatetech">🌱 ClimateTech & Clean Energy</option>
+                <option value="deeptech">🤖 AI, DeepTech & Software</option>
+                <option value="consumer">🛍️ Consumer Goods & Retail</option>
+                <option value="creative">🎨 Creative Arts & Media Tech</option>
+                <option value="edtech">📚 EdTech & Campus Innovation</option>
+              </select>
+            </div>
+            <div>
+              <label class="adabah-field-label">
+                <span>Venture Stage <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+              </label>
+              <select name="stage" class="adabah-select" required>
+                <option value="">Select Stage...</option>
+                <option value="idea">💡 Developing Business Idea (Ideation)</option>
+                <option value="prototype">⚙️ Working Prototype / MVP</option>
+                <option value="mvp">🚀 Existing Business (Pre-revenue)</option>
+                <option value="early_revenue">💰 Existing Business (Generating Sales)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: PROBLEM & SOLUTION -->
+        <div class="app-step hidden space-y-5" id="app-step-3">
+          <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 pb-3">
+            <h4 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Problem, Solution & Traction</h4>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">What are you solving and how?</p>
+          </div>
+
+          <div>
+            <label class="adabah-field-label">
+              <span>The Problem Being Addressed <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+            </label>
+            <textarea name="problem" rows="3" placeholder="Explain the key problem your target customers face and why existing solutions are not sufficient..." required></textarea>
+            <p class="adabah-field-hint">How important and clearly defined is the problem being addressed?</p>
+          </div>
+
+          <div>
+            <label class="adabah-field-label">
+              <span>Your Solution & Value Proposition <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+            </label>
+            <textarea name="solution" rows="3" placeholder="Describe your product or service. How does it uniquely solve the problem?" required></textarea>
+            <p class="adabah-field-hint">How effectively does the product solve the problem?</p>
+          </div>
+
+          <div>
+            <label class="adabah-field-label">
+              <span>Current Progress / Traction</span>
+            </label>
+            <input type="text" name="traction" placeholder="e.g. Sales, customers, user feedback, prototype tests, student signups" />
+            <p class="adabah-field-hint">What progress has the venture made so far?</p>
+          </div>
+        </div>
+
+        <!-- STEP 4: DECK -->
+        <div class="app-step hidden space-y-5" id="app-step-4">
+          <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 pb-3">
+            <h4 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Pitch Deck & Supporting Documents</h4>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">Share your presentation slides or business summary.</p>
+          </div>
+
+          <div>
+            <label class="adabah-field-label">
+              <span>Pitch Deck or Business Summary Link <span class="text-[#865237] dark:text-[#dfa04e]">*</span></span>
+            </label>
+            <input type="url" name="deckUrl" placeholder="https://docs.google.com/presentation/... or Canva / Drive link" required />
+            <div class="mt-2 p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-start gap-2 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+              <span class="text-[#865237] dark:text-[#dfa04e] font-bold">💡</span>
+              <span>Ensure permissions are set to <strong>"Anyone with the link can view"</strong>.</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="adabah-field-label">
+              <span>Optional Demo Video Link</span>
+            </label>
+            <input type="url" name="videoUrl" placeholder="https://youtube.com/... or Loom link" />
+          </div>
+
+          <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#1a0f09] border border-[#865237]/15 dark:border-[#f5d6b4]/15">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="terms-check" class="mt-0.5" required />
+              <span class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/90 leading-relaxed">
+                I confirm that all submitted details are accurate and represent our original venture. I agree to participate in the 3-week mentorship cohort if selected.
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 5: REVIEW -->
+        <div class="app-step hidden space-y-5" id="app-step-5">
+          <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 pb-3">
+            <h4 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Executive Review</h4>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">Confirm your submission details before final processing.</p>
+          </div>
+
+          <div id="review-summary-content" class="space-y-4"></div>
+        </div>
+
+        <!-- Wizard Buttons -->
+        <div class="pt-4 border-t border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-center justify-between gap-3">
+          <button type="button" id="prev-step-btn" class="px-4 sm:px-5 py-3 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 text-[#5C3D2E] dark:text-[#f5d6b4] text-xs font-bold hover:border-[#865237] dark:hover:border-[#dfa04e] transition-all hidden cursor-pointer">
+            ← Previous
+          </button>
+          <div class="ml-auto flex items-center gap-2.5">
+            <button type="button" id="next-step-btn" class="px-5 sm:px-7 py-3 rounded-xl btn-adabah-primary font-bold text-xs flex items-center gap-1.5 cursor-pointer">
+              <span>Continue to Step 2</span> →
+            </button>
+            <button type="submit" id="submit-app-btn" class="px-6 sm:px-8 py-3.5 rounded-xl btn-adabah-primary font-black text-xs shadow-xl hidden cursor-pointer">
+              Submit Official Application
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Success Screen -->
+      <div id="application-success-view" class="hidden p-6 sm:p-12 text-center space-y-5">
+        <div class="w-16 h-16 mx-auto rounded-full bg-[#865237]/15 dark:bg-[#dfa04e]/20 text-[#865237] dark:text-[#dfa04e] flex items-center justify-center text-3xl border-2 border-[#865237] dark:border-[#dfa04e]">✓</div>
+        <div>
+          <span class="text-[11px] uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest block">Application Submitted</span>
+          <h3 class="font-display font-black text-2xl sm:text-3xl text-[#1A0F09] dark:text-white mt-1">You Are Successfully Registered!</h3>
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-sm mx-auto mt-2">
+            Your venture has been entered into The ADABAH Startup Challenge 2026. Keep your Reference ID safe:
+          </p>
+        </div>
+
+        <div class="max-w-xs mx-auto p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/30 dark:border-[#dfa04e]/50 font-mono font-black text-2xl text-[#865237] dark:text-[#f5d6b4]" id="new-app-id">
+          ADB-2026-XXXX
+        </div>
+
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+          <button type="button" id="copy-id-btn" class="px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-[#1A0F09] dark:text-white text-xs font-bold transition-colors cursor-pointer">
+            📋 Copy ID
+          </button>
+          <button type="button" id="view-in-tracker-btn" class="px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer">
+            Track Status →
+          </button>
+          <button type="button" id="print-receipt-btn" class="px-4 py-2.5 rounded-xl bg-white dark:bg-[#1a0f09] border border-[#865237]/30 dark:border-[#f5d6b4]/30 text-xs text-[#1A0F09] dark:text-[#f5d6b4] hover:text-[#865237] cursor-pointer">
+            🖨️ Print Receipt
+          </button>
+          <button type="button" id="close-success-btn" class="px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 text-stone-500 dark:text-stone-400 hover:text-black dark:hover:text-white text-xs cursor-pointer">
+            Close
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PARTNER WITH US MODAL -->
+  <div id="partner-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-4">
+    <div class="relative w-full max-w-lg bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl p-6 text-xs space-y-4">
+      <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e]">Join As A Partner</span>
+          <h4 class="font-bold text-[#1A0F09] dark:text-white text-base">Partner With The ADABAH Challenge</h4>
+        </div>
+        <button id="close-partner-modal-btn" class="text-stone-400 hover:text-[#1A0F09] dark:hover:text-white cursor-pointer">✕</button>
+      </div>
+
+      <p class="text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+        Engage directly with ambitious student entrepreneurs through sponsorship, mentorship, judging, speaking, or in-kind support.
+      </p>
+
+      <form id="partner-form" class="space-y-3">
+        <div>
+          <label class="block font-semibold text-[#1A0F09] dark:text-[#f5d6b4] mb-1">Your Name / Organization *</label>
+          <input type="text" id="partner-name" class="w-full" placeholder="Name or Company" required />
+        </div>
+        <div>
+          <label class="block font-semibold text-[#1A0F09] dark:text-[#f5d6b4] mb-1">Email Address *</label>
+          <input type="email" id="partner-email" class="w-full" placeholder="partner@example.com" required />
+        </div>
+        <div>
+          <label class="block font-semibold text-[#1A0F09] dark:text-[#f5d6b4] mb-1">Partnership Interest</label>
+          <select id="partner-type" class="w-full adabah-select">
+            <option value="Sponsorship">Sponsorship / Financial Contribution</option>
+            <option value="Mentorship">Mentorship / Workshop Leader</option>
+            <option value="Judging">Judging / Speaker</option>
+            <option value="Media">Media / Community Partner</option>
+            <option value="InKind">Prizes & In-Kind Contributions</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-[#1A0F09] dark:text-[#f5d6b4] mb-1">Message</label>
+          <textarea id="partner-message" rows="3" class="w-full" placeholder="Tell us how you would like to collaborate..." required></textarea>
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer">
+          Submit Partnership Inquiry
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN MODAL (with overflow-x-auto table protection) -->
+  <div id="admin-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-4">
+    <div class="relative w-full max-w-5xl bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl overflow-hidden my-6 flex flex-col max-h-[88vh]">
+      <div class="px-6 py-4 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-center justify-between bg-[#FAF7F2] dark:bg-[#120904]">
+        <h3 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">Adabah Reviewer Dashboard</h3>
+        <button id="close-admin-modal-btn" class="p-2 text-stone-400 hover:text-[#1A0F09] dark:hover:text-white cursor-pointer">✕</button>
+      </div>
+      <div class="p-4 sm:p-5 border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2]/60 dark:bg-black/30 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <input type="text" id="admin-search" placeholder="Search startup or ID..." class="px-3 py-1.5 rounded-lg text-xs" />
+          <select id="admin-track-filter" class="adabah-select text-xs py-1.5 px-3">
+            <option value="all">All Tracks</option>
+            <option value="fintech">FinTech</option>
+            <option value="agritech">AgriTech</option>
+            <option value="healthtech">HealthTech</option>
+            <option value="climatetech">ClimateTech</option>
+            <option value="deeptech">AI & DeepTech</option>
+          </select>
+        </div>
+        <button id="admin-export-csv" class="px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-[#1A0F09] dark:text-[#f5d6b4] font-bold cursor-pointer">Export CSV</button>
+      </div>
+      <!-- Table Wrapper with overflow-x-auto prevents any mobile overflow -->
+      <div class="flex-1 overflow-y-auto p-3 sm:p-5 w-full">
+        <div class="w-full overflow-x-auto">
+          <table class="w-full text-left text-xs min-w-[500px]">
+            <thead>
+              <tr class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 text-[#7A5843] dark:text-[#f5d6b4]/60 uppercase font-semibold">
+                <th class="py-2 px-2">ID</th>
+                <th class="py-2 px-2">Startup</th>
+                <th class="py-2 px-2">Track</th>
+                <th class="py-2 px-2">Stage</th>
+                <th class="py-2 px-2">Status</th>
+                <th class="py-2 px-2 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-table-body" class="divide-y divide-[#865237]/10 dark:divide-[#f5d6b4]/10"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION DETAILS (ADMIN) -->
+  <div id="admin-detail-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-4">
+    <div class="relative w-full max-w-xl bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl p-6 my-6 text-xs space-y-4">
+      <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
+        <h4 class="font-bold text-[#1A0F09] dark:text-white text-base" id="detail-modal-title">Application</h4>
+        <button id="close-detail-modal-btn" class="text-stone-400 hover:text-[#1A0F09] dark:hover:text-white cursor-pointer">✕</button>
+      </div>
+      <div id="detail-modal-body" class="space-y-3 max-h-[60vh] overflow-y-auto"></div>
+      <div class="flex items-center justify-between pt-3 border-t border-[#865237]/15 dark:border-[#f5d6b4]/15 gap-2">
+        <select id="detail-status-select" class="adabah-select max-w-[200px]">
+          <option value="submitted">Submitted</option>
+          <option value="under_review">Under Review</option>
+          <option value="shortlisted">Shortlisted</option>
+          <option value="finalist">Finalist</option>
+          <option value="accepted">Accepted (Winner)</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <button id="save-status-btn" class="px-4 py-2 rounded-lg btn-adabah-primary font-bold cursor-pointer">Save Status</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="printable-receipt" class="hidden"></div>
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-[90vw]"></div>
+
+  <!-- Scripts -->
+  <script src="/js/app.js"></script>
+  <script src="/js/application.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
