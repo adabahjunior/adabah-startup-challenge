@@ -219,6 +219,33 @@
             </svg>
             <span>SMS Broadcast</span>
           </button>
+
+          <!-- 6. Founder Profile -->
+          <button
+            type="button"
+            data-page="founder"
+            class="admin-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left text-[#5C3D2E] dark:text-[#f5d6b4]/80 hover:bg-[#865237]/10 dark:hover:bg-white/5 cursor-pointer"
+          >
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span>Founder Profile</span>
+          </button>
+
+          <!-- 7. Partners & Sponsors -->
+          <button
+            type="button"
+            data-page="partners"
+            class="admin-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left text-[#5C3D2E] dark:text-[#f5d6b4]/80 hover:bg-[#865237]/10 dark:hover:bg-white/5 cursor-pointer"
+          >
+            <div class="flex items-center gap-2.5">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>Partners & Sponsors</span>
+            </div>
+            <span id="badge-total-partners" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#865237]/15 dark:bg-white/10 text-[#865237] dark:text-[#dfa04e]">4</span>
+          </button>
         </nav>
       </div>
 
@@ -754,6 +781,282 @@
           </div>
         </div>
       </div>
+
+      <!-- ======================================================== -->
+      <!-- 6. PAGE: THE FOUNDER PROFILE CMS -->
+      <!-- ======================================================== -->
+      <div id="page-founder" class="admin-page hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e]">Public Presence</span>
+            <h2 class="font-display font-black text-2xl text-[#1A0F09] dark:text-white">Founder Profile CMS</h2>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+              Update Michael Akrofi Junior Adabah's public profile, biography, photo, vision statement, and social channels.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <a
+              href="/founder"
+              target="_blank"
+              class="px-4 py-2 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-xs font-bold text-[#865237] dark:text-[#dfa04e] hover:bg-[#865237]/10 flex items-center gap-1.5"
+            >
+              <span>View Public Page</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </a>
+            <button
+              type="button"
+              id="save-founder-btn-top"
+              class="px-5 py-2 rounded-xl btn-adabah-primary font-bold text-xs shadow-md cursor-pointer flex items-center gap-1.5"
+            >
+              <span>Save Changes</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="founder-editor-form" class="space-y-6">
+          <!-- Card 1: Identity & Photo -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/15 shadow-sm space-y-4">
+            <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">1. Identity & Portrait</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+              <!-- Photo Preview & Controls -->
+              <div class="md:col-span-4 flex flex-col items-center space-y-3">
+                <div class="w-40 h-48 rounded-2xl overflow-hidden border-2 border-[#dfa04e]/50 shadow-md bg-[#FAF7F2] dark:bg-black/40 flex items-center justify-center relative group">
+                  <img
+                    id="founder-edit-photo-preview"
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+                    alt="Portrait Preview"
+                    class="w-full h-full object-cover object-top"
+                  />
+                </div>
+
+                <div class="w-full space-y-2">
+                  <label class="block text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] text-center cursor-pointer px-3 py-1.5 rounded-xl border border-[#865237]/30 hover:bg-[#865237]/10 transition-colors">
+                    <span>📁 Upload New Photo</span>
+                    <input type="file" id="founder-edit-photo-file" accept="image/*" class="hidden" />
+                  </label>
+                  
+                  <input
+                    type="url"
+                    id="founder-edit-photo-url"
+                    placeholder="Or paste photo URL..."
+                    class="w-full px-3 py-2 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                  />
+                </div>
+              </div>
+
+              <!-- Fields -->
+              <div class="md:col-span-8 space-y-4">
+                <div>
+                  <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Full Legal / Display Name <span class="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    id="founder-edit-name"
+                    required
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                  />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Official Title / Role <span class="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    id="founder-edit-title"
+                    required
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                  />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Tagline / Mission Subtitle</label>
+                  <input
+                    type="text"
+                    id="founder-edit-tagline"
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Vision, Bio, and Message -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/15 shadow-sm space-y-4">
+            <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">2. Narrative, Vision & Message</h3>
+
+            <div>
+              <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Core Vision Statement</label>
+              <textarea
+                id="founder-edit-vision"
+                rows="3"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Full Biography & Journey</label>
+              <textarea
+                id="founder-edit-bio"
+                rows="6"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Personal Letter / Direct Quote to Student Applicants</label>
+              <textarea
+                id="founder-edit-message"
+                rows="4"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Card 3: Social Media & Contact Links -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/15 shadow-sm space-y-4">
+            <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">3. Social Links & Contact Channels</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">LinkedIn URL</label>
+                <input
+                  type="url"
+                  id="founder-edit-linkedin"
+                  placeholder="https://linkedin.com/in/..."
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                />
+              </div>
+              <div>
+                <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">X / Twitter URL</label>
+                <input
+                  type="url"
+                  id="founder-edit-twitter"
+                  placeholder="https://x.com/..."
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                />
+              </div>
+              <div>
+                <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Instagram URL</label>
+                <input
+                  type="url"
+                  id="founder-edit-instagram"
+                  placeholder="https://instagram.com/..."
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                />
+              </div>
+              <div>
+                <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Contact Email</label>
+                <input
+                  type="email"
+                  id="founder-edit-email"
+                  placeholder="contact@adabah.com"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+                />
+              </div>
+            </div>
+
+            <div class="pt-4 flex items-center justify-end">
+              <button
+                type="submit"
+                id="save-founder-btn"
+                class="px-8 py-3 rounded-xl btn-adabah-primary font-display font-black text-xs sm:text-sm shadow-xl hover:scale-[1.02] transition-transform cursor-pointer flex items-center gap-2"
+              >
+                <span id="save-founder-btn-text">Save Founder Profile</span> →
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 7. PAGE: PARTNERS & SPONSORS CMS -->
+      <!-- ======================================================== -->
+      <div id="page-partners" class="admin-page hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e]">Ecosystem & Sponsors</span>
+            <h2 class="font-display font-black text-2xl text-[#1A0F09] dark:text-white">Partners & Sponsors CMS</h2>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+              Manage all academic, institutional, tech, and ecosystem partners displayed on the public site.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <a
+              href="/partners"
+              target="_blank"
+              class="px-4 py-2 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-xs font-bold text-[#865237] dark:text-[#dfa04e] hover:bg-[#865237]/10 flex items-center gap-1.5"
+            >
+              <span>View Public Page</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </a>
+            <button
+              type="button"
+              id="open-create-partner-btn"
+              class="px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs shadow-md hover:scale-[1.02] transition-transform cursor-pointer flex items-center gap-2"
+            >
+              <span>+ Add Partner / Sponsor</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Metrics Bar -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm text-center">
+            <span class="text-[10px] uppercase font-bold text-[#5C3D2E] dark:text-[#f5d6b4]/70">Total Partners</span>
+            <div id="stat-total-partners" class="font-display font-black text-2xl text-[#1A0F09] dark:text-white mt-0.5">0</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm text-center">
+            <span class="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400">Active On Site</span>
+            <div id="stat-active-partners" class="font-display font-black text-2xl text-emerald-600 dark:text-emerald-400 mt-0.5">0</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm text-center">
+            <span class="text-[10px] uppercase font-bold text-[#865237] dark:text-[#dfa04e]">Categories / Tiers</span>
+            <div id="stat-total-tiers" class="font-display font-black text-2xl text-[#865237] dark:text-[#dfa04e] mt-0.5">4</div>
+          </div>
+        </div>
+
+        <!-- Partners Table Card -->
+        <div class="rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden p-6 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">All Partners & Sponsors</h3>
+            
+            <div class="flex items-center gap-2">
+              <select
+                id="admin-partner-filter"
+                class="px-3 py-1.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/20 text-xs font-semibold text-[#1A0F09] dark:text-white"
+              >
+                <option value="all">All Categories</option>
+                <option value="Headline Sponsor">Headline Sponsor</option>
+                <option value="Academic Partner">Academic Partner</option>
+                <option value="Technology Partner">Technology Partner</option>
+                <option value="Ecosystem Partner">Ecosystem Partner</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto w-full">
+            <table class="w-full text-left text-xs min-w-[700px]">
+              <thead class="bg-[#FAF7F2]/80 dark:bg-black/30 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15">
+                <tr class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 uppercase text-[10px] font-bold">
+                  <th class="py-2.5 px-3">Logo</th>
+                  <th class="py-2.5 px-3">Partner Name</th>
+                  <th class="py-2.5 px-3">Category / Tier</th>
+                  <th class="py-2.5 px-3">Website</th>
+                  <th class="py-2.5 px-3 text-center">Order</th>
+                  <th class="py-2.5 px-3 text-center">Status</th>
+                  <th class="py-2.5 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-partners-table-body" class="divide-y divide-[#865237]/10 dark:divide-[#f5d6b4]/10">
+                <tr><td colspan="7" class="py-6 text-center text-[#5C3D2E]/60">Loading partners directory...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -1067,6 +1370,144 @@
     </div>
   </div>
 
+  <!-- ======================================================== -->
+  <!-- MODAL 3: ADD / EDIT PARTNER & SPONSOR MODAL -->
+  <!-- ======================================================== -->
+  <div id="partner-editor-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-5">
+    <div class="relative w-full max-w-xl bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/25 dark:border-[#f5d6b4]/30 shadow-2xl overflow-hidden my-6 flex flex-col">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-center justify-between bg-[#FAF7F2] dark:bg-[#120904]">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-[#865237]/15 dark:bg-white/10 flex items-center justify-center font-bold text-xs text-[#865237] dark:text-[#dfa04e]">
+            🤝
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-[#1A0F09] dark:text-white text-base" id="partner-modal-title">Add Partner / Sponsor</h3>
+            <span class="text-[10px] text-[#865237] dark:text-[#dfa04e]">Challenge Ecosystem Partner</span>
+          </div>
+        </div>
+        <button id="close-partner-modal-btn" class="p-1.5 rounded-lg text-[#5C3D2E] dark:text-[#f5d6b4] hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form id="admin-partner-form" class="p-6 space-y-4">
+        <input type="hidden" id="partner-modal-id" value="" />
+
+        <div>
+          <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Partner / Organization Name <span class="text-red-500">*</span></label>
+          <input
+            type="text"
+            id="partner-modal-name"
+            placeholder="e.g. UMaT Innovation Hub, BMS Africa"
+            required
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Category / Tier <span class="text-red-500">*</span></label>
+            <select
+              id="partner-modal-category"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#180e08] border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+            >
+              <option value="Headline Sponsor">Headline Sponsor</option>
+              <option value="Academic Partner">Academic Partner</option>
+              <option value="Technology Partner">Technology Partner</option>
+              <option value="Ecosystem Partner">Ecosystem Partner</option>
+              <option value="Media Partner">Media Partner</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Display Sort Order</label>
+            <input
+              type="number"
+              id="partner-modal-order"
+              value="1"
+              min="0"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+            />
+          </div>
+        </div>
+
+        <!-- Logo Upload & Preview -->
+        <div>
+          <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Partner Logo</label>
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 p-1 flex items-center justify-center overflow-hidden flex-shrink-0">
+              <img id="partner-modal-logo-preview" src="" alt="Logo Preview" class="max-w-full max-h-full object-contain hidden" />
+              <span id="partner-modal-logo-placeholder" class="text-lg">🏢</span>
+            </div>
+            <div class="flex-1 space-y-1.5">
+              <label class="inline-block text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer px-3 py-1 rounded-lg border border-[#865237]/25 hover:bg-[#865237]/10">
+                <span>📁 Upload Logo Image</span>
+                <input type="file" id="partner-modal-logo-file" accept="image/*" class="hidden" />
+              </label>
+              <input
+                type="url"
+                id="partner-modal-logo-url"
+                placeholder="Or enter logo image URL..."
+                class="w-full px-3 py-1.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Website URL</label>
+          <input
+            type="url"
+            id="partner-modal-website"
+            placeholder="https://company.com"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+          />
+        </div>
+
+        <div>
+          <label class="block font-bold text-xs text-[#1A0F09] dark:text-white mb-1">Description / Contribution Details</label>
+          <textarea
+            id="partner-modal-description"
+            rows="3"
+            placeholder="e.g. Providing cloud hosting credits, event sponsorship, judging..."
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <input
+            type="checkbox"
+            id="partner-modal-active"
+            checked
+            class="w-4 h-4 rounded text-[#865237] focus:ring-[#865237]"
+          />
+          <label for="partner-modal-active" class="text-xs font-semibold text-[#1A0F09] dark:text-white cursor-pointer">
+            Display this partner publicly on the Partners page
+          </label>
+        </div>
+
+        <div class="pt-3 border-t border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-center justify-end gap-3">
+          <button
+            type="button"
+            id="cancel-partner-modal-btn"
+            class="px-4 py-2 rounded-xl border border-[#865237]/20 text-xs font-bold text-[#5C3D2E] dark:text-[#f5d6b4] hover:bg-black/5"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            id="save-partner-modal-btn"
+            class="px-6 py-2 rounded-xl btn-adabah-primary font-bold text-xs shadow-md cursor-pointer flex items-center gap-2"
+          >
+            <span id="save-partner-modal-text">Save Partner</span> →
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- MASTER ADMIN PASSCODE LOCK SCREEN (Default passcode: sirmyk26) -->
   <div
     id="admin-lock-screen"
@@ -1149,6 +1590,6 @@
   <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-[90vw]"></div>
 
   <!-- Scripts -->
-  <script src="/js/admin-dashboard.js?v=20260912-1"></script>
+  <script src="/js/admin-dashboard.js?v=20260912-2"></script>
 </body>
 </html>

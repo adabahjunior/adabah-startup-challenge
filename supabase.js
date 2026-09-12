@@ -243,6 +243,190 @@ async function saveInquiry(inquiryData) {
   }
 }
 
+// --- Founder Profile ---
+async function getFounderProfile() {
+  if (!supabase) return null;
+  try {
+    const { data, error } = await supabase
+      .from('founder_profile')
+      .select('*')
+      .eq('id', 'default')
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) return null;
+    return {
+      id: data.id,
+      name: data.name,
+      title: data.title,
+      tagline: data.tagline,
+      photo: data.photo,
+      bio: data.bio,
+      vision: data.vision,
+      message: data.message,
+      socials: data.socials || {},
+      highlights: data.highlights || [],
+      updatedAt: data.updated_at
+    };
+  } catch (err) {
+    console.error('Supabase getFounderProfile error:', err.message);
+    return null;
+  }
+}
+
+async function updateFounderProfile(updates) {
+  if (!supabase) return null;
+  try {
+    const row = {
+      updated_at: new Date().toISOString()
+    };
+    if (updates.name !== undefined) row.name = updates.name;
+    if (updates.title !== undefined) row.title = updates.title;
+    if (updates.tagline !== undefined) row.tagline = updates.tagline;
+    if (updates.photo !== undefined) row.photo = updates.photo;
+    if (updates.bio !== undefined) row.bio = updates.bio;
+    if (updates.vision !== undefined) row.vision = updates.vision;
+    if (updates.message !== undefined) row.message = updates.message;
+    if (updates.socials !== undefined) row.socials = updates.socials;
+    if (updates.highlights !== undefined) row.highlights = updates.highlights;
+
+    const { data, error } = await supabase
+      .from('founder_profile')
+      .upsert({ id: 'default', ...row })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return {
+      id: data.id,
+      name: data.name,
+      title: data.title,
+      tagline: data.tagline,
+      photo: data.photo,
+      bio: data.bio,
+      vision: data.vision,
+      message: data.message,
+      socials: data.socials || {},
+      highlights: data.highlights || [],
+      updatedAt: data.updated_at
+    };
+  } catch (err) {
+    console.error('Supabase updateFounderProfile error:', err.message);
+    return null;
+  }
+}
+
+// --- Partners & Sponsors ---
+function toPartnerModel(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    logo: row.logo,
+    website: row.website,
+    description: row.description,
+    sortOrder: Number(row.sort_order) || 0,
+    active: row.active !== false,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  };
+}
+
+async function getPartners({ all = false } = {}) {
+  if (!supabase) return null;
+  try {
+    let query = supabase
+      .from('partners')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true });
+
+    if (!all) {
+      query = query.eq('active', true);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return (data || []).map(toPartnerModel);
+  } catch (err) {
+    console.error('Supabase getPartners error:', err.message);
+    return null;
+  }
+}
+
+async function savePartner(partner) {
+  if (!supabase) return null;
+  try {
+    const row = {
+      id: partner.id || `SPON-${Date.now()}`,
+      name: partner.name,
+      category: partner.category || 'Ecosystem Partner',
+      logo: partner.logo || '',
+      website: partner.website || '',
+      description: partner.description || '',
+      sort_order: Number(partner.sortOrder) || 0,
+      active: partner.active !== false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    const { data, error } = await supabase
+      .from('partners')
+      .insert([row])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return toPartnerModel(data);
+  } catch (err) {
+    console.error('Supabase savePartner error:', err.message);
+    return null;
+  }
+}
+
+async function updatePartner(id, updates) {
+  if (!supabase || !id) return null;
+  try {
+    const row = { updated_at: new Date().toISOString() };
+    if (updates.name !== undefined) row.name = updates.name;
+    if (updates.category !== undefined) row.category = updates.category;
+    if (updates.logo !== undefined) row.logo = updates.logo;
+    if (updates.website !== undefined) row.website = updates.website;
+    if (updates.description !== undefined) row.description = updates.description;
+    if (updates.sortOrder !== undefined) row.sort_order = Number(updates.sortOrder);
+    if (updates.active !== undefined) row.active = !!updates.active;
+
+    const { data, error } = await supabase
+      .from('partners')
+      .update(row)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return toPartnerModel(data);
+  } catch (err) {
+    console.error('Supabase updatePartner error:', err.message);
+    return null;
+  }
+}
+
+async function deletePartner(id) {
+  if (!supabase || !id) return false;
+  try {
+    const { error } = await supabase
+      .from('partners')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+    return true;
+  } catch (err) {
+    console.error('Supabase deletePartner error:', err.message);
+    return false;
+  }
+}
+
 module.exports = {
   client: supabase,
   checkConnection,
@@ -250,5 +434,11 @@ module.exports = {
   getApplicationById,
   saveApplication,
   updateApplication,
-  saveInquiry
+  saveInquiry,
+  getFounderProfile,
+  updateFounderProfile,
+  getPartners,
+  savePartner,
+  updatePartner,
+  deletePartner
 };

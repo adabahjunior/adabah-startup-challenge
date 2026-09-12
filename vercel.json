@@ -41,6 +41,22 @@
     {
       "source": "/join/(.*)",
       "destination": "/join.html"
+    },
+    {
+      "source": "/founder",
+      "destination": "/founder.html"
+    },
+    {
+      "source": "/about-founder",
+      "destination": "/founder.html"
+    },
+    {
+      "source": "/partners",
+      "destination": "/partners.html"
+    },
+    {
+      "source": "/sponsors",
+      "destination": "/partners.html"
     }
   ]
 }

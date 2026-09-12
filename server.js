@@ -19,6 +19,8 @@ const APPLICATIONS_FILE = path.join(DATA_DIR, 'applications.json');
 const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
 const BLOGS_FILE = path.join(DATA_DIR, 'blogs.json');
 const BROADCASTS_FILE = path.join(DATA_DIR, 'broadcasts.json');
+const FOUNDER_FILE = path.join(DATA_DIR, 'founder.json');
+const PARTNERS_FILE = path.join(DATA_DIR, 'partners.json');
 
 // Admin Password Gate (Default: sirmyk26)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sirmyk26';
@@ -1680,6 +1682,8 @@ async function requestHandler(req, res) {
           statusBreakdown[a.status || 'submitted'] = (statusBreakdown[a.status || 'submitted'] || 0) + 1;
         });
 
+        const partners = readJsonFile(PARTNERS_FILE, []);
+
         return sendJson(res, 200, {
           success: true,
           data: {
@@ -1689,6 +1693,8 @@ async function requestHandler(req, res) {
             totalBlogs: blogs.length,
             publishedBlogs: blogs.filter(b => b.published !== false).length,
             totalBroadcasts: broadcasts.length,
+            totalPartners: partners.length,
+            activePartners: partners.filter(p => p.active !== false).length,
             bmsBalance: bmsInfo.balance !== undefined ? bmsInfo.balance : 'N/A',
             bmsSenderId: bmsInfo.senderId || 'Adabah',
             bmsStatus: bmsInfo.senderStatus || 'approved',
@@ -1696,6 +1702,187 @@ async function requestHandler(req, res) {
             statusBreakdown
           }
         });
+      }
+
+      // ========================================================
+      // 14. FOUNDER PROFILE & PARTNERS / SPONSORS CMS
+      // ========================================================
+
+      // 14a. GET /api/content/founder - Public Founder Profile
+      if (pathname === '/api/content/founder' && method === 'GET') {
+        let founder = await supabaseDb.getFounderProfile();
+        if (!founder) {
+          founder = readJsonFile(FOUNDER_FILE, null);
+        }
+        if (!founder) {
+          return sendJson(res, 404, { success: false, message: 'Founder profile not found.' });
+        }
+        return sendJson(res, 200, { success: true, data: founder });
+      }
+
+      // 14b. PUT /api/admin/founder - Update Founder Profile (Admin Only)
+      if (pathname === '/api/admin/founder' && method === 'PUT') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const body = await parseBody(req);
+          let currentFounder = await supabaseDb.getFounderProfile();
+          if (!currentFounder) {
+            currentFounder = readJsonFile(FOUNDER_FILE, {});
+          }
+
+          const updated = {
+            ...currentFounder,
+            name: body.name !== undefined ? body.name.trim() : currentFounder.name,
+            title: body.title !== undefined ? body.title.trim() : currentFounder.title,
+            tagline: body.tagline !== undefined ? body.tagline.trim() : currentFounder.tagline,
+            photo: body.photo !== undefined ? body.photo.trim() : currentFounder.photo,
+            bio: body.bio !== undefined ? body.bio.trim() : currentFounder.bio,
+            vision: body.vision !== undefined ? body.vision.trim() : currentFounder.vision,
+            message: body.message !== undefined ? body.message.trim() : currentFounder.message,
+            socials: body.socials !== undefined ? body.socials : currentFounder.socials,
+            highlights: body.highlights !== undefined ? body.highlights : currentFounder.highlights,
+            updatedAt: new Date().toISOString()
+          };
+
+          writeJsonFile(FOUNDER_FILE, updated);
+          await supabaseDb.updateFounderProfile(updated);
+
+          return sendJson(res, 200, {
+            success: true,
+            message: 'Founder profile updated successfully.',
+            data: updated
+          });
+        } catch (err) {
+          console.error('Error updating founder profile:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to update founder profile: ' + err.message });
+        }
+      }
+
+      // 14c. GET /api/content/partners - List Partners (Public or Admin with all=true)
+      if (pathname === '/api/content/partners' && method === 'GET') {
+        const showAll = parsedUrl.query && parsedUrl.query.all === 'true' && validateAdminToken(req);
+        let partners = await supabaseDb.getPartners({ all: showAll });
+        if (!partners) {
+          const allLocal = readJsonFile(PARTNERS_FILE, []);
+          partners = showAll ? allLocal : allLocal.filter(p => p.active !== false);
+        }
+        partners.sort((a, b) => (Number(a.sortOrder) || 0) - (Number(b.sortOrder) || 0));
+        return sendJson(res, 200, { success: true, count: partners.length, data: partners });
+      }
+
+      // 14d. POST /api/admin/partners - Create Partner / Sponsor
+      if (pathname === '/api/admin/partners' && method === 'POST') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const body = await parseBody(req);
+          if (!body.name || !body.name.trim()) {
+            return sendJson(res, 400, { success: false, message: 'Partner name is required.' });
+          }
+
+          const partnerId = (body.id && String(body.id).trim()) || `SPON-${Date.now().toString().slice(-6)}`;
+          const newPartner = {
+            id: partnerId,
+            name: body.name.trim(),
+            category: body.category || 'Ecosystem Partner',
+            logo: body.logo ? body.logo.trim() : '',
+            website: body.website ? body.website.trim() : '',
+            description: body.description ? body.description.trim() : '',
+            sortOrder: Number(body.sortOrder) || 0,
+            active: body.active !== false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+
+          // Update local JSON
+          const localPartners = readJsonFile(PARTNERS_FILE, []);
+          localPartners.push(newPartner);
+          writeJsonFile(PARTNERS_FILE, localPartners);
+
+          // Update Supabase
+          await supabaseDb.savePartner(newPartner);
+
+          return sendJson(res, 201, {
+            success: true,
+            message: 'Partner added successfully.',
+            data: newPartner
+          });
+        } catch (err) {
+          console.error('Error creating partner:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to create partner: ' + err.message });
+        }
+      }
+
+      // 14e. PUT /api/admin/partners/:id - Update Partner
+      const partnerPutMatch = pathname.match(/^\/api\/admin\/partners\/([^\/]+)$/);
+      if (partnerPutMatch && method === 'PUT') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const id = partnerPutMatch[1].trim();
+          const body = await parseBody(req);
+
+          const localPartners = readJsonFile(PARTNERS_FILE, []);
+          const idx = localPartners.findIndex(p => p.id.toLowerCase() === id.toLowerCase());
+
+          const updates = {};
+          if (body.name !== undefined) updates.name = body.name.trim();
+          if (body.category !== undefined) updates.category = body.category;
+          if (body.logo !== undefined) updates.logo = body.logo.trim();
+          if (body.website !== undefined) updates.website = body.website.trim();
+          if (body.description !== undefined) updates.description = body.description.trim();
+          if (body.sortOrder !== undefined) updates.sortOrder = Number(body.sortOrder);
+          if (body.active !== undefined) updates.active = !!body.active;
+          updates.updatedAt = new Date().toISOString();
+
+          let updatedPartner = null;
+          if (idx !== -1) {
+            localPartners[idx] = { ...localPartners[idx], ...updates };
+            writeJsonFile(PARTNERS_FILE, localPartners);
+            updatedPartner = localPartners[idx];
+          }
+
+          const dbUpdated = await supabaseDb.updatePartner(id, updates);
+          if (dbUpdated) updatedPartner = dbUpdated;
+
+          if (!updatedPartner) {
+            return sendJson(res, 404, { success: false, message: 'Partner not found.' });
+          }
+
+          return sendJson(res, 200, {
+            success: true,
+            message: 'Partner updated successfully.',
+            data: updatedPartner
+          });
+        } catch (err) {
+          console.error('Error updating partner:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to update partner: ' + err.message });
+        }
+      }
+
+      // 14f. DELETE /api/admin/partners/:id - Delete Partner
+      const partnerDelMatch = pathname.match(/^\/api\/admin\/partners\/([^\/]+)$/);
+      if (partnerDelMatch && method === 'DELETE') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const id = partnerDelMatch[1].trim();
+          const localPartners = readJsonFile(PARTNERS_FILE, []);
+          const filtered = localPartners.filter(p => p.id.toLowerCase() !== id.toLowerCase());
+          writeJsonFile(PARTNERS_FILE, filtered);
+
+          await supabaseDb.deletePartner(id);
+
+          return sendJson(res, 200, { success: true, message: 'Partner deleted successfully.' });
+        } catch (err) {
+          console.error('Error deleting partner:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to delete partner: ' + err.message });
+        }
       }
 
       // Unhandled API Route
@@ -1738,6 +1925,16 @@ async function requestHandler(req, res) {
   // Route /admin or /admin/* to public/admin.html
   if (parsedUrl.pathname === '/admin' || parsedUrl.pathname.startsWith('/admin/')) {
     filePath = path.join(PUBLIC_DIR, 'admin.html');
+  }
+
+  // Route /founder or /about-founder to public/founder.html
+  if (parsedUrl.pathname === '/founder' || parsedUrl.pathname === '/about-founder') {
+    filePath = path.join(PUBLIC_DIR, 'founder.html');
+  }
+
+  // Route /partners or /sponsors to public/partners.html
+  if (parsedUrl.pathname === '/partners' || parsedUrl.pathname === '/sponsors') {
+    filePath = path.join(PUBLIC_DIR, 'partners.html');
   }
 
   // Clean URL support: e.g. /apply -> apply.html

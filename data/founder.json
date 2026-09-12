@@ -1,0 +1,36 @@
+{
+  "id": "default",
+  "name": "Michael Akrofi Junior Adabah",
+  "title": "Founder & Lead Convener, The ADABAH Startup Challenge",
+  "tagline": "Championing Student Innovation, Youth Entrepreneurship & Grassroots Technology Across Africa",
+  "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+  "bio": "Michael Akrofi Junior Adabah is a Ghanaian entrepreneur, venture builder, and ecosystem advocate passionate about unlocking the immense economic potential of university students across West Africa.\n\nHaving witnessed firsthand the ingenuity of student innovators who often lack the early seed funding, hands-on mentorship, and institutional credibility required to take their ideas to market, Michael initiated **The ADABAH Startup Challenge**.\n\nHis mission is rooted in a fundamental conviction: universities must not simply be factories for traditional corporate employment, but living laboratories where high-velocity tech products, sustainable agricultural solutions, and decentralized healthcare innovations are tested, funded, and launched into scalable commercial enterprises.",
+  "vision": "To build Ghana's most catalytic university-to-venture pipeline, where every student with a bold idea and the courage to execute receives non-dilutive equity-free capital, elite mentorship, and a national stage to showcase their work.",
+  "message": "\"If you are a student builder today, you have an unprecedented advantage: the technology is cheaper, distribution is instant, and your campus is the richest micro-market you will ever have. Don't wait for graduation to start building. Take your ideas seriously, find committed co-founders, and let us back you with the resources and belief you deserve.\"",
+  "socials": {
+    "email": "contact@adabah.com",
+    "twitter": "https://x.com/adabahjunior",
+    "linkedin": "https://linkedin.com/in/adabahjunior",
+    "whatsapp": "+233245741757",
+    "instagram": "https://instagram.com/adabahjunior"
+  },
+  "highlights": [
+    {
+      "label": "Non-Dilutive Equity-Free Cash Prize",
+      "metric": "GH₵3,000"
+    },
+    {
+      "label": "Focus on University Founders (UMaT & Cohorts)",
+      "metric": "100%"
+    },
+    {
+      "label": "Impact Tracks: FinTech, AgriTech, HealthTech, AI & Climate",
+      "metric": "5 Core"
+    },
+    {
+      "label": "Executive Mentorship & Investor Demo Day",
+      "metric": "1-on-1"
+    }
+  ],
+  "updatedAt": "2026-09-12T14:27:22.185Z"
+}

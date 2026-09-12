@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About The Founder | THE ADABAH STARTUP CHALLENGE 2026</title>
+  <meta name="description" content="Meet Michael Akrofi Junior Adabah — Founder & Lead Convener of The ADABAH Startup Challenge 2026, championing student innovation across Ghana." />
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:title" content="About The Founder | THE ADABAH STARTUP CHALLENGE 2026" />
+  <meta property="og:description" content="Meet Michael Akrofi Junior Adabah — Founder & Lead Convener of The ADABAH Startup Challenge." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#FAF7F2',
+              sand: '#F4EDE4',
+              umber: '#865237',
+              darkumber: '#5C3D2E',
+              gold: '#dfa04e',
+              deep: '#180E08',
+              carddark: '#24140b'
+            }
+          },
+          fontFamily: {
+            display: ['Outfit', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Immediate Theme Initializer -->
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('adabah_theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css?v=20260912-9" />
+</head>
+<body class="bg-[#FAF7F2] text-[#1A0F09] dark:bg-[#180e08] dark:text-[#fbf1e6] font-sans antialiased selection:bg-[#dfa04e] selection:text-[#180e08] min-h-screen relative w-full overflow-x-hidden transition-colors duration-200">
+
+  <!-- HEADER NAVIGATION -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-[#FAF7F2]/90 dark:bg-[#180e08]/90 border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center gap-3 group flex-shrink-0">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[2px] shadow-sm group-hover:scale-105 transition-transform duration-200">
+          <div class="w-full h-full bg-[#120904] rounded-[14px] flex items-center justify-center font-display font-black text-sm text-[#f5d6b4]">
+            A
+          </div>
+        </div>
+        <div>
+          <span class="font-display font-black text-base sm:text-lg tracking-tight text-[#1A0F09] dark:text-white block leading-none">THE ADABAH</span>
+          <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#865237] dark:text-[#dfa04e] block">Startup Challenge</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+        <a href="/" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Home</a>
+        <a href="/founder" class="text-[#865237] dark:text-[#dfa04e] font-bold border-b-2 border-[#865237] dark:border-[#dfa04e] pb-0.5">The Founder</a>
+        <a href="/partners" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Partners & Sponsors</a>
+        <a href="/dashboard" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Dashboard</a>
+      </nav>
+
+      <!-- Actions & Theme Toggle -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        <button
+          type="button"
+          class="theme-toggle-btn px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-white dark:bg-white/10 border border-[#865237]/20 dark:border-white/15 text-xs font-semibold flex items-center gap-1.5 shadow-sm hover:border-[#865237] transition-all cursor-pointer"
+          title="Toggle Light/Dark Theme"
+          aria-label="Toggle Theme"
+        >
+          <svg class="w-4 h-4 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+          <span class="text-xs font-semibold text-[#5c3d2e] dark:text-[#f5d6b4] hidden sm:inline">Theme</span>
+        </button>
+
+        <a
+          href="/apply"
+          class="hidden sm:inline-flex px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs shadow-md hover:scale-[1.02] transition-transform"
+        >
+          Apply Now →
+        </a>
+
+        <!-- Mobile Menu Toggle -->
+        <button
+          id="mobile-menu-toggle"
+          class="md:hidden p-2 rounded-lg text-[#1A0F09] dark:text-[#f5d6b4] hover:bg-black/5 dark:hover:bg-white/5"
+          aria-label="Toggle Menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2] dark:bg-[#120904] px-5 py-4 space-y-3 shadow-lg">
+      <a href="/" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Home</a>
+      <a href="/founder" class="block py-2 text-sm text-[#865237] dark:text-[#dfa04e] font-bold">The Founder</a>
+      <a href="/partners" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Partners & Sponsors</a>
+      <a href="/dashboard" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Founder Dashboard</a>
+      <div class="pt-2 flex flex-col gap-2">
+        <a href="/apply" class="w-full py-3 rounded-xl btn-adabah-primary font-bold text-sm text-center">
+          Apply for Challenge →
+        </a>
+        <a href="/admin" class="w-full py-2.5 rounded-xl border border-[#865237]/25 dark:border-[#dfa04e]/30 text-center text-xs font-bold text-[#865237] dark:text-[#dfa04e]">
+          Admin Portal ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-16 sm:space-y-24">
+
+    <!-- HERO SECTION: FOUNDER INTRO -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 items-center">
+      
+      <!-- Founder Portrait Column -->
+      <div class="md:col-span-5 flex flex-col items-center">
+        <div class="relative group">
+          <!-- Ambient Glow Ring -->
+          <div class="absolute -inset-2 bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] rounded-3xl blur-md opacity-40 group-hover:opacity-75 transition-opacity duration-300"></div>
+          
+          <div class="relative w-64 h-72 sm:w-72 sm:h-84 md:w-80 md:h-96 rounded-3xl overflow-hidden border-2 border-[#dfa04e]/50 shadow-2xl bg-[#24140b]">
+            <img
+              id="founder-photo"
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+              alt="Michael Akrofi Junior Adabah"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80'"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#dfa04e] text-[#180e08] mb-1">
+                Challenge Convener
+              </span>
+              <div id="founder-photo-caption" class="font-display font-bold text-sm tracking-tight">
+                Michael Akrofi Junior Adabah
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Media Cards -->
+        <div class="flex items-center gap-3 mt-6">
+          <a
+            id="founder-social-linkedin"
+            href="https://linkedin.com/in/adabahjunior"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-center text-[#865237] dark:text-[#dfa04e] hover:scale-110 transition-transform shadow-sm"
+            title="LinkedIn Profile"
+          >
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.64c-.9 0-1.62.72-1.62 1.62s.72 1.62 1.62 1.62 1.62-.72 1.62-1.62-.72-1.62-1.62-1.62z"/>
+            </svg>
+          </a>
+          <a
+            id="founder-social-twitter"
+            href="https://x.com/adabahjunior"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-center text-[#865237] dark:text-[#dfa04e] hover:scale-110 transition-transform shadow-sm"
+            title="X / Twitter Profile"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a
+            id="founder-social-instagram"
+            href="https://instagram.com/adabahjunior"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-center text-[#865237] dark:text-[#dfa04e] hover:scale-110 transition-transform shadow-sm"
+            title="Instagram Profile"
+          >
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a
+            id="founder-social-email"
+            href="mailto:contact@adabah.com"
+            class="w-10 h-10 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-center text-[#865237] dark:text-[#dfa04e] hover:scale-110 transition-transform shadow-sm"
+            title="Send Email"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Narrative Column -->
+      <div class="md:col-span-7 space-y-5 text-left">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#865237]/10 dark:bg-white/10 text-xs font-bold text-[#865237] dark:text-[#dfa04e]">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Leadership & Convener
+        </div>
+
+        <h1 id="founder-name" class="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-[#1A0F09] dark:text-white tracking-tight leading-tight">
+          Michael Akrofi Junior Adabah
+        </h1>
+
+        <div id="founder-title" class="font-display font-bold text-base sm:text-lg text-[#865237] dark:text-[#dfa04e]">
+          Founder & Lead Convener, The ADABAH Startup Challenge
+        </div>
+
+        <p id="founder-tagline" class="text-sm sm:text-base text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-medium leading-relaxed">
+          Championing Student Innovation, Youth Entrepreneurship & Grassroots Technology Across Africa
+        </p>
+
+        <!-- Vision Statement Quote Card -->
+        <div class="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#24140b] border-l-4 border-[#865237] dark:border-[#dfa04e] border-y border-r border-[#865237]/15 dark:border-[#f5d6b4]/10 shadow-md">
+          <div class="text-xs uppercase font-extrabold tracking-wider text-[#865237] dark:text-[#dfa04e] mb-2 flex items-center gap-1.5">
+            <span>⚡</span> The Core Vision
+          </div>
+          <p id="founder-vision" class="text-sm sm:text-base text-[#1A0F09] dark:text-[#fbf1e6] font-semibold italic leading-relaxed">
+            "To build Ghana's most catalytic university-to-venture pipeline, where every student with a bold idea and the courage to execute receives non-dilutive equity-free capital, elite mentorship, and a national stage to showcase their work."
+          </p>
+        </div>
+
+        <div class="pt-2 flex flex-wrap items-center gap-3">
+          <a
+            href="/apply"
+            class="px-6 py-3 rounded-xl btn-adabah-primary font-display font-black text-xs shadow-lg hover:scale-[1.02] transition-transform flex items-center gap-2"
+          >
+            <span>Apply to the 2026 Cohort</span> →
+          </a>
+          <a
+            href="/partners"
+            class="px-5 py-3 rounded-xl bg-white dark:bg-white/10 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-xs font-bold text-[#865237] dark:text-[#dfa04e] hover:bg-[#865237]/10 dark:hover:bg-white/5 transition-colors"
+          >
+            Partner With Michael ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY STATS & METRICS -->
+    <section class="p-6 sm:p-8 rounded-3xl bg-[#F4EDE4] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/15 shadow-inner">
+      <div id="founder-highlights" class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <!-- Default Highlights -->
+        <div class="space-y-1">
+          <div class="font-display font-black text-2xl sm:text-3xl text-[#865237] dark:text-[#dfa04e]">GH₵3,000</div>
+          <div class="text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold">Non-Dilutive Equity-Free Prize</div>
+        </div>
+        <div class="space-y-1">
+          <div class="font-display font-black text-2xl sm:text-3xl text-[#865237] dark:text-[#dfa04e]">100%</div>
+          <div class="text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold">Tertiary Student Cohort Focus</div>
+        </div>
+        <div class="space-y-1">
+          <div class="font-display font-black text-2xl sm:text-3xl text-[#865237] dark:text-[#dfa04e]">5 Tracks</div>
+          <div class="text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold">FinTech, AgriTech, Health, AI, Climate</div>
+        </div>
+        <div class="space-y-1">
+          <div class="font-display font-black text-2xl sm:text-3xl text-[#865237] dark:text-[#dfa04e]">1-on-1</div>
+          <div class="text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold">Executive Operator Mentorship</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOUNDER'S STORY & WHY -->
+    <section class="space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <span class="text-xs uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest">Origins & Purpose</span>
+        <h2 class="font-display font-black text-2xl sm:text-3xl text-[#1A0F09] dark:text-white">
+          Why The ADABAH Challenge Was Born
+        </h2>
+        <div class="w-16 h-1 bg-[#865237] dark:bg-[#dfa04e] mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <div class="md:col-span-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-4">
+          <h3 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">
+            Transforming Tertiary Campuses Into Innovation Engines
+          </h3>
+          <div id="founder-bio" class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/85 leading-relaxed space-y-3 font-normal whitespace-pre-line">
+            Michael Akrofi Junior Adabah is a Ghanaian entrepreneur, venture builder, and ecosystem advocate passionate about unlocking the immense economic potential of university students across West Africa.
+
+            Having witnessed firsthand the ingenuity of student innovators who often lack the early seed funding, hands-on mentorship, and institutional credibility required to take their ideas to market, Michael initiated The ADABAH Startup Challenge.
+
+            His mission is rooted in a fundamental conviction: universities must not simply be factories for traditional corporate employment, but living laboratories where high-velocity tech products, sustainable agricultural solutions, and decentralized healthcare innovations are tested, funded, and launched into scalable commercial enterprises.
+          </div>
+        </div>
+
+        <!-- Pillar Callout Cards -->
+        <div class="md:col-span-4 space-y-4">
+          <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1.5">
+            <div class="text-base">🚀</div>
+            <div class="font-display font-bold text-xs text-[#1A0F09] dark:text-white">Execution Over Credentials</div>
+            <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-normal">
+              We reward students who build working software and talk to real users, not just theory or slides.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1.5">
+            <div class="text-base">💡</div>
+            <div class="font-display font-bold text-xs text-[#1A0F09] dark:text-white">Non-Dilutive First Capital</div>
+            <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-normal">
+              Zero equity taken. 100% of the prize money directly funds server costs, pilots, and customer discovery.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-1.5">
+            <div class="text-base">🤝</div>
+            <div class="font-display font-bold text-xs text-[#1A0F09] dark:text-white">Ecosystem Backing</div>
+            <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-normal">
+              Connecting UMaT student founders directly to industry operators, SMS infrastructure, and angel syndicates.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPEN LETTER / MESSAGE TO STUDENTS -->
+    <section class="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#180E08] to-[#24140b] text-white border border-[#dfa04e]/30 shadow-2xl relative overflow-hidden">
+      <!-- Decorative Background Quote Mark -->
+      <div class="absolute -right-6 -bottom-10 text-[180px] font-serif font-black text-white/5 pointer-events-none select-none">
+        ”
+      </div>
+
+      <div class="relative max-w-3xl space-y-6">
+        <span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#dfa04e]/20 text-[#dfa04e] border border-[#dfa04e]/30">
+          Personal Message From Michael
+        </span>
+
+        <h3 class="font-display font-black text-xl sm:text-2xl text-white">
+          An Open Letter to Aspiring Student Founders
+        </h3>
+
+        <div id="founder-message" class="text-sm sm:text-base text-[#f5d6b4]/90 italic font-medium leading-relaxed whitespace-pre-line">
+          "If you are a student builder today, you have an unprecedented advantage: the technology is cheaper, distribution is instant, and your campus is the richest micro-market you will ever have. Don't wait for graduation to start building. Take your ideas seriously, find committed co-founders, and let us back you with the resources and belief you deserve."
+        </div>
+
+        <div class="pt-4 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full overflow-hidden border border-[#dfa04e] flex-shrink-0">
+            <img
+              id="founder-message-avatar"
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+              alt="Michael Akrofi Junior Adabah"
+              class="w-full h-full object-cover object-top"
+            />
+          </div>
+          <div>
+            <div class="font-display font-bold text-sm text-white">Michael Akrofi Junior Adabah</div>
+            <div class="text-[11px] text-[#dfa04e] font-semibold">Founder & Convener • The ADABAH Challenge</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION BANNER -->
+    <section class="text-center py-6 sm:py-10">
+      <div class="p-8 sm:p-12 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/15 shadow-xl space-y-4 max-w-3xl mx-auto">
+        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white">
+          READY TO TAKE YOUR VENTURE TO THE NEXT LEVEL?
+        </h2>
+        <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-xl mx-auto leading-relaxed">
+          The challenge is currently open exclusively to UMaT, Tarkwa student founders. Submit your application today.
+        </p>
+        <div class="pt-2 flex flex-wrap justify-center gap-3">
+          <a
+            href="/apply"
+            class="px-8 py-3.5 rounded-xl btn-adabah-primary font-display font-black text-xs sm:text-sm shadow-xl hover:scale-[1.02] transition-transform"
+          >
+            APPLY FOR CHALLENGE 2026 →
+          </a>
+          <a
+            href="/partners"
+            class="px-6 py-3.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-xs sm:text-sm font-bold text-[#865237] dark:text-[#dfa04e] hover:bg-[#865237]/10 transition-colors"
+          >
+            View Challenge Partners
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- LUXURY ESPRESSO FOOTER -->
+  <footer class="border-t border-[#865237]/30 dark:border-[#f5d6b4]/10 bg-[#180E08] py-10 text-xs text-[#f5d6b4]/80">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div>
+        <div class="font-bold text-white text-sm">THE ADABAH STARTUP CHALLENGE</div>
+        <div class="text-[11px] text-[#dfa04e] font-semibold mt-0.5">Empowering student entrepreneurs to build what comes next.</div>
+        <div class="text-[10px] text-[#f5d6b4]/60 font-medium mt-1">ORGANIZED BY MICHAEL AKROFI JUNIOR ADABAH • 2026</div>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-5 text-[#f5d6b4]/80 font-medium">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/founder" class="text-white font-bold underline">The Founder</a>
+        <a href="/partners" class="hover:text-white">Partners</a>
+        <a href="/dashboard" class="hover:text-white">Dashboard</a>
+        <a href="/apply" class="text-[#dfa04e] hover:underline font-bold">Apply Portal ↗</a>
+        <a href="/admin" class="text-[#dfa04e] hover:underline font-bold">Admin Portal ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/founder.js?v=20260912-1"></script>
+</body>
+</html>

@@ -206,6 +206,8 @@ function startAdminDashboard() {
     setupBlogControls();
     setupSubmissionsFilters();
     setupTeamsFilters();
+    setupFounderControls();
+    setupPartnerControls();
 
     // Check URL hash or query for initial tab
     const urlParams = new URLSearchParams(window.location.search);
@@ -246,7 +248,9 @@ function startAdminDashboard() {
         loadApplicationsData(),
         loadTeamsData(),
         loadBlogsData(),
-        loadBroadcastsData()
+        loadBroadcastsData(),
+        loadFounderData(),
+        loadPartnersData()
       ]);
     } catch (err) {
       console.error('Error initializing admin data:', err);
@@ -290,7 +294,7 @@ function startAdminDashboard() {
   }
 
   function switchAdminPage(pageId, pushState = true) {
-    const validPages = ['overview', 'submissions', 'teams', 'blogs', 'broadcast'];
+    const validPages = ['overview', 'submissions', 'teams', 'blogs', 'broadcast', 'founder', 'partners'];
     if (!validPages.includes(pageId)) pageId = 'overview';
 
     // Toggle pages
@@ -323,10 +327,19 @@ function startAdminDashboard() {
       submissions: 'Submissions',
       teams: 'Startup Teams',
       blogs: 'Blog CMS',
-      broadcast: 'SMS Broadcast'
+      broadcast: 'SMS Broadcast',
+      founder: 'Founder Profile',
+      partners: 'Partners & Sponsors'
     };
     if (mobilePageTitle) {
       mobilePageTitle.textContent = titles[pageId] || 'Overview';
+    }
+
+    // Tab-specific load triggers
+    if (pageId === 'founder') {
+      loadFounderData();
+    } else if (pageId === 'partners') {
+      loadPartnersData();
     }
 
     // Reset scroll
@@ -1315,6 +1328,574 @@ function startAdminDashboard() {
   function setText(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
+  }
+
+  function setValue(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  }
+
+  function getValue(id) {
+    const el = document.getElementById(id);
+    return el ? el.value : '';
+  }
+
+  // ========================================================
+  // 6. FOUNDER PROFILE CONTROLLER
+  // ========================================================
+  let currentFounderData = null;
+
+  async function loadFounderData() {
+    try {
+      const res = await fetch('/api/content/founder');
+      const data = await res.json();
+      if (res.ok && data.success && data.data) {
+        currentFounderData = data.data;
+        populateFounderForm(currentFounderData);
+      }
+    } catch (err) {
+      console.warn('Error fetching founder profile:', err);
+    }
+  }
+
+  function populateFounderForm(f) {
+    if (!f) return;
+    setValue('founder-edit-name', f.name || '');
+    setValue('founder-edit-title', f.title || '');
+    setValue('founder-edit-tagline', f.tagline || '');
+    setValue('founder-edit-vision', f.vision || '');
+    setValue('founder-edit-bio', f.bio || '');
+    setValue('founder-edit-message', f.message || '');
+    setValue('founder-edit-photo-url', f.photo || '');
+
+    const preview = document.getElementById('founder-edit-photo-preview');
+    if (preview && f.photo) {
+      preview.src = f.photo;
+    }
+
+    if (f.socials) {
+      setValue('founder-edit-linkedin', f.socials.linkedin || '');
+      setValue('founder-edit-twitter', f.socials.twitter || '');
+      setValue('founder-edit-instagram', f.socials.instagram || '');
+      setValue('founder-edit-email', f.socials.email || '');
+    }
+  }
+
+  function setupFounderControls() {
+    const photoFileInput = document.getElementById('founder-edit-photo-file');
+    const photoUrlInput = document.getElementById('founder-edit-photo-url');
+    const photoPreview = document.getElementById('founder-edit-photo-preview');
+    const form = document.getElementById('founder-editor-form');
+    const topSaveBtn = document.getElementById('save-founder-btn-top');
+
+    if (photoUrlInput && photoPreview) {
+      photoUrlInput.addEventListener('input', () => {
+        const val = photoUrlInput.value.trim();
+        if (val) photoPreview.src = val;
+      });
+    }
+
+    if (photoFileInput && photoPreview) {
+      photoFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        // Show immediate local preview
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          photoPreview.src = re.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        // Upload to server
+        try {
+          showToast('Uploading photo...', 'info');
+          const uploadedUrl = await uploadImageFile(file, 'founder_photo');
+          if (uploadedUrl) {
+            photoUrlInput.value = uploadedUrl;
+            photoPreview.src = uploadedUrl;
+            showToast('Photo uploaded successfully!', 'success');
+          }
+        } catch (err) {
+          showToast('Error uploading photo: ' + err.message, 'error');
+        }
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await saveFounderProfile();
+      });
+    }
+
+    if (topSaveBtn) {
+      topSaveBtn.addEventListener('click', async () => {
+        await saveFounderProfile();
+      });
+    }
+  }
+
+  async function saveFounderProfile() {
+    const saveBtn = document.getElementById('save-founder-btn');
+    const saveBtnText = document.getElementById('save-founder-btn-text');
+    const topSaveBtn = document.getElementById('save-founder-btn-top');
+
+    const name = getValue('founder-edit-name').trim();
+    const title = getValue('founder-edit-title').trim();
+    const tagline = getValue('founder-edit-tagline').trim();
+    const vision = getValue('founder-edit-vision').trim();
+    const bio = getValue('founder-edit-bio').trim();
+    const message = getValue('founder-edit-message').trim();
+    const photo = getValue('founder-edit-photo-url').trim();
+
+    const socials = {
+      linkedin: getValue('founder-edit-linkedin').trim(),
+      twitter: getValue('founder-edit-twitter').trim(),
+      instagram: getValue('founder-edit-instagram').trim(),
+      email: getValue('founder-edit-email').trim()
+    };
+
+    if (!name || !title) {
+      showToast('Founder name and title are required.', 'error');
+      return;
+    }
+
+    if (saveBtn) saveBtn.disabled = true;
+    if (saveBtnText) saveBtnText.textContent = 'Saving...';
+    if (topSaveBtn) topSaveBtn.disabled = true;
+
+    try {
+      const payload = {
+        name,
+        title,
+        tagline,
+        vision,
+        bio,
+        message,
+        photo,
+        socials
+      };
+
+      const res = await adminFetch('/api/admin/founder', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast('Founder profile updated successfully!', 'success');
+        currentFounderData = data.data;
+        populateFounderForm(currentFounderData);
+      } else {
+        showToast(data.message || 'Failed to update founder profile', 'error');
+      }
+    } catch (err) {
+      showToast('Network error saving founder profile.', 'error');
+    } finally {
+      if (saveBtn) saveBtn.disabled = false;
+      if (saveBtnText) saveBtnText.textContent = 'Save Founder Profile';
+      if (topSaveBtn) topSaveBtn.disabled = false;
+    }
+  }
+
+  // Helper for image upload
+  async function uploadImageFile(file, prefix = 'upload') {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64Data = e.target.result;
+        try {
+          const res = await adminFetch('/api/admin/upload-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              image: base64Data,
+              filename: `${prefix}_${file.name}`
+            })
+          });
+          const json = await res.json();
+          if (res.ok && json.success && json.url) {
+            resolve(json.url);
+          } else {
+            resolve(base64Data);
+          }
+        } catch (uploadErr) {
+          resolve(base64Data);
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ========================================================
+  // 7. PARTNERS & SPONSORS CONTROLLER
+  // ========================================================
+  let allAdminPartners = [];
+  let partnerFilterCategory = 'all';
+
+  async function loadPartnersData() {
+    try {
+      const res = await adminFetch('/api/content/partners?all=true');
+      const json = await res.json();
+      if (res.ok && json.success && Array.isArray(json.data)) {
+        allAdminPartners = json.data;
+      } else {
+        allAdminPartners = [];
+      }
+      renderAdminPartnersTable();
+    } catch (err) {
+      console.warn('Error loading partners data:', err);
+    }
+  }
+
+  function renderAdminPartnersTable() {
+    const tbody = document.getElementById('admin-partners-table-body');
+    const badge = document.getElementById('badge-total-partners');
+    const statTotal = document.getElementById('stat-total-partners');
+    const statActive = document.getElementById('stat-active-partners');
+    const statTiers = document.getElementById('stat-total-tiers');
+
+    if (badge) badge.textContent = allAdminPartners.length;
+    if (statTotal) statTotal.textContent = allAdminPartners.length;
+    if (statActive) statActive.textContent = allAdminPartners.filter(p => p.active !== false).length;
+
+    const tiers = new Set(allAdminPartners.map(p => p.category));
+    if (statTiers) statTiers.textContent = Math.max(tiers.size, 1);
+
+    if (!tbody) return;
+
+    const filtered = partnerFilterCategory === 'all'
+      ? allAdminPartners
+      : allAdminPartners.filter(p => p.category === partnerFilterCategory);
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="py-8 text-center text-[#5C3D2E]/60 text-xs">
+            No partners match the current filter. Click "+ Add Partner / Sponsor" to register one.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(p => {
+      const categoryBadgeColors = {
+        'Headline Sponsor': 'bg-[#dfa04e]/20 text-[#865237] dark:text-[#dfa04e]',
+        'Academic Partner': 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400',
+        'Technology Partner': 'bg-blue-500/15 text-blue-700 dark:text-blue-400',
+        'Ecosystem Partner': 'bg-purple-500/15 text-purple-700 dark:text-purple-400'
+      };
+      const badgeStyle = categoryBadgeColors[p.category] || 'bg-black/5 dark:bg-white/10 text-[#5C3D2E] dark:text-[#f5d6b4]';
+
+      return `
+        <tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+          <td class="py-3 px-3">
+            <div class="w-10 h-10 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 p-1 flex items-center justify-center overflow-hidden">
+              ${p.logo ? `
+                <img src="${escapeHtml(p.logo)}" alt="logo" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                <span class="hidden font-bold text-xs text-[#865237] dark:text-[#dfa04e]">${escapeHtml((p.name || 'P')[0])}</span>
+              ` : `
+                <span class="font-bold text-xs text-[#865237] dark:text-[#dfa04e]">${escapeHtml((p.name || 'P')[0])}</span>
+              `}
+            </div>
+          </td>
+          <td class="py-3 px-3">
+            <div class="font-bold text-[#1A0F09] dark:text-white text-xs">${escapeHtml(p.name)}</div>
+            <div class="text-[10px] text-[#5C3D2E]/70 dark:text-[#f5d6b4]/60 truncate max-w-[200px]">${escapeHtml(p.description || '')}</div>
+          </td>
+          <td class="py-3 px-3">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeStyle}">
+              ${escapeHtml(p.category || 'Partner')}
+            </span>
+          </td>
+          <td class="py-3 px-3 font-mono text-[11px]">
+            ${p.website ? `
+              <a href="${escapeHtml(p.website)}" target="_blank" rel="noopener noreferrer" class="text-[#865237] dark:text-[#dfa04e] hover:underline flex items-center gap-1">
+                <span class="truncate max-w-[140px]">${escapeHtml(p.website.replace(/^https?:\/\//, ''))}</span>
+                <span class="text-[9px]">↗</span>
+              </a>
+            ` : `<span class="text-[#5C3D2E]/40">—</span>`}
+          </td>
+          <td class="py-3 px-3 text-center font-bold text-xs">
+            ${p.sortOrder || 0}
+          </td>
+          <td class="py-3 px-3 text-center">
+            ${p.active !== false ? `
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+              </span>
+            ` : `
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-500/15 text-gray-500">
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> Hidden
+              </span>
+            `}
+          </td>
+          <td class="py-3 px-3 text-right">
+            <div class="inline-flex items-center gap-1.5">
+              <button
+                type="button"
+                data-action="edit-partner"
+                data-id="${escapeHtml(p.id)}"
+                class="p-1.5 rounded-lg text-[#865237] dark:text-[#dfa04e] hover:bg-[#865237]/10 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                title="Edit Partner"
+              >
+                ✏️
+              </button>
+              <button
+                type="button"
+                data-action="delete-partner"
+                data-id="${escapeHtml(p.id)}"
+                data-name="${escapeHtml(p.name)}"
+                class="p-1.5 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                title="Delete Partner"
+              >
+                🗑️
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Attach row action listeners
+    tbody.querySelectorAll('[data-action="edit-partner"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const partner = allAdminPartners.find(p => p.id === id);
+        if (partner) openPartnerEditorModal(partner);
+      });
+    });
+
+    tbody.querySelectorAll('[data-action="delete-partner"]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-name');
+        if (confirm(`Are you sure you want to delete "${name}" from partners?`)) {
+          await deletePartner(id);
+        }
+      });
+    });
+  }
+
+  function setupPartnerControls() {
+    const createBtn = document.getElementById('open-create-partner-btn');
+    const closeBtn = document.getElementById('close-partner-modal-btn');
+    const cancelBtn = document.getElementById('cancel-partner-modal-btn');
+    const filterSelect = document.getElementById('admin-partner-filter');
+    const modal = document.getElementById('partner-editor-modal');
+    const form = document.getElementById('admin-partner-form');
+
+    const logoFileInput = document.getElementById('partner-modal-logo-file');
+    const logoUrlInput = document.getElementById('partner-modal-logo-url');
+    const logoPreview = document.getElementById('partner-modal-logo-preview');
+    const logoPlaceholder = document.getElementById('partner-modal-logo-placeholder');
+
+    if (createBtn) {
+      createBtn.addEventListener('click', () => {
+        openPartnerEditorModal(null);
+      });
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closePartnerEditorModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closePartnerEditorModal);
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closePartnerEditorModal();
+      });
+    }
+
+    if (filterSelect) {
+      filterSelect.addEventListener('change', () => {
+        partnerFilterCategory = filterSelect.value;
+        renderAdminPartnersTable();
+      });
+    }
+
+    if (logoUrlInput && logoPreview && logoPlaceholder) {
+      logoUrlInput.addEventListener('input', () => {
+        const val = logoUrlInput.value.trim();
+        if (val) {
+          logoPreview.src = val;
+          logoPreview.classList.remove('hidden');
+          logoPlaceholder.classList.add('hidden');
+        } else {
+          logoPreview.classList.add('hidden');
+          logoPlaceholder.classList.remove('hidden');
+        }
+      });
+    }
+
+    if (logoFileInput && logoPreview && logoPlaceholder) {
+      logoFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        // Instant local preview
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          logoPreview.src = re.target.result;
+          logoPreview.classList.remove('hidden');
+          logoPlaceholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+
+        // Upload to server
+        try {
+          showToast('Uploading partner logo...', 'info');
+          const uploadedUrl = await uploadImageFile(file, 'partner_logo');
+          if (uploadedUrl) {
+            logoUrlInput.value = uploadedUrl;
+            logoPreview.src = uploadedUrl;
+            showToast('Logo uploaded!', 'success');
+          }
+        } catch (err) {
+          showToast('Failed to upload logo: ' + err.message, 'error');
+        }
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await savePartnerRecord();
+      });
+    }
+  }
+
+  function openPartnerEditorModal(partner = null) {
+    const modal = document.getElementById('partner-editor-modal');
+    const title = document.getElementById('partner-modal-title');
+    const idInput = document.getElementById('partner-modal-id');
+    const logoPreview = document.getElementById('partner-modal-logo-preview');
+    const logoPlaceholder = document.getElementById('partner-modal-logo-placeholder');
+
+    if (!modal) return;
+
+    if (partner) {
+      if (title) title.textContent = 'Edit Partner / Sponsor';
+      if (idInput) idInput.value = partner.id;
+      setValue('partner-modal-name', partner.name || '');
+      setValue('partner-modal-category', partner.category || 'Headline Sponsor');
+      setValue('partner-modal-order', partner.sortOrder || 1);
+      setValue('partner-modal-logo-url', partner.logo || '');
+      setValue('partner-modal-website', partner.website || '');
+      setValue('partner-modal-description', partner.description || '');
+      const activeCb = document.getElementById('partner-modal-active');
+      if (activeCb) activeCb.checked = partner.active !== false;
+
+      if (partner.logo && logoPreview && logoPlaceholder) {
+        logoPreview.src = partner.logo;
+        logoPreview.classList.remove('hidden');
+        logoPlaceholder.classList.add('hidden');
+      } else if (logoPreview && logoPlaceholder) {
+        logoPreview.classList.add('hidden');
+        logoPlaceholder.classList.remove('hidden');
+      }
+    } else {
+      if (title) title.textContent = 'Add Partner / Sponsor';
+      if (idInput) idInput.value = '';
+      setValue('partner-modal-name', '');
+      setValue('partner-modal-category', 'Ecosystem Partner');
+      setValue('partner-modal-order', allAdminPartners.length + 1);
+      setValue('partner-modal-logo-url', '');
+      setValue('partner-modal-website', '');
+      setValue('partner-modal-description', '');
+      const activeCb = document.getElementById('partner-modal-active');
+      if (activeCb) activeCb.checked = true;
+
+      if (logoPreview && logoPlaceholder) {
+        logoPreview.classList.add('hidden');
+        logoPlaceholder.classList.remove('hidden');
+      }
+    }
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePartnerEditorModal() {
+    const modal = document.getElementById('partner-editor-modal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  async function savePartnerRecord() {
+    const id = getValue('partner-modal-id').trim();
+    const name = getValue('partner-modal-name').trim();
+    const category = getValue('partner-modal-category');
+    const sortOrder = Number(getValue('partner-modal-order')) || 0;
+    const logo = getValue('partner-modal-logo-url').trim();
+    const website = getValue('partner-modal-website').trim();
+    const description = getValue('partner-modal-description').trim();
+    const active = document.getElementById('partner-modal-active')?.checked !== false;
+    const saveBtn = document.getElementById('save-partner-modal-btn');
+    const saveText = document.getElementById('save-partner-modal-text');
+
+    if (!name) {
+      showToast('Partner name is required.', 'error');
+      return;
+    }
+
+    if (saveBtn) saveBtn.disabled = true;
+    if (saveText) saveText.textContent = 'Saving...';
+
+    try {
+      const payload = {
+        name,
+        category,
+        sortOrder,
+        logo,
+        website,
+        description,
+        active
+      };
+
+      const url = id ? `/api/admin/partners/${id}` : '/api/admin/partners';
+      const method = id ? 'PUT' : 'POST';
+
+      const res = await adminFetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(id ? 'Partner updated successfully!' : 'Partner added successfully!', 'success');
+        closePartnerEditorModal();
+        await loadPartnersData();
+      } else {
+        showToast(data.message || 'Error saving partner record.', 'error');
+      }
+    } catch (err) {
+      showToast('Network error saving partner.', 'error');
+    } finally {
+      if (saveBtn) saveBtn.disabled = false;
+      if (saveText) saveText.textContent = 'Save Partner';
+    }
+  }
+
+  async function deletePartner(id) {
+    try {
+      const res = await adminFetch(`/api/admin/partners/${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast('Partner deleted successfully.', 'success');
+        await loadPartnersData();
+      } else {
+        showToast(data.message || 'Failed to delete partner', 'error');
+      }
+    } catch (err) {
+      showToast('Network error deleting partner.', 'error');
+    }
   }
 
   function getStatusConfig(status) {
