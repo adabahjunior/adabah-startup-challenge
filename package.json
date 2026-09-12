@@ -4,6 +4,7 @@
   "description": "The Official Web Platform and Application Portal for The ADABAH Startup Challenge",
   "main": "server.js",
   "scripts": {
+    "build": "echo Build complete",
     "start": "node server.js",
     "dev": "node server.js"
   },
