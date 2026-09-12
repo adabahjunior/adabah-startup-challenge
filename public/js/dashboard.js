@@ -52,6 +52,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setupEventListeners() {
+    // Mobile Sidebar Drawer Controls
+    const mobileToggleBtn = document.getElementById('dashboard-mobile-toggle');
+    const mobileCloseBtn = document.getElementById('dashboard-sidebar-close');
+    const sidebarBackdrop = document.getElementById('dashboard-sidebar-backdrop');
+    const copyIdBtn = document.getElementById('dash-copy-id-btn');
+
+    if (mobileToggleBtn) {
+      mobileToggleBtn.addEventListener('click', openMobileSidebar);
+    }
+    if (mobileCloseBtn) {
+      mobileCloseBtn.addEventListener('click', closeMobileSidebar);
+    }
+    if (sidebarBackdrop) {
+      sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+    }
+
+    if (copyIdBtn) {
+      copyIdBtn.addEventListener('click', () => {
+        if (!currentApp) return;
+        navigator.clipboard.writeText(currentApp.id).then(() => {
+          showToast(`Copied ${currentApp.id} to clipboard!`, 'success');
+        }).catch(() => {
+          showToast(`Application ID: ${currentApp.id}`, 'info');
+        });
+      });
+    }
+
+    // Sidebar Navigation Links
+    setupSidebarNavigation();
+
     // Portal Login Form
     if (loginForm) {
       loginForm.addEventListener('submit', async (e) => {
@@ -191,9 +221,79 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Mobile Sidebar Drawer Functions
+  function openMobileSidebar() {
+    const sidebar = document.getElementById('dashboard-sidebar');
+    const backdrop = document.getElementById('dashboard-sidebar-backdrop');
+    if (sidebar) {
+      sidebar.classList.remove('-translate-x-full');
+      sidebar.classList.add('translate-x-0');
+    }
+    if (backdrop) {
+      backdrop.classList.remove('hidden');
+    }
+  }
+
+  function closeMobileSidebar() {
+    const sidebar = document.getElementById('dashboard-sidebar');
+    const backdrop = document.getElementById('dashboard-sidebar-backdrop');
+    if (sidebar) {
+      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.remove('translate-x-0');
+    }
+    if (backdrop) {
+      backdrop.classList.add('hidden');
+    }
+  }
+
+  function setupSidebarNavigation() {
+    const navLinks = document.querySelectorAll('.sidebar-nav-link');
+    if (!navLinks || navLinks.length === 0) return;
+
+    function setActiveLink(activeHref) {
+      navLinks.forEach(link => {
+        const isMatch = link.getAttribute('href') === activeHref;
+        if (isMatch) {
+          link.classList.add('bg-[#865237]/15', 'text-[#865237]', 'dark:text-[#dfa04e]', 'dark:bg-white/10');
+          link.classList.remove('text-[#5C3D2E]', 'dark:text-[#f5d6b4]/80');
+        } else {
+          link.classList.remove('bg-[#865237]/15', 'text-[#865237]', 'dark:text-[#dfa04e]', 'dark:bg-white/10');
+          link.classList.add('text-[#5C3D2E]', 'dark:text-[#f5d6b4]/80');
+        }
+      });
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const href = link.getAttribute('href');
+        setActiveLink(href);
+        if (window.innerWidth < 768) {
+          closeMobileSidebar();
+        }
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const sectionIds = ['sec-overview', 'sec-progress', 'sec-deliverables', 'sec-team', 'sec-profile'];
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveLink(`#${entry.target.id}`);
+          }
+        });
+      }, { rootMargin: '-20% 0px -65% 0px' });
+
+      sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }
+  }
+
   // Show Auth / Lookup View
   function showAuthView() {
     currentApp = null;
+    closeMobileSidebar();
     if (authView) authView.classList.remove('hidden');
     if (mainView) mainView.classList.add('hidden');
     if (headerAppBadge) headerAppBadge.classList.add('hidden');
@@ -242,21 +342,41 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderDashboard(app) {
     if (!app) return;
 
-    // Header Badge
+    // Header & Sidebar Badges
     if (headerAppBadge) {
       headerAppBadge.classList.remove('hidden');
       headerAppBadge.classList.add('flex');
     }
-    if (headerAppId) headerAppId.textContent = app.id;
+    setText('header-app-id', app.id);
+    setText('sidebar-startup-name', app.startupName || '—');
+    setText('sidebar-track-text', `${app.track || 'General'} Track`);
 
     // 1. Startup Banner
     setText('dash-app-id', app.id);
-    setText('dash-startup-name', app.startupName);
+    setText('dash-startup-name', app.startupName || '—');
     setText('dash-tagline', app.tagline || 'Student-led innovation venture');
     setText('dash-track-pill', `${app.track || 'General'} Track`);
     setText('dash-stage-pill', `${app.stage || 'Idea'} Stage`);
     setText('dash-location', `${app.city ? `${app.city}, ` : ''}${app.country || 'Ghana'}`);
     setText('dash-founder-name', app.founderName);
+
+    // Fast stats strip
+    const teamCount = (Array.isArray(app.team) ? app.team.length : 0) + 1;
+    setText('stat-team-size', `${teamCount} ${teamCount === 1 ? 'Member' : 'Members'}`);
+
+    const delivCount = (app.deliverables || []).length;
+    setText('stat-submissions-count', `${delivCount} ${delivCount === 1 ? 'Item' : 'Items'}`);
+
+    const deckStat = document.getElementById('stat-deck-status');
+    if (deckStat) {
+      if (app.deckUrl && app.deckUrl.trim()) {
+        deckStat.textContent = 'Attached';
+        deckStat.className = 'font-bold text-emerald-600 dark:text-emerald-400 text-sm';
+      } else {
+        deckStat.textContent = 'Not Added';
+        deckStat.className = 'font-bold text-amber-600 dark:text-amber-400 text-sm';
+      }
+    }
 
     // Website Link
     const websiteWrapper = document.getElementById('dash-website-wrapper');
@@ -271,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (websiteWrapper) websiteWrapper.classList.add('hidden');
     }
 
-    // Status Pill
+    // Status Pill (Sidebar & Mobile Top Bar)
     renderStatusPill(app.status);
 
     // 2. Evaluation Stage Visualizer
@@ -303,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderStatusPill(status) {
     const pill = document.getElementById('dash-status-pill');
     const text = document.getElementById('dash-status-text');
-    if (!pill || !text) return;
+    const mobilePill = document.getElementById('mobile-status-pill');
 
     const s = (status || 'submitted').toLowerCase();
     const config = {
@@ -317,8 +437,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const c = config[s] || config.submitted;
-    pill.className = `px-3 py-1 rounded-full border text-xs font-bold inline-flex items-center gap-1.5 ${c.bg}`;
-    text.textContent = c.label;
+    if (pill) {
+      pill.className = `px-2 py-0.5 rounded-full border text-[10px] font-bold inline-flex items-center gap-1 ${c.bg}`;
+    }
+    if (text) {
+      text.textContent = c.label;
+    }
+    if (mobilePill) {
+      mobilePill.className = `px-2.5 py-1 rounded-full border text-[10px] font-bold ${c.bg}`;
+      mobilePill.textContent = c.label;
+    }
   }
 
   // Render 5-Stage Stepper
@@ -484,6 +612,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast(data.message || 'Team member added!', 'success');
         if (data.data) currentApp = data.data;
         renderTeam(currentApp);
+        const teamCount = (Array.isArray(currentApp.team) ? currentApp.team.length : 0) + 1;
+        setText('stat-team-size', `${teamCount} ${teamCount === 1 ? 'Member' : 'Members'}`);
         addTeamModal.classList.add('hidden');
         addTeamForm.reset();
       } else {
@@ -512,6 +642,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Team member removed.', 'info');
         if (data.data) currentApp = data.data;
         renderTeam(currentApp);
+        const teamCount = (Array.isArray(currentApp.team) ? currentApp.team.length : 0) + 1;
+        setText('stat-team-size', `${teamCount} ${teamCount === 1 ? 'Member' : 'Members'}`);
       } else {
         showToast(data.message || 'Failed to remove team member.', 'error');
       }
@@ -668,6 +800,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.data) currentApp = data.data;
         renderPitchCards(currentApp);
         renderDeliverables(currentApp.deliverables || []);
+        const delivCount = (currentApp.deliverables || []).length;
+        setText('stat-submissions-count', `${delivCount} ${delivCount === 1 ? 'Item' : 'Items'}`);
+        const deckStat = document.getElementById('stat-deck-status');
+        if (deckStat) {
+          if (currentApp.deckUrl && currentApp.deckUrl.trim()) {
+            deckStat.textContent = 'Attached';
+            deckStat.className = 'font-bold text-emerald-600 dark:text-emerald-400 text-sm';
+          } else {
+            deckStat.textContent = 'Not Added';
+            deckStat.className = 'font-bold text-amber-600 dark:text-amber-400 text-sm';
+          }
+        }
         submitDelivModal.classList.add('hidden');
         submitDelivForm.reset();
       } else {

@@ -65,616 +65,566 @@
     <div class="absolute bottom-20 right-0 w-[600px] max-w-full h-[450px] bg-[#dfa04e]/6 dark:bg-[#dfa04e]/10 rounded-full blur-[180px]"></div>
   </div>
 
-  <!-- STICKY HEADER -->
-  <header class="sticky top-0 z-40 w-full border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2]/90 dark:bg-[#180e08]/95 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between py-3">
-      
-      <!-- Brand Logo & Badge -->
-      <div class="flex items-center gap-3 min-w-0">
-        <a href="/" class="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
-          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[1.5px] shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
-            <div class="w-full h-full bg-[#120904] rounded-[9px] flex items-center justify-center font-display font-black text-lg sm:text-xl text-[#f5d6b4]">
-              A
-            </div>
-          </div>
-          <div class="min-w-0 hidden xs:block">
-            <span class="font-display font-black text-base sm:text-lg tracking-tight text-[#1A0F09] dark:text-white block leading-none truncate">THE ADABAH</span>
-            <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#865237] dark:text-[#dfa04e] block">Startup Challenge</span>
-          </div>
-        </a>
-
-        <div class="h-6 w-[1px] bg-[#865237]/20 dark:bg-white/10 hidden sm:block"></div>
-
-        <span class="px-2.5 py-1 rounded-full bg-[#865237]/10 dark:bg-[#dfa04e]/20 text-[#865237] dark:text-[#dfa04e] text-[11px] font-bold tracking-wide uppercase flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e] animate-pulse"></span>
-          Founder Dashboard
-        </span>
-      </div>
-
-      <!-- Header Right Controls -->
-      <div class="flex items-center gap-2 sm:gap-4 text-xs flex-shrink-0">
-        <!-- Active App Indicator -->
-        <div id="header-app-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 font-mono font-bold text-xs text-[#865237] dark:text-[#dfa04e]">
-          <span id="header-app-id">ADB-2026-XXXX</span>
-          <button id="switch-app-btn" class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#1A0F09] dark:hover:text-white underline cursor-pointer">Switch</button>
-        </div>
-
-        <!-- Theme Switcher -->
-        <button type="button" class="theme-toggle-btn px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-white dark:bg-white/10 border border-[#865237]/20 dark:border-white/15 text-xs font-semibold flex items-center gap-1.5 shadow-sm hover:border-[#865237] transition-all cursor-pointer" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
-          <svg class="w-4 h-4 text-[#865237]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-          <span class="text-xs font-semibold text-[#5c3d2e] hidden md:inline">Theme</span>
-        </button>
-
-        <a href="/" class="hidden md:inline-flex items-center gap-1 text-[#5C3D2E] dark:text-[#f5d6b4]/80 hover:text-[#1A0F09] dark:hover:text-white transition-colors font-semibold">
-          Overview ↗
-        </a>
+  <!-- ======================================================== -->
+  <!-- VIEW 1: AUTH / ACCESS LOOKUP (Shown if no application selected) -->
+  <!-- ======================================================== -->
+  <section id="dashboard-auth-view" class="relative z-10 max-w-lg mx-auto py-16 sm:py-24 px-4 text-center space-y-6">
+    <div class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-2xl bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[2px] shadow-lg">
+      <div class="w-full h-full bg-[#120904] rounded-[14px] flex items-center justify-center text-xl sm:text-2xl font-display font-black text-[#f5d6b4]">
+        A
       </div>
     </div>
-  </header>
 
-  <!-- MAIN DASHBOARD CONTENT -->
-  <main class="relative z-10 py-6 sm:py-10 w-full max-w-full overflow-x-hidden">
-    <div class="max-w-7xl mx-auto px-3.5 sm:px-6">
+    <div>
+      <h1 class="font-display font-black text-2xl sm:text-3xl text-[#1A0F09] dark:text-white tracking-tight">
+        Founder Workspace
+      </h1>
+      <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 mt-1">
+        Enter your Application Reference ID or registered email
+      </p>
+    </div>
 
-      <!-- ======================================================== -->
-      <!-- VIEW 1: AUTH / ACCESS LOOKUP (Shown if no application selected) -->
-      <!-- ======================================================== -->
-      <section id="dashboard-auth-view" class="max-w-xl mx-auto py-12 sm:py-20 text-center space-y-6">
-        <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-3xl bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[2px] shadow-xl">
-          <div class="w-full h-full bg-[#120904] rounded-[22px] flex items-center justify-center text-2xl sm:text-3xl font-display font-black text-[#f5d6b4]">
-            🚀
+    <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-xl text-left space-y-4">
+      <form id="dashboard-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-[#1A0F09] dark:text-white mb-1.5">
+            Application ID or Email
+          </label>
+          <input
+            type="text"
+            id="portal-id-input"
+            placeholder="e.g. ADB-2026-XXXX or founder@email.com"
+            class="w-full px-4 py-3 rounded-xl bg-[#FAF7F2] dark:bg-black/50 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white placeholder-[#865237]/50 dark:placeholder-[#f5d6b4]/40 text-xs sm:text-sm font-mono focus:outline-none focus:border-[#865237] dark:focus:border-[#dfa04e]"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          id="portal-login-btn"
+          class="w-full py-3 rounded-xl btn-adabah-primary font-bold text-xs shadow-md cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>Open Dashboard</span> →
+        </button>
+      </form>
+
+      <div class="pt-2 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+        New applicant? <a href="/apply" class="font-bold text-[#865237] dark:text-[#dfa04e] hover:underline">Apply Here →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- VIEW 2: ACTIVE FOUNDER DASHBOARD (STICKY SIDEBAR LAYOUT) -->
+  <!-- ======================================================== -->
+  <div id="dashboard-main-view" class="hidden relative z-10 min-h-screen flex flex-col md:flex-row w-full max-w-full">
+
+    <!-- MOBILE TOP BAR (md:hidden) -->
+    <header class="md:hidden sticky top-0 z-40 w-full border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2]/95 dark:bg-[#180e08]/95 backdrop-blur-md px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <button
+          type="button"
+          id="dashboard-mobile-toggle"
+          class="p-2 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-[#f5d6b4] cursor-pointer hover:border-[#865237] transition-all"
+          aria-label="Toggle Navigation Sidebar"
+        >
+          <svg class="w-5 h-5 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        
+        <a href="/" class="flex items-center gap-2 min-w-0">
+          <div class="w-7 h-7 rounded-lg bg-[#120904] text-[#f5d6b4] font-display font-black text-sm flex items-center justify-center flex-shrink-0">
+            A
+          </div>
+          <span class="font-display font-black text-sm text-[#1A0F09] dark:text-white truncate">ADABAH 2026</span>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span id="mobile-status-pill" class="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-bold text-[10px]">
+          Submitted
+        </span>
+        <button type="button" class="theme-toggle-btn p-2 rounded-xl bg-white dark:bg-white/10 border border-[#865237]/20 text-[#865237] dark:text-[#dfa04e] cursor-pointer" title="Toggle Theme">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- MOBILE SIDEBAR BACKDROP OVERLAY -->
+    <div id="dashboard-sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
+
+    <!-- STICKY SIDEBAR (Desktop Fixed, Mobile Drawer) -->
+    <aside
+      id="dashboard-sidebar"
+      class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] transform -translate-x-full md:translate-x-0 md:static md:sticky md:top-0 md:h-screen md:w-64 lg:w-72 bg-[#FAF7F2] dark:bg-[#140b06] border-r border-[#865237]/15 dark:border-[#f5d6b4]/10 flex flex-col justify-between transition-transform duration-300 ease-in-out overflow-y-auto select-none"
+    >
+      <!-- Sidebar Top & Nav -->
+      <div class="p-4 sm:p-5 space-y-5">
+        
+        <!-- Logo & Mobile Close -->
+        <div class="flex items-center justify-between">
+          <a href="/" class="flex items-center gap-2.5 group">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[1.5px] shadow-sm flex-shrink-0">
+              <div class="w-full h-full bg-[#120904] rounded-[9px] flex items-center justify-center font-display font-black text-sm text-[#f5d6b4]">
+                A
+              </div>
+            </div>
+            <div>
+              <span class="font-display font-black text-sm tracking-tight text-[#1A0F09] dark:text-white block leading-none">THE ADABAH</span>
+              <span class="text-[9px] uppercase font-bold tracking-widest text-[#865237] dark:text-[#dfa04e]">Startup Challenge</span>
+            </div>
+          </a>
+
+          <button
+            type="button"
+            id="dashboard-sidebar-close"
+            class="md:hidden p-1.5 rounded-lg text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#1A0F09] dark:hover:text-white font-bold text-sm cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Active Startup Badge Card -->
+        <div class="p-3.5 rounded-2xl bg-white dark:bg-[#201108] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span id="header-app-id" class="font-mono font-bold text-xs text-[#865237] dark:text-[#dfa04e]">
+              ADB-2026-XXXX
+            </span>
+            <button
+              type="button"
+              id="dash-copy-id-btn"
+              class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#865237] font-semibold cursor-pointer flex items-center gap-0.5"
+              title="Copy Reference ID"
+            >
+              📋 Copy
+            </button>
+          </div>
+
+          <h2 id="sidebar-startup-name" class="font-display font-black text-base text-[#1A0F09] dark:text-white truncate">
+            —
+          </h2>
+
+          <div class="flex items-center justify-between text-[11px] pt-1 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10">
+            <span id="sidebar-track-text" class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 capitalize">Track</span>
+            <span id="dash-status-pill" class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold text-[10px] inline-flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span id="dash-status-text">Submitted</span>
+            </span>
           </div>
         </div>
 
-        <div>
-          <span class="text-xs uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest block mb-1">Founder Portal Access</span>
-          <h1 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white tracking-tight">
-            Welcome to Your Founder Dashboard
-          </h1>
-          <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-md mx-auto mt-2 leading-relaxed">
-            Track evaluation progress, invite your team members, and upload weekly challenge deliverables for The ADABAH Startup Challenge 2026.
+        <!-- Navigation Menu -->
+        <nav class="space-y-1 text-xs font-bold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+          <a
+            href="#sec-overview"
+            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          >
+            <span class="text-base">📊</span>
+            <span>Overview</span>
+          </a>
+
+          <a
+            href="#sec-progress"
+            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          >
+            <span class="text-base">📈</span>
+            <span>Evaluation Stage</span>
+          </a>
+
+          <a
+            href="#sec-deliverables"
+            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          >
+            <span class="text-base">📤</span>
+            <span>Submissions &amp; Pitch</span>
+          </a>
+
+          <a
+            href="#sec-team"
+            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          >
+            <span class="text-base">👥</span>
+            <span>Startup Team</span>
+          </a>
+
+          <a
+            href="#sec-profile"
+            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          >
+            <span class="text-base">📝</span>
+            <span>Venture Profile</span>
+          </a>
+        </nav>
+
+      </div>
+
+      <!-- Sidebar Footer Controls -->
+      <div class="p-4 sm:p-5 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 space-y-2 text-xs">
+        <div class="flex items-center justify-between gap-2">
+          <button
+            type="button"
+            class="theme-toggle-btn flex-1 py-2 rounded-xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-white/10 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm hover:border-[#865237] cursor-pointer"
+            title="Toggle Light/Dark Theme"
+          >
+            <svg class="w-3.5 h-3.5 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            <span class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]">Theme</span>
+          </button>
+
+          <a
+            href="/"
+            class="py-2 px-3 rounded-xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-white/10 text-xs font-semibold text-[#5C3D2E] dark:text-[#f5d6b4] hover:text-[#1A0F09] flex items-center justify-center shadow-sm"
+            title="Challenge Homepage"
+          >
+            Site ↗
+          </a>
+        </div>
+
+        <button
+          type="button"
+          id="logout-btn"
+          class="w-full py-2 rounded-xl text-center text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/60 hover:text-red-500 dark:hover:text-red-400 transition-colors cursor-pointer"
+        >
+          Switch Application / Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- ======================================================== -->
+    <!-- MAIN WORKSPACE CONTENT CANVAS -->
+    <!-- ======================================================== -->
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 space-y-6 max-w-full">
+
+      <!-- 1. OVERVIEW HERO BANNER -->
+      <section id="sec-overview" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="space-y-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="dash-app-id" class="px-2.5 py-0.5 rounded-lg bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/20 font-mono font-bold text-xs text-[#865237] dark:text-[#dfa04e]">
+                ADB-2026-XXXX
+              </span>
+              <span id="dash-track-pill" class="px-2.5 py-0.5 rounded-lg bg-[#865237]/10 dark:bg-white/10 text-xs font-bold text-[#1A0F09] dark:text-white capitalize">
+                Track
+              </span>
+              <span id="dash-stage-pill" class="px-2.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/5 text-[10px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80 uppercase">
+                Stage
+              </span>
+            </div>
+
+            <h1 id="dash-startup-name" class="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-[#1A0F09] dark:text-white tracking-tight break-words">
+              —
+            </h1>
+
+            <p id="dash-tagline" class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-2xl leading-relaxed">
+            </p>
+
+            <div class="flex flex-wrap items-center gap-3 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 pt-1">
+              <span>📍 <strong id="dash-location" class="text-[#1A0F09] dark:text-white">—</strong></span>
+              <span>👤 Founder: <strong id="dash-founder-name" class="text-[#1A0F09] dark:text-white">—</strong></span>
+              <span id="dash-website-wrapper" class="hidden">
+                🌐 <a id="dash-website-link" href="#" target="_blank" rel="noopener noreferrer" class="text-[#865237] dark:text-[#dfa04e] hover:underline font-bold">Website ↗</a>
+              </span>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2 self-start sm:self-center flex-shrink-0">
+            <button
+              type="button"
+              id="edit-profile-btn"
+              class="px-3.5 py-2 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+            >
+              ✏️ <span>Edit Profile</span>
+            </button>
+            <button
+              type="button"
+              id="share-dashboard-btn"
+              class="px-3.5 py-2 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+            >
+              🔗 <span>Copy Link</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fast Stats Strip -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 text-xs">
+          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
+            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Team Size</span>
+            <span id="stat-team-size" class="font-bold text-[#1A0F09] dark:text-white text-sm">1 Member</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
+            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Submissions</span>
+            <span id="stat-submissions-count" class="font-bold text-[#1A0F09] dark:text-white text-sm">0 Items</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
+            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Pitch Deck</span>
+            <span id="stat-deck-status" class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Attached</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
+            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Cohort Starts</span>
+            <span class="font-bold text-[#865237] dark:text-[#dfa04e] text-sm">2 Nov 2026</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. EVALUATION PROGRESS TRACKER -->
+      <section id="sec-progress" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-bold text-base sm:text-lg text-[#1A0F09] dark:text-white">
+            Evaluation &amp; Selection Stage
+          </h3>
+          <div id="dash-score-badge" class="px-3 py-1 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/20 text-xs flex items-center gap-1.5">
+            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold text-[11px]">Score:</span>
+            <span id="dash-score-text" class="font-display font-black text-[#865237] dark:text-[#dfa04e]">Pending</span>
+          </div>
+        </div>
+
+        <!-- 5-Stage Step Circles -->
+        <div class="py-1">
+          <div class="grid grid-cols-5 gap-1 sm:gap-2 text-center items-center">
+            
+            <div class="flex flex-col items-center gap-1" id="stage-node-submitted">
+              <div class="w-8 h-8 rounded-full border-2 border-[#865237] dark:border-[#dfa04e] bg-[#865237] dark:bg-[#dfa04e] text-white dark:text-[#180e08] flex items-center justify-center font-bold text-xs shadow-sm">
+                ✓
+              </div>
+              <span class="font-bold text-[10px] sm:text-xs text-[#1A0F09] dark:text-white">Submitted</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-under_review">
+              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
+                2
+              </div>
+              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Screening</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-shortlisted">
+              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
+                3
+              </div>
+              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Shortlisted</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-finalist">
+              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
+                4
+              </div>
+              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Finalist</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-winner">
+              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
+                🏆
+              </div>
+              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Winner</span>
+            </div>
+
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="relative w-full bg-[#E5DACD] dark:bg-[#120904] h-1.5 rounded-full overflow-hidden mt-3 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+            <div id="stage-progress-bar" class="h-full bg-gradient-to-r from-[#865237] via-[#dfa04e] to-[#f5d6b4] transition-all duration-500 w-[20%]"></div>
+          </div>
+        </div>
+
+        <!-- Status Notes Feedback Box -->
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1 text-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[#865237] dark:text-[#dfa04e]">Committee Notes</span>
+            <span id="dash-updated-at" class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 font-mono">Recently</span>
+          </div>
+          <p id="dash-status-notes" class="text-[#1A0F09] dark:text-[#fbf1e6] leading-relaxed">
+            Application submitted successfully. Under preliminary compliance and eligibility screening.
           </p>
         </div>
+      </section>
 
-        <!-- Lookup Form -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-xl space-y-4 text-left">
-          <form id="dashboard-login-form" class="space-y-4">
-            <div>
-              <label class="block text-xs font-bold text-[#1A0F09] dark:text-white mb-1.5">
-                Application Reference ID or Founder Email
-              </label>
-              <input
-                type="text"
-                id="portal-id-input"
-                placeholder="e.g. ADB-2026-XXXX or founder@email.com"
-                class="w-full px-4 py-3.5 rounded-xl bg-[#FAF7F2] dark:bg-black/50 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white placeholder-[#865237]/50 dark:placeholder-[#f5d6b4]/40 text-sm font-mono focus:outline-none focus:border-[#865237] dark:focus:border-[#dfa04e]"
-                required
-              />
+      <!-- 3. SUBMISSIONS & MILESTONES -->
+      <section id="sec-deliverables" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h3 class="font-display font-bold text-base sm:text-lg text-[#1A0F09] dark:text-white">
+            Pitch Materials &amp; Milestones
+          </h3>
+          <button
+            type="button"
+            id="open-submit-modal-btn"
+            class="px-3.5 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm flex items-center gap-1.5 self-start sm:self-auto"
+          >
+            <span>+ Make Submission</span>
+          </button>
+        </div>
+
+        <!-- Pitch Deck & Video Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Primary Deck</span>
+              <span id="deck-status-label" class="font-bold text-xs text-[#1A0F09] dark:text-white truncate block">Pitch Deck</span>
             </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <a id="view-deck-link" href="#" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg btn-adabah-primary text-[11px] font-bold">Open ↗</a>
+              <button type="button" id="update-deck-btn" class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]">Update</button>
+            </div>
+          </div>
 
+          <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Demo Video</span>
+              <span id="video-status-label" class="font-semibold text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 truncate block">Optional Video</span>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <a id="view-video-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden px-2.5 py-1 rounded-lg btn-adabah-primary text-[11px] font-bold">Watch ↗</a>
+              <button type="button" id="update-video-btn" class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]">Add / Update</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3-Week Cohort Milestones Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
+          <div class="p-3 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
+            <div>
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 1</span>
+              <span class="font-bold text-[#1A0F09] dark:text-white block">Customer Discovery</span>
+            </div>
             <button
-              type="submit"
-              id="portal-login-btn"
-              class="w-full py-3.5 rounded-xl btn-adabah-primary font-bold text-xs shadow-md cursor-pointer flex items-center justify-center gap-2"
+              type="button"
+              class="quick-submit-milestone-btn w-full py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
+              data-milestone="milestone_1"
+              data-title="Week 1: Customer Discovery & Validation"
             >
-              <span>Access Founder Dashboard</span> →
+              Submit Deliverable →
             </button>
-          </form>
-
-          <div class="pt-2 text-center">
-            <span class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">Haven't applied yet?</span>
-            <a href="/apply" class="text-xs font-bold text-[#865237] dark:text-[#dfa04e] hover:underline ml-1">
-              Apply For The Challenge →
-            </a>
           </div>
-        </div>
-      </section>
 
-      <!-- ======================================================== -->
-      <!-- VIEW 2: ACTIVE FOUNDER DASHBOARD -->
-      <!-- ======================================================== -->
-      <section id="dashboard-main-view" class="hidden space-y-6 sm:space-y-8">
-
-        <!-- 1. STARTUP BANNER & FAST CONTROLS -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-md">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            
-            <!-- Left: Startup Identity -->
-            <div class="space-y-2 min-w-0">
-              <div class="flex flex-wrap items-center gap-2">
-                <span id="dash-app-id" class="px-3 py-1 rounded-lg bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/20 font-mono font-bold text-xs text-[#865237] dark:text-[#dfa04e]">
-                  ADB-2026-XXXX
-                </span>
-                <span id="dash-track-pill" class="px-3 py-1 rounded-lg bg-[#865237]/10 dark:bg-white/10 text-xs font-bold text-[#1A0F09] dark:text-white capitalize">
-                  FinTech Track
-                </span>
-                <span id="dash-stage-pill" class="px-3 py-1 rounded-lg bg-black/5 dark:bg-white/5 text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80 uppercase">
-                  Idea Stage
-                </span>
-                <span id="dash-status-pill" class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-bold text-xs inline-flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span id="dash-status-text">Submitted</span>
-                </span>
-              </div>
-
-              <h1 id="dash-startup-name" class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white tracking-tight break-words">
-                —
-              </h1>
-
-              <p id="dash-tagline" class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-2xl leading-relaxed">
-              </p>
-
-              <div class="flex flex-wrap items-center gap-4 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 pt-1">
-                <span class="flex items-center gap-1">
-                  <span>📍</span>
-                  <strong id="dash-location" class="text-[#1A0F09] dark:text-white">—</strong>
-                </span>
-                <span class="flex items-center gap-1">
-                  <span>👤 Lead Founder:</span>
-                  <strong id="dash-founder-name" class="text-[#1A0F09] dark:text-white">—</strong>
-                </span>
-                <span id="dash-website-wrapper" class="hidden flex items-center gap-1">
-                  <span>🌐</span>
-                  <a id="dash-website-link" href="#" target="_blank" rel="noopener noreferrer" class="text-[#865237] dark:text-[#dfa04e] hover:underline font-bold truncate max-w-[200px]">
-                    Website ↗
-                  </a>
-                </span>
-              </div>
-            </div>
-
-            <!-- Right: Quick Actions -->
-            <div class="flex flex-wrap items-center gap-2.5 sm:self-start lg:self-center flex-shrink-0">
-              <button
-                type="button"
-                id="edit-profile-btn"
-                class="px-4 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
-              >
-                ✏️ <span>Edit Profile</span>
-              </button>
-              <button
-                type="button"
-                id="share-dashboard-btn"
-                class="px-4 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
-              >
-                🔗 <span>Copy Portal Link</span>
-              </button>
-              <button
-                type="button"
-                id="logout-btn"
-                class="px-3 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-xs font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-red-500 transition-colors cursor-pointer"
-                title="Switch Application / Sign out"
-              >
-                Sign Out
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- 2. STAGE EVALUATION PROGRESS VISUALIZER -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-md space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-4">
+          <div class="p-3 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
             <div>
-              <span class="text-xs uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest block">Cohort Selection Journey</span>
-              <h2 class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white mt-0.5">Evaluation & Programme Stage</h2>
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 2</span>
+              <span class="font-bold text-[#1A0F09] dark:text-white block">Business Model</span>
             </div>
-            <div id="dash-score-badge" class="px-4 py-2 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center gap-2">
-              <span class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold">Evaluation Score:</span>
-              <span id="dash-score-text" class="font-display font-black text-sm sm:text-base text-[#865237] dark:text-[#dfa04e]">Pending</span>
-            </div>
+            <button
+              type="button"
+              class="quick-submit-milestone-btn w-full py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
+              data-milestone="milestone_2"
+              data-title="Week 2: Business Model & Unit Economics"
+            >
+              Submit Deliverable →
+            </button>
           </div>
 
-          <!-- 5-Stage Step Circles & Connectors -->
-          <div class="py-2">
-            <div class="grid grid-cols-5 gap-1 sm:gap-3 text-center">
-              
-              <!-- Step 1: Submitted -->
-              <div class="flex flex-col items-center gap-1.5" id="stage-node-submitted">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237] dark:border-[#dfa04e] bg-[#865237] dark:bg-[#dfa04e] text-white dark:text-[#180e08] flex items-center justify-center font-bold text-xs sm:text-sm shadow-md transition-all">
-                  ✓
-                </div>
-                <span class="font-bold text-[11px] sm:text-xs text-[#1A0F09] dark:text-white">Submitted</span>
-                <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 hidden md:block">Entry Registered</span>
-              </div>
-
-              <!-- Step 2: Under Review -->
-              <div class="flex flex-col items-center gap-1.5 opacity-40" id="stage-node-under_review">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm transition-all">
-                  2
-                </div>
-                <span class="font-semibold text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Screening</span>
-                <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 hidden md:block">Jury Assessment</span>
-              </div>
-
-              <!-- Step 3: Shortlisted -->
-              <div class="flex flex-col items-center gap-1.5 opacity-40" id="stage-node-shortlisted">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm transition-all">
-                  3
-                </div>
-                <span class="font-semibold text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Shortlisted</span>
-                <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 hidden md:block">Cohort Selection</span>
-              </div>
-
-              <!-- Step 4: Finalist -->
-              <div class="flex flex-col items-center gap-1.5 opacity-40" id="stage-node-finalist">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm transition-all">
-                  4
-                </div>
-                <span class="font-semibold text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Finalist</span>
-                <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 hidden md:block">Live Pitch Day</span>
-              </div>
-
-              <!-- Step 5: Winner / Award -->
-              <div class="flex flex-col items-center gap-1.5 opacity-40" id="stage-node-winner">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm transition-all">
-                  🏆
-                </div>
-                <span class="font-semibold text-[11px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Winner</span>
-                <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 hidden md:block">GH₵3,000 Award</span>
-              </div>
-
+          <div class="p-3 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
+            <div>
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 3</span>
+              <span class="font-bold text-[#1A0F09] dark:text-white block">Final Pitch Slides</span>
             </div>
-
-            <!-- Connecting Progress Bar -->
-            <div class="relative w-full bg-[#E5DACD] dark:bg-[#120904] h-2 rounded-full overflow-hidden mt-4 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
-              <div id="stage-progress-bar" class="h-full bg-gradient-to-r from-[#865237] via-[#dfa04e] to-[#f5d6b4] transition-all duration-500 w-[20%]"></div>
-            </div>
-          </div>
-
-          <!-- Official Status Feedback Card -->
-          <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-[#865237] dark:text-[#dfa04e] flex items-center gap-1.5">
-                <span>📋</span> Official Evaluation Notes
-              </span>
-              <span id="dash-updated-at" class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 font-mono">
-                Updated Recently
-              </span>
-            </div>
-            <p id="dash-status-notes" class="text-xs sm:text-sm text-[#1A0F09] dark:text-[#fbf1e6] leading-relaxed">
-              Your application has been received and is queued for preliminary compliance and eligibility screening.
-            </p>
-          </div>
-
-          <!-- Timeline Strip -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
-            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
-              <span class="text-[10px] uppercase font-bold text-[#865237] dark:text-[#dfa04e] block">Step 1: Selection</span>
-              <span class="font-bold text-[#1A0F09] dark:text-white">Review Closes Late October</span>
-            </div>
-            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
-              <span class="text-[10px] uppercase font-bold text-[#865237] dark:text-[#dfa04e] block">Step 2: Mentorship</span>
-              <span class="font-bold text-[#1A0F09] dark:text-white">Cohort Starts 2 Nov 2026</span>
-            </div>
-            <div class="p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
-              <span class="text-[10px] uppercase font-bold text-[#865237] dark:text-[#dfa04e] block">Step 3: Live Pitch</span>
-              <span class="font-bold text-[#1A0F09] dark:text-white">Demo Day 21 Nov 2026</span>
-            </div>
+            <button
+              type="button"
+              class="quick-submit-milestone-btn w-full py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
+              data-milestone="milestone_3"
+              data-title="Week 3: Final Pitch Deck"
+            >
+              Submit Deliverable →
+            </button>
           </div>
         </div>
 
-        <!-- 3. TWO-COLUMN WORKSPACE: TEAM & SUBMISSIONS -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
-          
-          <!-- LEFT COLUMN (5 Cols): TEAM MANAGEMENT -->
-          <div class="lg:col-span-5 space-y-6">
-            
-            <!-- Team Hub Card -->
-            <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-md space-y-5">
-              <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-4">
-                <div>
-                  <span class="text-[10px] uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest block">Team Workspace</span>
-                  <h3 class="font-display font-black text-lg sm:text-xl text-[#1A0F09] dark:text-white">Startup Team</h3>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span id="dash-team-count-badge" class="px-2.5 py-1 rounded-full bg-[#865237]/10 dark:bg-white/10 text-xs font-bold text-[#865237] dark:text-[#dfa04e]">
-                    1 Member
-                  </span>
-                  <button
-                    type="button"
-                    id="open-add-team-modal-btn"
-                    class="px-3 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm flex items-center gap-1"
-                  >
-                    <span>+ Add Member</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Lead Founder Card -->
-              <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border-2 border-[#865237]/25 dark:border-[#dfa04e]/30 space-y-2">
-                <div class="flex items-start justify-between">
-                  <div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e] block">Lead Founder</span>
-                    <h4 id="team-lead-name" class="font-display font-bold text-base text-[#1A0F09] dark:text-white">—</h4>
-                    <span id="team-lead-role" class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-medium">Lead Founder</span>
-                  </div>
-                  <span class="px-2 py-0.5 rounded bg-black/5 dark:bg-white/10 text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e]">Primary</span>
-                </div>
-
-                <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 text-xs space-y-1 text-[#5C3D2E] dark:text-[#f5d6b4]/70">
-                  <div class="flex items-center gap-1.5 truncate">
-                    <span>📧</span>
-                    <span id="team-lead-email" class="truncate font-mono">—</span>
-                  </div>
-                  <div id="team-lead-phone-row" class="flex items-center gap-1.5 truncate">
-                    <span>📞</span>
-                    <span id="team-lead-phone" class="font-mono">—</span>
-                  </div>
-                  <div id="team-lead-academic-row" class="flex items-center gap-1.5 truncate">
-                    <span>🎓</span>
-                    <span id="team-lead-academic">—</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Co-Founders & Teammates List -->
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-[#1A0F09] dark:text-white">Co-Founders & Core Members</span>
-                  <span class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/60">Max 5 student teammates</span>
-                </div>
-
-                <div id="teammates-container" class="space-y-3">
-                  <!-- Injected via JavaScript -->
-                </div>
-
-                <!-- Empty State -->
-                <div id="teammates-empty-state" class="p-6 rounded-2xl border border-dashed border-[#865237]/30 dark:border-[#f5d6b4]/20 text-center space-y-2">
-                  <span class="text-2xl block">👥</span>
-                  <h5 class="text-xs font-bold text-[#1A0F09] dark:text-white">No Additional Teammates Added Yet</h5>
-                  <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 max-w-xs mx-auto">
-                    Building a multidisciplinary startup? Add your co-founders, engineers, or designers to your challenge roster.
-                  </p>
-                  <button
-                    type="button"
-                    class="mt-1 px-3 py-1.5 rounded-lg bg-[#FAF7F2] dark:bg-white/10 hover:bg-[#865237]/10 border border-[#865237]/25 text-xs font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
-                    onclick="document.getElementById('open-add-team-modal-btn').click()"
-                  >
-                    + Add Your First Teammate
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Startup Overview & Summary Card -->
-            <div class="p-6 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-md space-y-4 text-xs">
-              <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3 flex items-center justify-between">
-                <h4 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white">Venture Profile</h4>
-                <span id="dash-founded-year" class="text-[11px] font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70">—</span>
-              </div>
-
-              <div>
-                <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Problem Statement</span>
-                <p id="dash-problem" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 mt-0.5 line-clamp-4 leading-relaxed">
-                  —
-                </p>
-              </div>
-
-              <div>
-                <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Proposed Solution</span>
-                <p id="dash-solution" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 mt-0.5 line-clamp-4 leading-relaxed">
-                  —
-                </p>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10">
-                <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-                  <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Traction</span>
-                  <span id="dash-traction" class="font-bold text-[#1A0F09] dark:text-white truncate block">—</span>
-                </div>
-                <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-                  <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Capital</span>
-                  <span id="dash-funding" class="font-bold text-[#1A0F09] dark:text-white truncate block">—</span>
-                </div>
-              </div>
-            </div>
-
+        <!-- History Log -->
+        <div class="space-y-2 pt-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-[#1A0F09] dark:text-white">Submission History</span>
+            <span id="submissions-count-badge" class="text-[10px] font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70">0 submissions</span>
           </div>
 
-          <!-- RIGHT COLUMN (7 Cols): SUBMISSIONS & DELIVERABLES -->
-          <div class="lg:col-span-7 space-y-6">
-            
-            <!-- Deliverables Hub Card -->
-            <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-md space-y-6">
-              
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-4">
-                <div>
-                  <span class="text-[10px] uppercase font-extrabold text-[#865237] dark:text-[#dfa04e] tracking-widest block">Cohort Submissions Hub</span>
-                  <h3 class="font-display font-black text-xl text-[#1A0F09] dark:text-white">Milestones & Deliverables</h3>
-                </div>
-                <button
-                  type="button"
-                  id="open-submit-modal-btn"
-                  class="px-4 py-2 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-md flex items-center gap-1.5 self-start sm:self-auto"
-                >
-                  <span>📤 Make New Submission</span>
-                </button>
-              </div>
-
-              <!-- Quick Pitch Resources Grid (Pitch Deck & Demo Video) -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                
-                <!-- Deck Card -->
-                <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 space-y-3">
-                  <div class="flex items-start justify-between">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xl">📊</span>
-                      <div>
-                        <h4 class="font-bold text-xs sm:text-sm text-[#1A0F09] dark:text-white">Pitch Deck</h4>
-                        <span id="deck-status-label" class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold block">✓ Link On File</span>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
-                    Official slides evaluated during screening and final selection.
-                  </p>
-                  <div class="flex items-center gap-2 pt-1">
-                    <a
-                      id="view-deck-link"
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="px-3 py-1.5 rounded-lg btn-adabah-primary text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      Open Deck ↗
-                    </a>
-                    <button
-                      type="button"
-                      id="update-deck-btn"
-                      class="px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 text-xs font-semibold text-[#5C3D2E] dark:text-[#f5d6b4] transition-colors cursor-pointer"
-                    >
-                      Update Link
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Video Card -->
-                <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 space-y-3">
-                  <div class="flex items-start justify-between">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xl">🎥</span>
-                      <div>
-                        <h4 class="font-bold text-xs sm:text-sm text-[#1A0F09] dark:text-white">Demo / Pitch Video</h4>
-                        <span id="video-status-label" class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 font-medium block">Optional</span>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
-                    2-minute walkthrough or prototype demonstration for judges.
-                  </p>
-                  <div class="flex items-center gap-2 pt-1">
-                    <a
-                      id="view-video-link"
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="hidden px-3 py-1.5 rounded-lg btn-adabah-primary text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      Watch Video ↗
-                    </a>
-                    <button
-                      type="button"
-                      id="update-video-btn"
-                      class="px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 text-xs font-semibold text-[#5C3D2E] dark:text-[#f5d6b4] transition-colors cursor-pointer"
-                    >
-                      Add / Update Video
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-
-              <!-- 3-Week Mentorship Cohort Deliverable Cards -->
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <h4 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white">3-Week Mentorship Deliverables</h4>
-                  <span class="text-[11px] text-[#865237] dark:text-[#dfa04e] font-semibold">Starts 2 Nov 2026</span>
-                </div>
-
-                <div class="space-y-2.5">
-                  <!-- Milestone 1 -->
-                  <div class="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-start gap-3">
-                      <div class="w-7 h-7 rounded-xl bg-[#865237]/10 dark:bg-white/10 flex items-center justify-center font-bold text-xs text-[#865237] dark:text-[#dfa04e] flex-shrink-0">
-                        W1
-                      </div>
-                      <div>
-                        <h5 class="font-bold text-xs sm:text-sm text-[#1A0F09] dark:text-white">Week 1: Customer Discovery & Validation</h5>
-                        <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">Interview findings, buyer personas, and problem-market fit synthesis.</p>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      class="quick-submit-milestone-btn px-3 py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#865237] dark:text-[#dfa04e] whitespace-nowrap self-start sm:self-auto cursor-pointer"
-                      data-milestone="milestone_1"
-                      data-title="Week 1: Customer Discovery & Validation"
-                    >
-                      Submit Week 1 →
-                    </button>
-                  </div>
-
-                  <!-- Milestone 2 -->
-                  <div class="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-start gap-3">
-                      <div class="w-7 h-7 rounded-xl bg-[#865237]/10 dark:bg-white/10 flex items-center justify-center font-bold text-xs text-[#865237] dark:text-[#dfa04e] flex-shrink-0">
-                        W2
-                      </div>
-                      <div>
-                        <h5 class="font-bold text-xs sm:text-sm text-[#1A0F09] dark:text-white">Week 2: Business Model & Unit Economics</h5>
-                        <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">Revenue streams, pricing experiments, CAC/LTV, and go-to-market plan.</p>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      class="quick-submit-milestone-btn px-3 py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#865237] dark:text-[#dfa04e] whitespace-nowrap self-start sm:self-auto cursor-pointer"
-                      data-milestone="milestone_2"
-                      data-title="Week 2: Business Model & Unit Economics"
-                    >
-                      Submit Week 2 →
-                    </button>
-                  </div>
-
-                  <!-- Milestone 3 -->
-                  <div class="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-start gap-3">
-                      <div class="w-7 h-7 rounded-xl bg-[#865237]/10 dark:bg-white/10 flex items-center justify-center font-bold text-xs text-[#865237] dark:text-[#dfa04e] flex-shrink-0">
-                        W3
-                      </div>
-                      <div>
-                        <h5 class="font-bold text-xs sm:text-sm text-[#1A0F09] dark:text-white">Week 3: Final 5-Minute Investor Pitch Deck</h5>
-                        <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">Refined pitch deck for the live jury demo day on 21 November 2026.</p>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      class="quick-submit-milestone-btn px-3 py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#865237] dark:text-[#dfa04e] whitespace-nowrap self-start sm:self-auto cursor-pointer"
-                      data-milestone="milestone_3"
-                      data-title="Week 3: Final Pitch Deck"
-                    >
-                      Submit Week 3 →
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Submission History Log -->
-              <div class="space-y-3 pt-2">
-                <div class="flex items-center justify-between">
-                  <h4 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white">Activity & Submission History</h4>
-                  <span id="submissions-count-badge" class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-mono">0 submissions</span>
-                </div>
-
-                <div id="submissions-list-container" class="space-y-2.5">
-                  <!-- Injected via JavaScript -->
-                </div>
-
-                <!-- Empty Deliverables State -->
-                <div id="submissions-empty-state" class="p-6 rounded-2xl border border-dashed border-[#865237]/30 dark:border-[#f5d6b4]/20 text-center space-y-2">
-                  <span class="text-2xl block">📂</span>
-                  <h5 class="text-xs font-bold text-[#1A0F09] dark:text-white">No Milestone Deliverables Submitted Yet</h5>
-                  <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 max-w-sm mx-auto">
-                    When you submit your weekly progress decks, prototypes, or financial sheets, they will appear here with confirmation timestamps.
-                  </p>
-                  <button
-                    type="button"
-                    class="mt-1 px-3 py-1.5 rounded-lg btn-adabah-primary text-xs font-bold cursor-pointer"
-                    onclick="document.getElementById('open-submit-modal-btn').click()"
-                  >
-                    Submit Deliverable Now
-                  </button>
-                </div>
-              </div>
-
-            </div>
-
+          <div id="submissions-list-container" class="space-y-2">
+            <!-- Injected via JavaScript -->
           </div>
 
+          <div id="submissions-empty-state" class="p-4 rounded-xl border border-dashed border-[#865237]/30 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+            No milestone submissions recorded yet.
+          </div>
         </div>
-
       </section>
 
-    </div>
-  </main>
+      <!-- 4. TEAM MANAGEMENT -->
+      <section id="sec-team" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <h3 class="font-display font-bold text-base sm:text-lg text-[#1A0F09] dark:text-white">
+              Startup Team
+            </h3>
+            <span id="dash-team-count-badge" class="px-2 py-0.5 rounded-full bg-[#865237]/10 dark:bg-white/10 text-[11px] font-bold text-[#865237] dark:text-[#dfa04e]">
+              1 Member
+            </span>
+          </div>
+
+          <button
+            type="button"
+            id="open-add-team-modal-btn"
+            class="px-3.5 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm"
+          >
+            + Add Teammate
+          </button>
+        </div>
+
+        <!-- Lead Founder Card -->
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#dfa04e]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 id="team-lead-name" class="font-bold text-sm text-[#1A0F09] dark:text-white">—</h4>
+              <span id="team-lead-role" class="px-2 py-0.5 rounded bg-[#865237]/10 dark:bg-white/10 text-[10px] font-bold text-[#865237] dark:text-[#dfa04e]">Lead Founder</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1">
+              <span>📧 <span id="team-lead-email" class="font-mono">—</span></span>
+              <span id="team-lead-phone-row">📞 <span id="team-lead-phone" class="font-mono">—</span></span>
+              <span id="team-lead-academic-row">🎓 <span id="team-lead-academic">—</span></span>
+            </div>
+          </div>
+          <span class="text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e] self-start sm:self-center">Primary Applicant</span>
+        </div>
+
+        <!-- Additional Teammates Container -->
+        <div id="teammates-container" class="space-y-2">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <div id="teammates-empty-state" class="p-4 rounded-xl border border-dashed border-[#865237]/30 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+          No additional teammates added. Tap "+ Add Teammate" to invite co-founders.
+        </div>
+      </section>
+
+      <!-- 5. VENTURE PROFILE -->
+      <section id="sec-profile" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4 text-xs">
+        <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
+          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">
+            Venture Information
+          </h3>
+          <span id="dash-founded-year" class="font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px]">—</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Problem Statement</span>
+            <p id="dash-problem" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed">—</p>
+          </div>
+          <div class="space-y-1">
+            <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Proposed Solution</span>
+            <p id="dash-solution" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed">—</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10">
+          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
+            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Traction</span>
+            <span id="dash-traction" class="font-bold text-[#1A0F09] dark:text-white block">—</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
+            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Capital</span>
+            <span id="dash-funding" class="font-bold text-[#1A0F09] dark:text-white block">—</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
 
   <!-- ======================================================== -->
   <!-- MODAL 1: ADD TEAM MEMBER -->
@@ -682,10 +632,7 @@
   <div id="add-team-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-4">
     <div class="relative w-full max-w-lg bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl p-6 text-xs space-y-4">
       <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
-        <div>
-          <span class="text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e]">Team Building</span>
-          <h4 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">Add Startup Teammate</h4>
-        </div>
+        <h4 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">Add Startup Teammate</h4>
         <button id="close-team-modal-btn" class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#1A0F09] dark:hover:text-white font-bold text-sm cursor-pointer">✕</button>
       </div>
 
@@ -697,7 +644,7 @@
           <input
             type="text"
             id="tm-name"
-            placeholder="e.g. Kwame Mensah"
+            placeholder="Full Name"
             class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
             required
           />
@@ -705,12 +652,12 @@
 
         <div>
           <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">
-            Role / Responsibility in Startup <span class="text-red-500">*</span>
+            Role / Responsibility <span class="text-red-500">*</span>
           </label>
           <input
             type="text"
             id="tm-role"
-            placeholder="e.g. CTO & Software Engineer, COO, Product Designer"
+            placeholder="e.g. CTO, Product Lead, Operations"
             class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
             required
           />
@@ -722,7 +669,7 @@
             <input
               type="email"
               id="tm-email"
-              placeholder="kwame@startup.com"
+              placeholder="name@email.com"
               class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
             />
           </div>
@@ -731,7 +678,7 @@
             <input
               type="tel"
               id="tm-phone"
-              placeholder="+233 24 000 0000"
+              placeholder="+233 ..."
               class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
             />
           </div>
@@ -756,7 +703,7 @@
             <input
               type="text"
               id="tm-campus"
-              placeholder="e.g. KNUST, UG Legon, UMaT"
+              placeholder="e.g. KNUST, UMaT, UG"
               class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
             />
           </div>
@@ -775,7 +722,7 @@
             id="save-team-member-btn"
             class="px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-md"
           >
-            Save Team Member
+            Save Teammate
           </button>
         </div>
       </form>
@@ -788,17 +735,14 @@
   <div id="submit-deliverable-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-4">
     <div class="relative w-full max-w-lg bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl p-6 text-xs space-y-4">
       <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
-        <div>
-          <span class="text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e]">Deliverable Upload</span>
-          <h4 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">Submit Challenge Milestone</h4>
-        </div>
+        <h4 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">Submit Milestone Deliverable</h4>
         <button id="close-deliverable-modal-btn" class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#1A0F09] dark:hover:text-white font-bold text-sm cursor-pointer">✕</button>
       </div>
 
       <form id="submit-deliverable-form" class="space-y-3.5">
         <div>
           <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">
-            Milestone Category <span class="text-red-500">*</span>
+            Category <span class="text-red-500">*</span>
           </label>
           <select
             id="del-milestone"
@@ -807,11 +751,11 @@
           >
             <option value="milestone_1">Week 1: Customer Discovery & Validation</option>
             <option value="milestone_2">Week 2: Business Model & Unit Economics</option>
-            <option value="milestone_3">Week 3: Final 5-Min Pitch Deck</option>
-            <option value="pitch_deck">Updated Primary Pitch Deck</option>
-            <option value="video">Product Demo / Video Walkthrough</option>
-            <option value="traction">Traction Proof & Financial Data</option>
-            <option value="custom">Other Milestone Deliverable</option>
+            <option value="milestone_3">Week 3: Final Pitch Deck</option>
+            <option value="pitch_deck">Updated Pitch Deck</option>
+            <option value="video">Product Demo Video</option>
+            <option value="traction">Traction Proof</option>
+            <option value="custom">Other Milestone</option>
           </select>
         </div>
 
@@ -822,7 +766,7 @@
           <input
             type="text"
             id="del-title"
-            placeholder="e.g. Week 1 Customer Validation Survey & Deck"
+            placeholder="e.g. Week 1 Validation Findings Deck"
             class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
             required
           />
@@ -830,26 +774,23 @@
 
         <div>
           <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">
-            Resource Link (Google Drive, Canva, Notion, YouTube, Loom, Figma) <span class="text-red-500">*</span>
+            Resource Link (Google Drive, Canva, Loom, etc.) <span class="text-red-500">*</span>
           </label>
           <input
             type="url"
             id="del-url"
-            placeholder="https://docs.google.com/presentation/... or Canva link"
+            placeholder="https://..."
             class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
             required
           />
-          <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1 block">
-            💡 Ensure your link is set to <strong>"Anyone with the link can view"</strong>.
-          </span>
         </div>
 
         <div>
-          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">Notes / Summary for Judges</label>
+          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">Notes (Optional)</label>
           <textarea
             id="del-notes"
             rows="2"
-            placeholder="Brief context on what was accomplished in this milestone..."
+            placeholder="Brief note for the evaluation committee..."
             class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
           ></textarea>
         </div>
@@ -867,7 +808,7 @@
             id="save-deliverable-btn"
             class="px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-md"
           >
-            Submit Deliverable
+            Submit
           </button>
         </div>
       </form>
@@ -880,16 +821,13 @@
   <div id="edit-profile-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-4">
     <div class="relative w-full max-w-lg bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl p-6 text-xs space-y-4">
       <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
-        <div>
-          <span class="text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e]">Venture Details</span>
-          <h4 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">Edit Startup Profile</h4>
-        </div>
+        <h4 class="font-display font-bold text-[#1A0F09] dark:text-white text-base">Edit Venture Details</h4>
         <button id="close-profile-modal-btn" class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#1A0F09] dark:hover:text-white font-bold text-sm cursor-pointer">✕</button>
       </div>
 
       <form id="edit-profile-form" class="space-y-3.5">
         <div>
-          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">One-line Tagline</label>
+          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">Tagline</label>
           <input
             type="text"
             id="prof-tagline"
@@ -898,17 +836,17 @@
         </div>
 
         <div>
-          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">Website or Landing Page URL</label>
+          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">Website URL</label>
           <input
             type="url"
             id="prof-website"
-            placeholder="https://yourstartup.com"
+            placeholder="https://..."
             class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237]"
           />
         </div>
 
         <div>
-          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">Primary Pitch Deck URL</label>
+          <label class="block font-bold text-[#1A0F09] dark:text-white mb-1">Pitch Deck URL</label>
           <input
             type="url"
             id="prof-deck-url"
@@ -940,7 +878,7 @@
             id="save-profile-btn"
             class="px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-md"
           >
-            Save Changes
+            Save
           </button>
         </div>
       </form>
@@ -949,15 +887,6 @@
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-[90vw]"></div>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-[#865237]/30 dark:border-[#f5d6b4]/10 bg-[#180E08] py-8 text-xs text-[#f5d6b4]/70 text-center mt-12">
-    <div class="max-w-4xl mx-auto px-4 space-y-2">
-      <div class="font-bold text-white">THE ADABAH STARTUP CHALLENGE 2026</div>
-      <p class="text-[11px] text-[#dfa04e]">Build. Pitch. Grow.</p>
-      <div class="text-[10px] text-[#f5d6b4]/60 font-medium">ORGANIZED BY ADABAH • ALL RIGHTS RESERVED</div>
-    </div>
-  </footer>
 
   <!-- Scripts -->
   <script src="/js/app.js"></script>

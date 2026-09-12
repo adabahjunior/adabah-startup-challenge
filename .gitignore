@@ -17,3 +17,6 @@ Thumbs.db
 # IDE & Editor files
 .vscode/
 .idea/
+
+# Scratch directory
+scratch/
