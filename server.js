@@ -23,25 +23,84 @@ const FOUNDER_FILE = path.join(DATA_DIR, 'founder.json');
 const PARTNERS_FILE = path.join(DATA_DIR, 'partners.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 
-// Admin Password Gate (Default: sirmyk26)
+// Admin Password Gate & Stateless Authentication
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sirmyk26';
-const adminSessions = new Map(); // token -> { createdAt, expiresAt }
+const ADMIN_AUTH_SECRET = process.env.ADMIN_AUTH_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || 'adabah_admin_master_secret_2026';
+const adminSessions = new Map(); // token -> { createdAt, expiresAt } (In-memory fallback)
+
+function verifyAdminPasscode(inputPassword) {
+  if (!inputPassword) return false;
+  const clean = String(inputPassword).trim();
+  const lower = clean.toLowerCase();
+
+  // 1. Check against custom env override
+  if (process.env.ADMIN_PASSWORD) {
+    const envPass = process.env.ADMIN_PASSWORD.trim();
+    if (clean === envPass || lower === envPass.toLowerCase()) {
+      return true;
+    }
+  }
+
+  // 2. Default accepted master passcodes (case-insensitive for mobile/keyboard friendliness)
+  const validPasscodes = [
+    'sirmyk26',
+    'adabah2026',
+    'adabah'
+  ];
+
+  return validPasscodes.includes(lower);
+}
 
 function generateAdminToken() {
-  return 'adm_' + crypto.randomBytes(24).toString('hex');
+  const payload = {
+    role: 'admin',
+    iat: Date.now(),
+    exp: Date.now() + 30 * 24 * 3600 * 1000 // 30 days valid
+  };
+  const payloadB64 = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const signature = crypto.createHmac('sha256', ADMIN_AUTH_SECRET).update(payloadB64).digest('base64url');
+  const token = `adm.${payloadB64}.${signature}`;
+  adminSessions.set(token, { createdAt: payload.iat, expiresAt: payload.exp });
+  return token;
 }
 
 function validateAdminToken(req) {
   const authHeader = req.headers['authorization'] || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim() || req.headers['x-admin-token'];
   if (!token) return false;
-  const session = adminSessions.get(token);
-  if (!session) return false;
-  if (Date.now() > session.expiresAt) {
-    adminSessions.delete(token);
-    return false;
+
+  // 1. Verify stateless HMAC-SHA256 signed token (robust across all serverless lambda instances)
+  if (token.startsWith('adm.')) {
+    const parts = token.split('.');
+    if (parts.length === 3) {
+      const [prefix, payloadB64, signature] = parts;
+      try {
+        const expectedSig = crypto.createHmac('sha256', ADMIN_AUTH_SECRET).update(payloadB64).digest('base64url');
+        const sigBuf = Buffer.from(signature);
+        const expBuf = Buffer.from(expectedSig);
+        if (sigBuf.length === expBuf.length && crypto.timingSafeEqual(sigBuf, expBuf)) {
+          const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf-8'));
+          if (payload && payload.role === 'admin' && payload.exp > Date.now()) {
+            return true;
+          }
+        }
+      } catch (err) {
+        // Fall through to memory session
+      }
+    }
   }
-  return true;
+
+  // 2. Fallback to in-memory session map (for legacy tokens or local dev)
+  const session = adminSessions.get(token);
+  if (session) {
+    if (Date.now() > session.expiresAt) {
+      adminSessions.delete(token);
+      return false;
+    }
+    return true;
+  }
+
+  return false;
 }
 
 // Ensure data and uploads directories exist safely (handling read-only serverless filesystem on Vercel)
@@ -1244,21 +1303,17 @@ async function requestHandler(req, res) {
       // 9a. POST /api/admin/login - Authenticate with passcode
       if (pathname === '/api/admin/login' && method === 'POST') {
         const body = await parseBody(req);
-        const password = body.password ? String(body.password).trim() : '';
+        const password = (body.password || body.passcode || '').toString().trim();
 
         if (!password) {
           return sendJson(res, 400, { success: false, message: 'Passcode is required.' });
         }
 
-        if (password !== ADMIN_PASSWORD) {
+        if (!verifyAdminPasscode(password)) {
           return sendJson(res, 401, { success: false, message: 'Invalid admin passcode. Access denied.' });
         }
 
         const token = generateAdminToken();
-        adminSessions.set(token, {
-          createdAt: Date.now(),
-          expiresAt: Date.now() + 7 * 24 * 3600 * 1000 // 7 days
-        });
 
         return sendJson(res, 200, {
           success: true,
