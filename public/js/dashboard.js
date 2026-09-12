@@ -62,13 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Quick ID sample buttons
-    document.querySelectorAll('.quick-id-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        if (id) loadApplication(id);
-      });
-    });
 
     // Switch App / Logout
     if (switchAppBtn) {

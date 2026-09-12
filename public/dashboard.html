@@ -146,7 +146,7 @@
               <input
                 type="text"
                 id="portal-id-input"
-                placeholder="e.g. ADB-2026-1014 or founder@email.com"
+                placeholder="e.g. ADB-2026-XXXX or founder@email.com"
                 class="w-full px-4 py-3.5 rounded-xl bg-[#FAF7F2] dark:bg-black/50 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white placeholder-[#865237]/50 dark:placeholder-[#f5d6b4]/40 text-sm font-mono focus:outline-none focus:border-[#865237] dark:focus:border-[#dfa04e]"
                 required
               />
@@ -160,19 +160,6 @@
               <span>Access Founder Dashboard</span> →
             </button>
           </form>
-
-          <!-- Fast Test Quick Buttons -->
-          <div class="pt-3 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 text-xs">
-            <span class="text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/70 block mb-2">Quick Test Applications:</span>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" class="quick-id-btn px-2.5 py-1 rounded-lg bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/20 dark:border-[#f5d6b4]/20 font-mono text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] hover:border-[#865237] transition-colors" data-id="ADB-2026-1014">
-                Afriklow (ADB-2026-1014)
-              </button>
-              <button type="button" class="quick-id-btn px-2.5 py-1 rounded-lg bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/20 dark:border-[#f5d6b4]/20 font-mono text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] hover:border-[#865237] transition-colors" data-id="ADB-2026-7931">
-                AfriFeed BioTech (ADB-2026-7931)
-              </button>
-            </div>
-          </div>
 
           <div class="pt-2 text-center">
             <span class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">Haven't applied yet?</span>
@@ -211,21 +198,20 @@
               </div>
 
               <h1 id="dash-startup-name" class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white tracking-tight break-words">
-                Startup Name
+                —
               </h1>
 
               <p id="dash-tagline" class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-2xl leading-relaxed">
-                Tagline or mission statement here.
               </p>
 
               <div class="flex flex-wrap items-center gap-4 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 pt-1">
                 <span class="flex items-center gap-1">
                   <span>📍</span>
-                  <strong id="dash-location" class="text-[#1A0F09] dark:text-white">Ghana</strong>
+                  <strong id="dash-location" class="text-[#1A0F09] dark:text-white">—</strong>
                 </span>
                 <span class="flex items-center gap-1">
                   <span>👤 Lead Founder:</span>
-                  <strong id="dash-founder-name" class="text-[#1A0F09] dark:text-white">Founder Name</strong>
+                  <strong id="dash-founder-name" class="text-[#1A0F09] dark:text-white">—</strong>
                 </span>
                 <span id="dash-website-wrapper" class="hidden flex items-center gap-1">
                   <span>🌐</span>
@@ -399,8 +385,8 @@
                 <div class="flex items-start justify-between">
                   <div>
                     <span class="text-[10px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e] block">Lead Founder</span>
-                    <h4 id="team-lead-name" class="font-display font-bold text-base text-[#1A0F09] dark:text-white">Founder Name</h4>
-                    <span id="team-lead-role" class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-medium">Founder & CEO</span>
+                    <h4 id="team-lead-name" class="font-display font-bold text-base text-[#1A0F09] dark:text-white">—</h4>
+                    <span id="team-lead-role" class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-medium">Lead Founder</span>
                   </div>
                   <span class="px-2 py-0.5 rounded bg-black/5 dark:bg-white/10 text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e]">Primary</span>
                 </div>
@@ -408,15 +394,15 @@
                 <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 text-xs space-y-1 text-[#5C3D2E] dark:text-[#f5d6b4]/70">
                   <div class="flex items-center gap-1.5 truncate">
                     <span>📧</span>
-                    <span id="team-lead-email" class="truncate font-mono">email@example.com</span>
+                    <span id="team-lead-email" class="truncate font-mono">—</span>
                   </div>
                   <div id="team-lead-phone-row" class="flex items-center gap-1.5 truncate">
                     <span>📞</span>
-                    <span id="team-lead-phone" class="font-mono">+233 ...</span>
+                    <span id="team-lead-phone" class="font-mono">—</span>
                   </div>
                   <div id="team-lead-academic-row" class="flex items-center gap-1.5 truncate">
                     <span>🎓</span>
-                    <span id="team-lead-academic">Undergraduate</span>
+                    <span id="team-lead-academic">—</span>
                   </div>
                 </div>
               </div>
@@ -454,31 +440,31 @@
             <div class="p-6 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-md space-y-4 text-xs">
               <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3 flex items-center justify-between">
                 <h4 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white">Venture Profile</h4>
-                <span id="dash-founded-year" class="text-[11px] font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70">Founded 2026</span>
+                <span id="dash-founded-year" class="text-[11px] font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70">—</span>
               </div>
 
               <div>
                 <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Problem Statement</span>
                 <p id="dash-problem" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 mt-0.5 line-clamp-4 leading-relaxed">
-                  Problem description...
+                  —
                 </p>
               </div>
 
               <div>
                 <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Proposed Solution</span>
                 <p id="dash-solution" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 mt-0.5 line-clamp-4 leading-relaxed">
-                  Solution description...
+                  —
                 </p>
               </div>
 
               <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10">
                 <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
                   <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Traction</span>
-                  <span id="dash-traction" class="font-bold text-[#1A0F09] dark:text-white truncate block">Validated Idea</span>
+                  <span id="dash-traction" class="font-bold text-[#1A0F09] dark:text-white truncate block">—</span>
                 </div>
                 <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
                   <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Capital</span>
-                  <span id="dash-funding" class="font-bold text-[#1A0F09] dark:text-white truncate block">Bootstrapped</span>
+                  <span id="dash-funding" class="font-bold text-[#1A0F09] dark:text-white truncate block">—</span>
                 </div>
               </div>
             </div>

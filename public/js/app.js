@@ -186,15 +186,6 @@ function initStatusTracker() {
   const resultDiv = document.getElementById('tracker-result');
   const errorDiv = document.getElementById('tracker-error');
 
-  document.querySelectorAll('.sample-id-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      if (input) {
-        input.value = id;
-        lookupApplication(id);
-      }
-    });
-  });
 
   if (form) {
     form.addEventListener('submit', e => {
