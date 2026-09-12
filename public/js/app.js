@@ -315,14 +315,18 @@ function initStatusTracker() {
         </div>
       </div>
 
-      ${app.deckUrl ? `
-        <div class="pt-2 flex items-center justify-between">
+      <div class="pt-3 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 flex flex-wrap items-center justify-between gap-2.5">
+        ${app.deckUrl ? `
           <a href="${escapeHtml(app.deckUrl)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-[#8F4C15] dark:text-[#dfa04e] hover:underline font-bold">
-            <span>View Submitted Pitch Materials</span>
+            <span>View Pitch Deck</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
           </a>
-        </div>
-      ` : ''}
+        ` : '<div></div>'}
+        <a href="/dashboard?id=${encodeURIComponent(app.id)}" class="px-4 py-2 rounded-xl btn-adabah-primary text-xs font-bold inline-flex items-center gap-1.5 shadow-sm">
+          <span>Open Founder Dashboard</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
     `;
   }
 }

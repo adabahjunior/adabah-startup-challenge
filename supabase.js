@@ -47,6 +47,8 @@ function toAppModel(row) {
     deckUrl: row.deck_url,
     videoUrl: row.video_url,
     heardFrom: row.heard_from,
+    team: Array.isArray(row.team) ? row.team : (typeof row.team === 'string' ? JSON.parse(row.team || '[]') : []),
+    deliverables: Array.isArray(row.deliverables) ? row.deliverables : (typeof row.deliverables === 'string' ? JSON.parse(row.deliverables || '[]') : []),
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
@@ -82,6 +84,8 @@ function toDbRow(data) {
     deck_url: data.deckUrl || '',
     video_url: data.videoUrl || '',
     heard_from: data.heardFrom || 'Direct Website',
+    team: data.team || [],
+    deliverables: data.deliverables || [],
     updated_at: new Date().toISOString()
   };
 }
@@ -175,14 +179,22 @@ async function saveApplication(appData) {
   }
 }
 
-// Update application status/score
+// Update application status/score/team/deliverables
 async function updateApplication(id, updates) {
   if (!supabase) return null;
   try {
     const dbUpdates = { updated_at: new Date().toISOString() };
-    if (updates.status) dbUpdates.status = updates.status;
+    if (updates.status !== undefined) dbUpdates.status = updates.status;
     if (updates.score !== undefined) dbUpdates.score = updates.score;
-    if (updates.statusNotes) dbUpdates.status_notes = updates.statusNotes;
+    if (updates.statusNotes !== undefined) dbUpdates.status_notes = updates.statusNotes;
+    if (updates.team !== undefined) dbUpdates.team = updates.team;
+    if (updates.deliverables !== undefined) dbUpdates.deliverables = updates.deliverables;
+    if (updates.teamSize !== undefined) dbUpdates.team_size = Number(updates.teamSize);
+    if (updates.deckUrl !== undefined) dbUpdates.deck_url = updates.deckUrl;
+    if (updates.videoUrl !== undefined) dbUpdates.video_url = updates.videoUrl;
+    if (updates.tagline !== undefined) dbUpdates.tagline = updates.tagline;
+    if (updates.website !== undefined) dbUpdates.website = updates.website;
+    if (updates.primaryGoal !== undefined) dbUpdates.primary_goal = updates.primaryGoal;
 
     const { data, error } = await supabase
       .from('applications')

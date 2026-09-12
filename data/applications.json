@@ -6,11 +6,11 @@
     "statusNotes": "Application submitted successfully. Under preliminary compliance and eligibility screening.",
     "score": null,
     "startupName": "Afriklow",
-    "tagline": "kwjnkoqpwoijceo",
+    "tagline": "Modern payment rails built for African student entrepreneurs",
     "foundedYear": "2026",
     "stage": "idea",
     "track": "fintech",
-    "website": "",
+    "website": "https://afriklow.com",
     "country": "Ghana",
     "city": "Tarkwa",
     "founderName": "Michael Akrofi Junior Adabah",
@@ -24,9 +24,43 @@
     "solution": "iqwkxwqicniqwknxoqwxoknwwwwxwsoxl'w;icjf",
     "traction": "Sales",
     "fundingRaised": "Bootstrapped",
-    "deckUrl": "https://www.h.com",
+    "deckUrl": "https://docs.google.com/presentation/d/afriklow-week1-deck",
     "videoUrl": "",
-    "heardFrom": "Direct Website"
+    "heardFrom": "Direct Website",
+    "team": [
+      {
+        "id": "TM-1789116876611-709",
+        "name": "Kofi Mensah",
+        "role": "CTO & Tech Lead",
+        "email": "kofi@afriklow.com",
+        "phone": "+233 24 111 2222",
+        "campus": "UMaT Tarkwa",
+        "addedAt": "2026-09-11T08:54:36.612Z",
+        "academicLevel": "Undergraduate (Year 3 - 4)"
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "DEL-1789199541047-566",
+        "title": "Week 2: Business Model Canvas & Financial Estimates",
+        "milestone": "milestone_2",
+        "deliverableType": "link",
+        "url": "https://docs.google.com/spreadsheets/d/afriklow-model-2026",
+        "notes": "Initial pricing strategy and projected transaction unit margins",
+        "submittedAt": "2026-09-12T07:52:21.047Z",
+        "status": "submitted"
+      },
+      {
+        "id": "DEL-1789117117066-176",
+        "url": "https://docs.google.com/presentation/d/afriklow-week1-deck",
+        "notes": "Interviewed 25 student users in Tarkwa and Kumasi",
+        "title": "Week 1: Customer Discovery & Validation Deck",
+        "status": "submitted",
+        "milestone": "milestone_1",
+        "submittedAt": "2026-09-11T08:58:37.066Z",
+        "deliverableType": "deck"
+      }
+    ]
   },
   {
     "id": "ADB-2026-7931",

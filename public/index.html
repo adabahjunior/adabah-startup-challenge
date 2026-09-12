@@ -90,6 +90,7 @@
         <a href="#criteria" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Judging</a>
         <a href="#prize" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Prize</a>
         <a href="#faq" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">FAQ</a>
+        <a href="/dashboard" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Dashboard</a>
         <a href="#tracker" class="text-[#865237] dark:text-[#dfa04e] hover:underline flex items-center gap-1">
           <svg class="w-3.5 h-3.5 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           Status
@@ -1115,14 +1116,17 @@
         </div>
 
         <div class="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+          <a href="/dashboard" id="modal-go-to-dashboard-btn" class="px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs inline-flex items-center gap-1.5 shadow-md cursor-pointer">
+            🚀 Open Founder Dashboard →
+          </a>
           <button type="button" id="copy-id-btn" class="px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-[#1A0F09] dark:text-white text-xs font-bold transition-colors cursor-pointer">
             📋 Copy ID
           </button>
-          <button type="button" id="view-in-tracker-btn" class="px-5 py-2.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer">
-            Track Status →
+          <button type="button" id="view-in-tracker-btn" class="px-4 py-2.5 rounded-xl bg-white dark:bg-[#1a0f09] border border-[#865237]/30 dark:border-[#f5d6b4]/30 hover:border-[#865237] text-xs font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer">
+            Track Status
           </button>
-          <button type="button" id="print-receipt-btn" class="px-4 py-2.5 rounded-xl bg-white dark:bg-[#1a0f09] border border-[#865237]/30 dark:border-[#f5d6b4]/30 text-xs text-[#1A0F09] dark:text-[#f5d6b4] hover:text-[#865237] cursor-pointer">
-            🖨️ Print Receipt
+          <button type="button" id="print-receipt-btn" class="px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/10 text-xs text-[#5C3D2E] dark:text-[#f5d6b4] hover:text-[#1A0F09] cursor-pointer">
+            🖨️ Receipt
           </button>
           <button type="button" id="close-success-btn" class="px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/10 text-[#5C3D2E] dark:text-[#f5d6b4] hover:text-[#1A0F09] dark:hover:text-white font-semibold text-xs cursor-pointer">
             Close

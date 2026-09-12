@@ -517,6 +517,20 @@ document.addEventListener('DOMContentLoaded', () => {
           if (idEl) idEl.innerText = result.data.id;
           if (successView) successView.classList.remove('hidden');
 
+          // Save founder dashboard session
+          try {
+            localStorage.setItem('adabah_founder_app_id', result.data.id);
+          } catch(e) {}
+
+          const dashBtn = document.getElementById('go-to-dashboard-btn');
+          if (dashBtn) {
+            dashBtn.href = `/dashboard?id=${encodeURIComponent(result.data.id)}`;
+          }
+          const modalDashBtn = document.getElementById('modal-go-to-dashboard-btn');
+          if (modalDashBtn) {
+            modalDashBtn.href = `/dashboard?id=${encodeURIComponent(result.data.id)}`;
+          }
+
           window.lastSubmittedApp = result.data;
           showToast('Application registered successfully!', 'success');
         } else {

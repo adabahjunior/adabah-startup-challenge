@@ -94,6 +94,9 @@
           <svg class="w-3.5 h-3.5 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
           Overview
         </a>
+        <a href="/dashboard" class="hidden xs:inline-flex items-center gap-1 text-[#5C3D2E] dark:text-[#f5d6b4]/80 hover:text-[#1A0F09] dark:hover:text-white transition-colors font-semibold">
+          Dashboard
+        </a>
         <a href="/#tracker" class="px-3 sm:px-4 py-2 rounded-xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#f5d6b4]/20 text-[#865237] dark:text-[#dfa04e] font-bold hover:border-[#865237] dark:hover:border-[#dfa04e] transition-colors shadow-sm">
           Track ID
         </a>
@@ -577,14 +580,17 @@
           </div>
 
           <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
-            <button type="button" id="view-in-tracker-btn" class="px-6 py-3.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer">
-              Check Status in Tracker →
+            <a href="/dashboard" id="go-to-dashboard-btn" class="px-6 py-3.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer inline-flex items-center gap-2 shadow-md">
+              🚀 Enter Founder Dashboard →
+            </a>
+            <button type="button" id="view-in-tracker-btn" class="px-5 py-3.5 rounded-xl bg-white dark:bg-[#1a0f09] border border-[#865237]/30 dark:border-[#f5d6b4]/30 hover:border-[#865237] dark:hover:border-[#dfa04e] text-[#1A0F09] dark:text-white font-bold text-xs transition-colors cursor-pointer">
+              Quick Tracker View
             </button>
-            <button type="button" id="print-receipt-btn" class="px-5 py-3.5 rounded-xl bg-white dark:bg-[#1a0f09] border border-[#865237]/30 dark:border-[#f5d6b4]/30 hover:border-[#865237] dark:hover:border-[#dfa04e] text-[#1A0F09] dark:text-white font-bold text-xs transition-colors cursor-pointer">
-              🖨️ Print Submission Receipt
+            <button type="button" id="print-receipt-btn" class="px-4 py-3.5 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold text-xs transition-colors cursor-pointer">
+              🖨️ Receipt
             </button>
-            <button type="button" id="close-success-btn" class="px-5 py-3.5 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold text-xs transition-colors cursor-pointer">
-              Back to Homepage
+            <button type="button" id="close-success-btn" class="px-4 py-3.5 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold text-xs transition-colors cursor-pointer">
+              Back to Home
             </button>
           </div>
         </div>

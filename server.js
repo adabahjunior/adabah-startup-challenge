@@ -216,8 +216,9 @@ const server = http.createServer(async (req, res) => {
       }
 
       // 3. GET /api/applications/:id - Check application status & details
-      if (pathname.startsWith('/api/applications/') && method === 'GET' && !pathname.includes('/status')) {
-        const id = pathname.replace('/api/applications/', '').trim();
+      const singleAppMatch = pathname.match(/^\/api\/applications\/([^\/]+)$/);
+      if (singleAppMatch && method === 'GET') {
+        const id = singleAppMatch[1].trim();
 
         // Query Supabase
         let app = await supabaseDb.getApplicationById(id);
@@ -260,7 +261,7 @@ const server = http.createServer(async (req, res) => {
         if (existing) {
           return sendJson(res, 409, {
             success: false,
-            message: `An application with founder email "${body.founderEmail}" already exists with ID: ${existing.id}. Use the Status Tracker to view your submission.`,
+            message: `An application with founder email "${body.founderEmail}" already exists with ID: ${existing.id}. Use the Status Tracker or Founder Dashboard to view your submission.`,
             existingId: existing.id
           });
         }
@@ -268,6 +269,33 @@ const server = http.createServer(async (req, res) => {
         // Generate unique Application Reference ID
         const randomNum = Math.floor(1000 + Math.random() * 9000);
         const newId = `ADB-2026-${randomNum}`;
+
+        // Initial deliverables if links provided
+        const initialDeliverables = [];
+        if (body.deckUrl && body.deckUrl.trim()) {
+          initialDeliverables.push({
+            id: 'DEL-' + Date.now() + '-deck',
+            title: 'Initial Pitch Deck',
+            milestone: 'pitch_deck',
+            deliverableType: 'deck',
+            url: body.deckUrl.trim(),
+            notes: 'Submitted during application registration',
+            submittedAt: new Date().toISOString(),
+            status: 'submitted'
+          });
+        }
+        if (body.videoUrl && body.videoUrl.trim()) {
+          initialDeliverables.push({
+            id: 'DEL-' + Date.now() + '-video',
+            title: 'Initial Demo / Pitch Video',
+            milestone: 'video',
+            deliverableType: 'video',
+            url: body.videoUrl.trim(),
+            notes: 'Submitted during application registration',
+            submittedAt: new Date().toISOString(),
+            status: 'submitted'
+          });
+        }
 
         const newApplication = {
           id: newId,
@@ -296,7 +324,9 @@ const server = http.createServer(async (req, res) => {
           fundingRaised: body.fundingRaised ? body.fundingRaised.trim() : 'Bootstrapped',
           deckUrl: body.deckUrl ? body.deckUrl.trim() : '',
           videoUrl: body.videoUrl ? body.videoUrl.trim() : '',
-          heardFrom: body.heardFrom ? body.heardFrom.trim() : 'Direct Website'
+          heardFrom: body.heardFrom ? body.heardFrom.trim() : 'Direct Website',
+          team: [],
+          deliverables: initialDeliverables
         };
 
         // Save to Supabase
@@ -340,6 +370,215 @@ const server = http.createServer(async (req, res) => {
           success: true,
           message: 'Status updated successfully in Supabase database',
           data: updatedApp || (appIndex !== -1 ? apps[appIndex] : null)
+        });
+      }
+
+      // 6. POST /api/applications/:id/team - Add team member
+      const teamPostMatch = pathname.match(/^\/api\/applications\/([^\/]+)\/team$/);
+      if (teamPostMatch && method === 'POST') {
+        const id = teamPostMatch[1].trim();
+        const body = await parseBody(req);
+
+        if (!body.name || !body.name.trim()) {
+          return sendJson(res, 400, { success: false, message: 'Team member name is required.' });
+        }
+
+        let app = await supabaseDb.getApplicationById(id);
+        const localApps = readJsonFile(APPLICATIONS_FILE, []);
+        const localIdx = localApps.findIndex(a =>
+          a.id.toLowerCase() === id.toLowerCase() ||
+          (a.founderEmail && a.founderEmail.toLowerCase() === id.toLowerCase())
+        );
+
+        if (!app && localIdx !== -1) {
+          app = localApps[localIdx];
+        }
+
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Application not found.' });
+        }
+
+        const currentTeam = Array.isArray(app.team) ? [...app.team] : [];
+        const newMember = {
+          id: 'TM-' + Date.now() + '-' + Math.floor(100 + Math.random() * 900),
+          name: body.name.trim(),
+          role: body.role ? body.role.trim() : 'Co-Founder / Teammate',
+          email: body.email ? body.email.trim() : '',
+          phone: body.phone ? body.phone.trim() : '',
+          academicLevel: body.academicLevel || '',
+          campus: body.campus ? body.campus.trim() : '',
+          addedAt: new Date().toISOString()
+        };
+        currentTeam.push(newMember);
+        const newTeamSize = currentTeam.length + 1; // Lead founder + members
+
+        const updatedApp = await supabaseDb.updateApplication(app.id, {
+          team: currentTeam,
+          teamSize: newTeamSize
+        });
+
+        if (localIdx !== -1) {
+          localApps[localIdx].team = currentTeam;
+          localApps[localIdx].teamSize = newTeamSize;
+          writeJsonFile(APPLICATIONS_FILE, localApps);
+        }
+
+        return sendJson(res, 201, {
+          success: true,
+          message: `${newMember.name} has been added to your startup team!`,
+          data: updatedApp || (localIdx !== -1 ? localApps[localIdx] : { ...app, team: currentTeam, teamSize: newTeamSize }),
+          member: newMember
+        });
+      }
+
+      // 7. DELETE /api/applications/:id/team/:memberId - Remove team member
+      const teamDeleteMatch = pathname.match(/^\/api\/applications\/([^\/]+)\/team\/([^\/]+)$/);
+      if (teamDeleteMatch && method === 'DELETE') {
+        const id = teamDeleteMatch[1].trim();
+        const memberId = teamDeleteMatch[2].trim();
+
+        let app = await supabaseDb.getApplicationById(id);
+        const localApps = readJsonFile(APPLICATIONS_FILE, []);
+        const localIdx = localApps.findIndex(a =>
+          a.id.toLowerCase() === id.toLowerCase() ||
+          (a.founderEmail && a.founderEmail.toLowerCase() === id.toLowerCase())
+        );
+
+        if (!app && localIdx !== -1) {
+          app = localApps[localIdx];
+        }
+
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Application not found.' });
+        }
+
+        const currentTeam = Array.isArray(app.team) ? [...app.team] : [];
+        const updatedTeam = currentTeam.filter(m => m.id !== memberId);
+        const newTeamSize = updatedTeam.length + 1;
+
+        const updatedApp = await supabaseDb.updateApplication(app.id, {
+          team: updatedTeam,
+          teamSize: newTeamSize
+        });
+
+        if (localIdx !== -1) {
+          localApps[localIdx].team = updatedTeam;
+          localApps[localIdx].teamSize = newTeamSize;
+          writeJsonFile(APPLICATIONS_FILE, localApps);
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          message: 'Team member removed.',
+          data: updatedApp || (localIdx !== -1 ? localApps[localIdx] : { ...app, team: updatedTeam, teamSize: newTeamSize })
+        });
+      }
+
+      // 8. POST /api/applications/:id/deliverables - Submit deliverable/deck/video/milestone
+      const deliverableMatch = pathname.match(/^\/api\/applications\/([^\/]+)\/deliverables$/);
+      if (deliverableMatch && method === 'POST') {
+        const id = deliverableMatch[1].trim();
+        const body = await parseBody(req);
+
+        if (!body.title || !body.title.trim()) {
+          return sendJson(res, 400, { success: false, message: 'Deliverable title is required.' });
+        }
+        if (!body.url || !body.url.trim()) {
+          return sendJson(res, 400, { success: false, message: 'Deliverable link or file URL is required.' });
+        }
+
+        let app = await supabaseDb.getApplicationById(id);
+        const localApps = readJsonFile(APPLICATIONS_FILE, []);
+        const localIdx = localApps.findIndex(a =>
+          a.id.toLowerCase() === id.toLowerCase() ||
+          (a.founderEmail && a.founderEmail.toLowerCase() === id.toLowerCase())
+        );
+
+        if (!app && localIdx !== -1) {
+          app = localApps[localIdx];
+        }
+
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Application not found.' });
+        }
+
+        const currentDeliverables = Array.isArray(app.deliverables) ? [...app.deliverables] : [];
+        const newDeliverable = {
+          id: 'DEL-' + Date.now() + '-' + Math.floor(100 + Math.random() * 900),
+          title: body.title.trim(),
+          milestone: body.milestone || 'general',
+          deliverableType: body.deliverableType || 'link',
+          url: body.url.trim(),
+          notes: body.notes ? body.notes.trim() : '',
+          submittedAt: new Date().toISOString(),
+          status: 'submitted'
+        };
+        currentDeliverables.unshift(newDeliverable);
+
+        const updates = { deliverables: currentDeliverables };
+        if (body.milestone === 'pitch_deck' || body.deliverableType === 'deck') {
+          updates.deckUrl = body.url.trim();
+        }
+        if (body.milestone === 'video' || body.deliverableType === 'video') {
+          updates.videoUrl = body.url.trim();
+        }
+
+        const updatedApp = await supabaseDb.updateApplication(app.id, updates);
+
+        if (localIdx !== -1) {
+          localApps[localIdx].deliverables = currentDeliverables;
+          if (updates.deckUrl) localApps[localIdx].deckUrl = updates.deckUrl;
+          if (updates.videoUrl) localApps[localIdx].videoUrl = updates.videoUrl;
+          writeJsonFile(APPLICATIONS_FILE, localApps);
+        }
+
+        return sendJson(res, 201, {
+          success: true,
+          message: `Submission "${newDeliverable.title}" received successfully!`,
+          data: updatedApp || (localIdx !== -1 ? localApps[localIdx] : { ...app, ...updates }),
+          deliverable: newDeliverable
+        });
+      }
+
+      // 9. PATCH /api/applications/:id/profile - Update startup details & pitch links
+      const profileMatch = pathname.match(/^\/api\/applications\/([^\/]+)\/profile$/);
+      if (profileMatch && method === 'PATCH') {
+        const id = profileMatch[1].trim();
+        const body = await parseBody(req);
+
+        let app = await supabaseDb.getApplicationById(id);
+        const localApps = readJsonFile(APPLICATIONS_FILE, []);
+        const localIdx = localApps.findIndex(a =>
+          a.id.toLowerCase() === id.toLowerCase() ||
+          (a.founderEmail && a.founderEmail.toLowerCase() === id.toLowerCase())
+        );
+
+        if (!app && localIdx !== -1) {
+          app = localApps[localIdx];
+        }
+
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Application not found.' });
+        }
+
+        const updates = {};
+        if (body.tagline !== undefined) updates.tagline = body.tagline.trim();
+        if (body.website !== undefined) updates.website = body.website.trim();
+        if (body.deckUrl !== undefined) updates.deckUrl = body.deckUrl.trim();
+        if (body.videoUrl !== undefined) updates.videoUrl = body.videoUrl.trim();
+        if (body.primaryGoal !== undefined) updates.primaryGoal = body.primaryGoal.trim();
+
+        const updatedApp = await supabaseDb.updateApplication(app.id, updates);
+
+        if (localIdx !== -1) {
+          Object.assign(localApps[localIdx], updates);
+          writeJsonFile(APPLICATIONS_FILE, localApps);
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          message: 'Startup profile updated successfully.',
+          data: updatedApp || (localIdx !== -1 ? localApps[localIdx] : { ...app, ...updates })
         });
       }
 
