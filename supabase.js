@@ -3,7 +3,9 @@ require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://shvnajqmpwnppnvvienx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 
+  process.env.SUPABASE_ANON_KEY || 
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodm5hanFtcHducHBudnZpZW54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNTMzMjIsImV4cCI6MjEwNDcyOTMyMn0.f65SueQ2n387QaPLw2yr3M1o7eukp-e3JReR_szJp68';
 
 let supabase = null;
 

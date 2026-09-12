@@ -7,10 +7,12 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const crypto = require('crypto');
+const os = require('os');
 const supabaseDb = require('./supabase.js');
 const bmsService = require('./bms.js');
 
 const PORT = process.env.PORT || 3000;
+const IS_VERCEL = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const DATA_DIR = path.join(__dirname, 'data');
 const APPLICATIONS_FILE = path.join(DATA_DIR, 'applications.json');
@@ -39,13 +41,25 @@ function validateAdminToken(req) {
   return true;
 }
 
-// Ensure data and uploads directories exist
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+// Ensure data and uploads directories exist safely (handling read-only serverless filesystem on Vercel)
+const UPLOADS_DIR = IS_VERCEL
+  ? path.join(os.tmpdir(), 'adabah_uploads')
+  : path.join(PUBLIC_DIR, 'uploads');
+
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Read-only filesystem on Vercel/serverless environments; continue safely
 }
-const UPLOADS_DIR = path.join(PUBLIC_DIR, 'uploads');
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+try {
+  if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Read-only filesystem on Vercel/serverless environments; continue safely
 }
 
 // MIME types for static assets
@@ -66,41 +80,76 @@ const MIME_TYPES = {
   '.webp': 'image/webp'
 };
 
-// Helper: Read JSON file safely
+// Helper: Read JSON file safely (supports serverless /tmp fallback)
 function readJsonFile(filePath, fallback = []) {
   try {
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(fallback, null, 2));
-      return fallback;
+    const filename = path.basename(filePath);
+    const tmpPath = path.join(os.tmpdir(), 'adabah_data', filename);
+    if (fs.existsSync(tmpPath)) {
+      const data = fs.readFileSync(tmpPath, 'utf-8');
+      return JSON.parse(data);
     }
-    const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data);
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(data);
+    }
+    return fallback;
   } catch (err) {
     console.error(`Error reading ${filePath}:`, err.message);
     return fallback;
   }
 }
 
-// Helper: Write JSON file safely
+// Helper: Write JSON file safely (supports serverless /tmp fallback)
 function writeJsonFile(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
     return true;
   } catch (err) {
-    console.error(`Error writing ${filePath}:`, err.message);
-    return false;
+    // If primary file is read-only (Vercel Serverless), persist in writable /tmp
+    try {
+      const filename = path.basename(filePath);
+      const tmpDir = path.join(os.tmpdir(), 'adabah_data');
+      if (!fs.existsSync(tmpDir)) {
+        fs.mkdirSync(tmpDir, { recursive: true });
+      }
+      const tmpPath = path.join(tmpDir, filename);
+      fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), 'utf-8');
+      return true;
+    } catch (tmpErr) {
+      console.error(`Error writing backup to tmp:`, tmpErr.message);
+      return false;
+    }
   }
 }
 
-// Helper: Parse request body
+// Helper: Parse request body (compatible with both Node.js streams and Vercel pre-parsed body)
 function parseBody(req) {
   return new Promise((resolve, reject) => {
+    // If body was already parsed by Vercel serverless runtime
+    if (req.body !== undefined && req.body !== null) {
+      if (typeof req.body === 'object') {
+        return resolve(req.body);
+      }
+      if (typeof req.body === 'string') {
+        try {
+          return resolve(JSON.parse(req.body));
+        } catch (e) {
+          return resolve({});
+        }
+      }
+    }
+
     let body = '';
     req.on('data', chunk => {
       body += chunk;
       // Protect against gigantic payloads (25MB limit for image uploads)
       if (body.length > 2.5e7) {
-        req.connection.destroy();
+        if (req.connection && req.connection.destroy) {
+          req.connection.destroy();
+        } else if (req.socket && req.socket.destroy) {
+          req.socket.destroy();
+        }
         reject(new Error('Payload too large'));
       }
     });
@@ -183,8 +232,8 @@ async function findApplicationByIdentifier(identifier) {
   return app || null;
 }
 
-// Server implementation
-const server = http.createServer(async (req, res) => {
+// Main Request Handler (Compatible with local HTTP server and Vercel Serverless Functions)
+async function requestHandler(req, res) {
   // CORS Preflight
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
@@ -196,7 +245,16 @@ const server = http.createServer(async (req, res) => {
   }
 
   const parsedUrl = url.parse(req.url, true);
-  const pathname = parsedUrl.pathname;
+  let pathname = parsedUrl.pathname || '/';
+
+  // Support Vercel serverless rewrites where req.url was mapped to /api/index.js
+  if (pathname === '/api/index.js' || pathname === '/api' || pathname === '/api/') {
+    const matched = req.headers['x-matched-path'] || req.headers['x-now-route-matches'];
+    if (matched && matched.startsWith('/api')) {
+      pathname = url.parse(matched).pathname;
+    }
+  }
+
   const method = req.method;
 
   // API Routes
@@ -1399,8 +1457,17 @@ const server = http.createServer(async (req, res) => {
   let relativePath = parsedUrl.pathname === '/' ? 'index.html' : parsedUrl.pathname.slice(1);
   let filePath = path.normalize(path.join(PUBLIC_DIR, relativePath));
 
-  // Security check: ensure path is within PUBLIC_DIR
-  if (!filePath.startsWith(PUBLIC_DIR)) {
+  // Handle uploaded images from UPLOADS_DIR (which may reside in /tmp on Vercel)
+  if (parsedUrl.pathname.startsWith('/uploads/')) {
+    const uploadFilename = path.basename(parsedUrl.pathname);
+    const tmpUploadPath = path.join(UPLOADS_DIR, uploadFilename);
+    if (fs.existsSync(tmpUploadPath)) {
+      filePath = tmpUploadPath;
+    }
+  }
+
+  // Security check: ensure path is within PUBLIC_DIR or UPLOADS_DIR
+  if (!filePath.startsWith(PUBLIC_DIR) && !filePath.startsWith(UPLOADS_DIR)) {
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     return res.end('Access Denied');
   }
@@ -1450,13 +1517,26 @@ const server = http.createServer(async (req, res) => {
       res.end(data);
     });
   });
-});
+}
 
-server.listen(PORT, () => {
-  console.log(`=======================================================`);
-  console.log(`🚀 The ADABAH STARTUP CHALLENGE Server is running!`);
-  console.log(`🌐 Local URL: http://localhost:${PORT}`);
-  console.log(`⚡ Connected to Supabase: https://shvnajqmpwnppnvvienx.supabase.co`);
-  console.log(`📁 Static files: ${PUBLIC_DIR}`);
-  console.log(`=======================================================`);
-});
+// Server initialization
+const server = http.createServer(requestHandler);
+
+// Only listen on port in local development (not inside Vercel serverless lambda)
+if (require.main === module && !IS_VERCEL) {
+  server.listen(PORT, () => {
+    console.log(`=======================================================`);
+    console.log(`🚀 The ADABAH STARTUP CHALLENGE Server is running!`);
+    console.log(`🌐 Local URL: http://localhost:${PORT}`);
+    console.log(`⚡ Connected to Supabase: https://shvnajqmpwnppnvvienx.supabase.co`);
+    console.log(`📁 Static files: ${PUBLIC_DIR}`);
+    console.log(`=======================================================`);
+  });
+}
+
+// Export for Vercel Serverless Function & module consumers
+module.exports = (req, res) => {
+  return requestHandler(req, res);
+};
+module.exports.server = server;
+module.exports.requestHandler = requestHandler;
