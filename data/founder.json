@@ -3,15 +3,15 @@
   "name": "Michael Akrofi Junior Adabah",
   "title": "Founder & Lead Convener, The ADABAH Startup Challenge",
   "tagline": "Championing Student Innovation, Youth Entrepreneurship & Grassroots Technology Across Africa",
-  "photo": "",
+  "photo": "https://shvnajqmpwnppnvvienx.supabase.co/storage/v1/object/public/adabah-media/1789226631924_a6abadb4_founder_portrait_1789226631915.jpg",
   "bio": "Michael Akrofi Junior Adabah is a Ghanaian entrepreneur, venture builder, and ecosystem advocate passionate about unlocking the immense economic potential of university students across West Africa.\n\nHaving witnessed firsthand the ingenuity of student innovators who often lack the early seed funding, hands-on mentorship, and institutional credibility required to take their ideas to market, Michael initiated **The ADABAH Startup Challenge**.\n\nHis mission is rooted in a fundamental conviction: universities must not simply be factories for traditional corporate employment, but living laboratories where high-velocity tech products, sustainable agricultural solutions, and decentralized healthcare innovations are tested, funded, and launched into scalable commercial enterprises.",
   "vision": "To build Ghana's most catalytic university-to-venture pipeline, where every student with a bold idea and the courage to execute receives non-dilutive equity-free capital, elite mentorship, and a national stage to showcase their work.",
   "message": "\"If you are a student builder today, you have an unprecedented advantage: the technology is cheaper, distribution is instant, and your campus is the richest micro-market you will ever have. Don't wait for graduation to start building. Take your ideas seriously, find committed co-founders, and let us back you with the resources and belief you deserve.\"",
   "socials": {
-    "email": "contact@adabah.com",
-    "twitter": "https://x.com/adabahjunior",
     "linkedin": "https://linkedin.com/in/adabahjunior",
-    "instagram": "https://instagram.com/adabahjunior"
+    "twitter": "https://x.com/adabahjunior",
+    "instagram": "https://instagram.com/adabahjunior",
+    "email": "contact@adabah.com"
   },
   "highlights": [
     {
@@ -31,5 +31,5 @@
       "metric": "1-on-1"
     }
   ],
-  "updatedAt": "2026-09-12T15:19:49.544Z"
+  "updatedAt": "2026-09-12T15:23:58.076Z"
 }
