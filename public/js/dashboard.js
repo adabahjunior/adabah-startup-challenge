@@ -8,12 +8,27 @@ function startDashboardApp() {
   const mainView = document.getElementById('dashboard-main-view');
   const loginForm = document.getElementById('dashboard-login-form');
   const portalInput = document.getElementById('portal-id-input');
+  const portalLoginBtn = document.getElementById('portal-login-btn');
   const headerAppBadge = document.getElementById('header-app-badge');
   const headerAppId = document.getElementById('header-app-id');
   const switchAppBtn = document.getElementById('switch-app-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const shareBtn = document.getElementById('share-dashboard-btn');
   const editProfileBtn = document.getElementById('edit-profile-btn');
+
+  // OTP Authentication DOM Elements
+  const stepIdentifier = document.getElementById('auth-step-identifier');
+  const stepOtp = document.getElementById('auth-step-otp');
+  const otpForm = document.getElementById('dashboard-otp-form');
+  const otpMaskedPhone = document.getElementById('otp-masked-phone');
+  const otpBoxes = document.querySelectorAll('.otp-box');
+  const otpHiddenInput = document.getElementById('portal-otp-input');
+  const verifyOtpBtn = document.getElementById('portal-verify-otp-btn');
+  const resendOtpBtn = document.getElementById('portal-resend-otp-btn');
+  const backToIdBtn = document.getElementById('portal-back-to-id-btn');
+
+  let currentAuthIdentifier = '';
+  let resendInterval = null;
 
   // Modals
   const addTeamModal = document.getElementById('add-team-modal');
@@ -35,25 +50,44 @@ function startDashboardApp() {
 
   async function init() {
     setupEventListeners();
+    setupOtpControls();
 
-    // Check URL query param first: ?id=ADB-2026-XXXX or ?app=...
     const urlParams = new URLSearchParams(window.location.search);
     const idFromUrl = urlParams.get('id') || urlParams.get('app');
-
-    // Check LocalStorage fallback
-    const savedId = localStorage.getItem('adabah_founder_app_id');
-
-    // Check if user explicitly requested sign-out / auth screen (?auth=1)
     const isExplicitAuth = urlParams.get('auth') === '1';
 
-    // Default to 'ADB-2026-1014' if no ID is specified, guaranteeing instant access across all pages
-    const targetId = isExplicitAuth ? (idFromUrl || savedId) : (idFromUrl || savedId || 'ADB-2026-1014');
-
-    if (targetId) {
-      await loadApplication(targetId);
-    } else {
-      showAuthView();
+    if (idFromUrl && portalInput) {
+      portalInput.value = idFromUrl;
     }
+
+    if (isExplicitAuth) {
+      showAuthView();
+      return;
+    }
+
+    // Check for existing valid session token
+    const sessionToken = localStorage.getItem('adabah_founder_session_token');
+
+    if (sessionToken) {
+      try {
+        const res = await fetch(`/api/auth/session?token=${encodeURIComponent(sessionToken)}`);
+        const data = await res.json();
+        if (res.ok && data.success && data.data) {
+          currentApp = data.data;
+          const initialPage = getRequestedPage();
+          renderDashboard(currentApp, initialPage);
+          return;
+        } else {
+          // Token expired or invalid
+          localStorage.removeItem('adabah_founder_session_token');
+        }
+      } catch (err) {
+        console.warn('Session verification error, falling back to login:', err);
+      }
+    }
+
+    // If no active verified session exists, show authentication view
+    showAuthView();
   }
 
   function setupEventListeners() {
@@ -87,23 +121,33 @@ function startDashboardApp() {
     // Sidebar Navigation Links
     setupSidebarNavigation();
 
-    // Portal Login Form
+    // Portal Login Form (Step 1: Request SMS OTP)
     if (loginForm) {
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const id = portalInput.value.trim();
         if (!id) return;
-        await loadApplication(id);
+        await handleSendOtp(id);
       });
     }
-
 
     // Switch App / Logout
     if (switchAppBtn) {
       switchAppBtn.addEventListener('click', showAuthView);
     }
     if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
+      logoutBtn.addEventListener('click', async () => {
+        const token = localStorage.getItem('adabah_founder_session_token');
+        if (token) {
+          try {
+            await fetch('/api/auth/logout', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token })
+            });
+          } catch (_) {}
+        }
+        localStorage.removeItem('adabah_founder_session_token');
         localStorage.removeItem('adabah_founder_app_id');
         window.history.replaceState(null, '', '/dashboard?auth=1');
         showAuthView();
@@ -392,10 +436,257 @@ function startDashboardApp() {
     if (authView) authView.classList.remove('hidden');
     if (mainView) mainView.classList.add('hidden');
     if (headerAppBadge) headerAppBadge.classList.add('hidden');
+
+    // Reset OTP screens to Step 1
+    if (stepIdentifier) stepIdentifier.classList.remove('hidden');
+    if (stepOtp) stepOtp.classList.add('hidden');
+    clearOtpInputs();
+    stopResendCountdown();
+
     if (portalInput) portalInput.focus();
   }
 
-  // Load Application from Server
+  // Setup OTP interaction handlers (auto-advance, backspace, paste)
+  function setupOtpControls() {
+    if (!otpBoxes || otpBoxes.length === 0) return;
+
+    otpBoxes.forEach((box, index) => {
+      box.addEventListener('input', () => {
+        const val = box.value.replace(/\D/g, '');
+        box.value = val ? val.slice(-1) : '';
+        syncOtpHiddenValue();
+
+        if (box.value && index < otpBoxes.length - 1) {
+          otpBoxes[index + 1].focus();
+        }
+
+        // Auto submit if all 6 digits entered
+        if (getEnteredOtp().length === 6) {
+          if (otpForm) otpForm.dispatchEvent(new Event('submit'));
+        }
+      });
+
+      box.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !box.value && index > 0) {
+          otpBoxes[index - 1].focus();
+          otpBoxes[index - 1].value = '';
+          syncOtpHiddenValue();
+        }
+      });
+
+      box.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+        if (!text) return;
+        for (let i = 0; i < otpBoxes.length; i++) {
+          otpBoxes[i].value = text[i] || '';
+        }
+        syncOtpHiddenValue();
+        const lastFilledIdx = Math.min(text.length - 1, otpBoxes.length - 1);
+        if (lastFilledIdx >= 0 && lastFilledIdx < otpBoxes.length) {
+          otpBoxes[lastFilledIdx].focus();
+        }
+        if (text.length >= 6 && otpForm) {
+          otpForm.dispatchEvent(new Event('submit'));
+        }
+      });
+    });
+
+    // Resend Code Button
+    if (resendOtpBtn) {
+      resendOtpBtn.addEventListener('click', handleResendOtp);
+    }
+
+    // Change Reference ID / Back button
+    if (backToIdBtn) {
+      backToIdBtn.addEventListener('click', () => {
+        if (stepOtp) stepOtp.classList.add('hidden');
+        if (stepIdentifier) stepIdentifier.classList.remove('hidden');
+        stopResendCountdown();
+        if (portalInput) portalInput.focus();
+      });
+    }
+
+    // OTP Form Submit
+    if (otpForm) {
+      otpForm.addEventListener('submit', handleVerifyOtpSubmit);
+    }
+  }
+
+  function getEnteredOtp() {
+    let code = '';
+    otpBoxes.forEach(box => { code += (box.value || '').trim(); });
+    return code;
+  }
+
+  function syncOtpHiddenValue() {
+    if (otpHiddenInput) {
+      otpHiddenInput.value = getEnteredOtp();
+    }
+  }
+
+  function clearOtpInputs() {
+    otpBoxes.forEach(b => { b.value = ''; });
+    if (otpHiddenInput) otpHiddenInput.value = '';
+  }
+
+  function startResendCountdown(seconds = 45) {
+    stopResendCountdown();
+    let remaining = seconds;
+    if (resendOtpBtn) {
+      resendOtpBtn.disabled = true;
+      resendOtpBtn.textContent = `Resend SMS Code (${remaining}s)`;
+    }
+
+    resendInterval = setInterval(() => {
+      remaining -= 1;
+      if (remaining <= 0) {
+        stopResendCountdown();
+        if (resendOtpBtn) {
+          resendOtpBtn.disabled = false;
+          resendOtpBtn.textContent = 'Resend SMS Code';
+        }
+      } else if (resendOtpBtn) {
+        resendOtpBtn.textContent = `Resend SMS Code (${remaining}s)`;
+      }
+    }, 1000);
+  }
+
+  function stopResendCountdown() {
+    if (resendInterval) {
+      clearInterval(resendInterval);
+      resendInterval = null;
+    }
+    if (resendOtpBtn) {
+      resendOtpBtn.disabled = false;
+      resendOtpBtn.textContent = 'Resend SMS Code';
+    }
+  }
+
+  // Step 1: Send OTP via BMS Africa
+  async function handleSendOtp(identifier) {
+    const originalText = portalLoginBtn ? portalLoginBtn.innerHTML : '';
+    if (portalLoginBtn) {
+      portalLoginBtn.disabled = true;
+      portalLoginBtn.innerHTML = `<span>Sending SMS code via Adabah...</span>`;
+    }
+
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: identifier.trim() })
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        currentAuthIdentifier = identifier.trim();
+        if (otpMaskedPhone) {
+          otpMaskedPhone.textContent = data.maskedPhone || 'your mobile number';
+        }
+
+        if (stepIdentifier) stepIdentifier.classList.add('hidden');
+        if (stepOtp) stepOtp.classList.remove('hidden');
+
+        clearOtpInputs();
+        if (otpBoxes.length > 0) otpBoxes[0].focus();
+
+        startResendCountdown(data.cooldownSeconds || 45);
+        showToast(data.message || `Verification SMS sent to ${data.maskedPhone}!`, 'success');
+      } else {
+        showToast(data.message || 'Failed to send verification code.', 'error');
+      }
+    } catch (err) {
+      console.error('Send OTP Error:', err);
+      showToast('Network error requesting verification code. Please check your connection.', 'error');
+    } finally {
+      if (portalLoginBtn) {
+        portalLoginBtn.disabled = false;
+        portalLoginBtn.innerHTML = originalText;
+      }
+    }
+  }
+
+  // Step 2: Verify OTP and Establish Founder Session
+  async function handleVerifyOtpSubmit(e) {
+    if (e) e.preventDefault();
+    const code = getEnteredOtp();
+    if (code.length < 6) {
+      showToast('Please enter the complete 6-digit verification code.', 'warning');
+      return;
+    }
+
+    const originalText = verifyOtpBtn ? verifyOtpBtn.innerHTML : '';
+    if (verifyOtpBtn) {
+      verifyOtpBtn.disabled = true;
+      verifyOtpBtn.innerHTML = `<span>Verifying Code...</span>`;
+    }
+
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          identifier: currentAuthIdentifier,
+          otp: code
+        })
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success && data.data) {
+        // Persist session token and app ID
+        if (data.token) {
+          localStorage.setItem('adabah_founder_session_token', data.token);
+        }
+        localStorage.setItem('adabah_founder_app_id', data.data.id);
+
+        currentApp = data.data;
+        stopResendCountdown();
+
+        const initialPage = getRequestedPage();
+        renderDashboard(currentApp, initialPage);
+        showToast(`Identity verified! Welcome back, ${currentApp.founderName.split(' ')[0]}!`, 'success');
+      } else {
+        showToast(data.message || 'Invalid verification code. Please try again.', 'error');
+        clearOtpInputs();
+        if (otpBoxes.length > 0) otpBoxes[0].focus();
+      }
+    } catch (err) {
+      console.error('Verify OTP Error:', err);
+      showToast('Network error while verifying code. Please try again.', 'error');
+    } finally {
+      if (verifyOtpBtn) {
+        verifyOtpBtn.disabled = false;
+        verifyOtpBtn.innerHTML = originalText;
+      }
+    }
+  }
+
+  // Step 2 Fallback: Resend SMS OTP
+  async function handleResendOtp() {
+    if (!currentAuthIdentifier) return;
+    if (resendOtpBtn) resendOtpBtn.disabled = true;
+
+    try {
+      const res = await fetch('/api/auth/resend-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: currentAuthIdentifier })
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        startResendCountdown(data.cooldownSeconds || 45);
+        showToast(data.message || 'A fresh SMS code was dispatched.', 'success');
+      } else {
+        showToast(data.message || 'Failed to resend code.', 'error');
+      }
+    } catch (err) {
+      showToast('Network error while resending code.', 'error');
+    }
+  }
+
+  // Load Application from Server (Fallback Direct Loader)
   async function loadApplication(identifier) {
     const loginBtn = document.getElementById('portal-login-btn');
     const originalBtnText = loginBtn ? loginBtn.innerHTML : '';

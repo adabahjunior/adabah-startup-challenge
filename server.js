@@ -8,6 +8,7 @@ const path = require('path');
 const url = require('url');
 const crypto = require('crypto');
 const supabaseDb = require('./supabase.js');
+const bmsService = require('./bms.js');
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -118,6 +119,43 @@ function convertToCsv(items) {
   return csvRows.join('\r\n');
 }
 
+// Helper: Find application by ID, email, or phone across Supabase and local backup
+async function findApplicationByIdentifier(identifier) {
+  if (!identifier) return null;
+  const id = String(identifier).trim();
+  
+  // 1. Try direct Supabase query
+  let app = await supabaseDb.getApplicationById(id);
+  
+  // 2. Fallback to search through Supabase applications
+  if (!app) {
+    const allApps = await supabaseDb.getApplications();
+    if (allApps && allApps.length > 0) {
+      const q = id.toLowerCase();
+      const normPhone = bmsService.formatBmsPhone(id);
+      app = allApps.find(a =>
+        (a.id && a.id.toLowerCase() === q) ||
+        (a.founderEmail && a.founderEmail.toLowerCase() === q) ||
+        (normPhone && a.founderPhone && bmsService.formatBmsPhone(a.founderPhone) === normPhone)
+      );
+    }
+  }
+
+  // 3. Fallback to local JSON file
+  if (!app) {
+    const localApps = readJsonFile(APPLICATIONS_FILE, []);
+    const q = id.toLowerCase();
+    const normPhone = bmsService.formatBmsPhone(id);
+    app = localApps.find(a =>
+      (a.id && a.id.toLowerCase() === q) ||
+      (a.founderEmail && a.founderEmail.toLowerCase() === q) ||
+      (normPhone && a.founderPhone && bmsService.formatBmsPhone(a.founderPhone) === normPhone)
+    );
+  }
+
+  return app || null;
+}
+
 // Server implementation
 const server = http.createServer(async (req, res) => {
   // CORS Preflight
@@ -143,6 +181,188 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 200, {
           success: true,
           data: dbStatus
+        });
+      }
+
+      // 0b. GET /api/bms-status - BMS Africa SMS & OTP Service Status Check
+      if (pathname === '/api/bms-status' && method === 'GET') {
+        const bmsStatus = await bmsService.checkBmsAccount();
+        return sendJson(res, 200, {
+          success: true,
+          data: bmsStatus
+        });
+      }
+
+      // AUTH 1. POST /api/auth/send-otp - Request SMS OTP for Founder Login
+      if (pathname === '/api/auth/send-otp' && method === 'POST') {
+        const body = await parseBody(req);
+        const identifier = body.identifier ? String(body.identifier).trim() : '';
+
+        if (!identifier) {
+          return sendJson(res, 400, {
+            success: false,
+            message: 'Please provide your Application Reference ID, registered email, or phone.'
+          });
+        }
+
+        const app = await findApplicationByIdentifier(identifier);
+        if (!app) {
+          return sendJson(res, 404, {
+            success: false,
+            message: `No application found matching "${identifier}". Please verify your Reference ID or email.`
+          });
+        }
+
+        if (!app.founderPhone || !String(app.founderPhone).trim()) {
+          return sendJson(res, 400, {
+            success: false,
+            message: 'No mobile phone number is registered for this application. Please contact support.'
+          });
+        }
+
+        const otpRes = await bmsService.requestOtp(identifier, app.id, app.founderPhone, app.founderEmail);
+        if (!otpRes.success) {
+          const status = otpRes.rateLimited ? 429 : 500;
+          return sendJson(res, status, {
+            success: false,
+            rateLimited: !!otpRes.rateLimited,
+            waitSeconds: otpRes.waitSeconds,
+            message: otpRes.message || 'Failed to dispatch verification SMS. Please try again.'
+          });
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          appId: app.id,
+          startupName: app.startupName,
+          founderName: app.founderName,
+          maskedPhone: otpRes.maskedPhone,
+          maskedEmail: otpRes.maskedEmail,
+          cooldownSeconds: otpRes.cooldownSeconds,
+          expiresInSeconds: otpRes.expiresInSeconds,
+          message: `A 6-digit verification code has been sent via SMS to ${otpRes.maskedPhone}.`
+        });
+      }
+
+      // AUTH 2. POST /api/auth/verify-otp - Verify Code and Authenticate Founder
+      if (pathname === '/api/auth/verify-otp' && method === 'POST') {
+        const body = await parseBody(req);
+        const identifier = body.identifier ? String(body.identifier).trim() : '';
+        const otp = body.otp ? String(body.otp).trim() : '';
+
+        if (!identifier || !otp) {
+          return sendJson(res, 400, {
+            success: false,
+            message: 'Both account identifier and 6-digit verification code are required.'
+          });
+        }
+
+        const verifyRes = bmsService.verifyOtp(identifier, otp);
+        if (!verifyRes.success) {
+          return sendJson(res, 400, {
+            success: false,
+            message: verifyRes.message
+          });
+        }
+
+        const app = await findApplicationByIdentifier(verifyRes.appId || identifier);
+        if (!app) {
+          return sendJson(res, 404, {
+            success: false,
+            message: 'Application record could not be loaded.'
+          });
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          message: 'Identity verified successfully! Welcome to your Founder Workspace.',
+          token: verifyRes.token,
+          data: app
+        });
+      }
+
+      // AUTH 3. POST /api/auth/resend-otp - Resend Verification Code
+      if (pathname === '/api/auth/resend-otp' && method === 'POST') {
+        const body = await parseBody(req);
+        const identifier = body.identifier ? String(body.identifier).trim() : '';
+
+        if (!identifier) {
+          return sendJson(res, 400, {
+            success: false,
+            message: 'Account identifier is required to resend code.'
+          });
+        }
+
+        const app = await findApplicationByIdentifier(identifier);
+        if (!app) {
+          return sendJson(res, 404, {
+            success: false,
+            message: 'Application not found.'
+          });
+        }
+
+        const otpRes = await bmsService.requestOtp(identifier, app.id, app.founderPhone, app.founderEmail);
+        if (!otpRes.success) {
+          const status = otpRes.rateLimited ? 429 : 500;
+          return sendJson(res, status, {
+            success: false,
+            rateLimited: !!otpRes.rateLimited,
+            waitSeconds: otpRes.waitSeconds,
+            message: otpRes.message || 'Failed to resend code.'
+          });
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          maskedPhone: otpRes.maskedPhone,
+          cooldownSeconds: otpRes.cooldownSeconds,
+          message: `A new verification code was sent to ${otpRes.maskedPhone}.`
+        });
+      }
+
+      // AUTH 4. GET /api/auth/session - Verify Active Session Token
+      if (pathname === '/api/auth/session' && method === 'GET') {
+        const authHeader = req.headers['authorization'] || '';
+        const token = authHeader.replace(/^Bearer\s+/i, '').trim() || parsedUrl.query.token;
+
+        if (!token) {
+          return sendJson(res, 401, { success: false, message: 'No session token provided.' });
+        }
+
+        const session = bmsService.validateSession(token);
+        if (!session) {
+          return sendJson(res, 401, { success: false, message: 'Session expired or invalid.' });
+        }
+
+        const app = await findApplicationByIdentifier(session.appId);
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Application associated with session not found.' });
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          data: app,
+          session: {
+            appId: session.appId,
+            createdAt: session.createdAt,
+            expiresAt: session.expiresAt
+          }
+        });
+      }
+
+      // AUTH 5. POST /api/auth/logout - Invalidate Session
+      if (pathname === '/api/auth/logout' && method === 'POST') {
+        const body = await parseBody(req);
+        const authHeader = req.headers['authorization'] || '';
+        const token = authHeader.replace(/^Bearer\s+/i, '').trim() || body.token || parsedUrl.query.token;
+
+        if (token) {
+          bmsService.revokeSession(token);
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          message: 'Signed out successfully.'
         });
       }
 
