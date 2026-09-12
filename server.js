@@ -21,6 +21,7 @@ const BLOGS_FILE = path.join(DATA_DIR, 'blogs.json');
 const BROADCASTS_FILE = path.join(DATA_DIR, 'broadcasts.json');
 const FOUNDER_FILE = path.join(DATA_DIR, 'founder.json');
 const PARTNERS_FILE = path.join(DATA_DIR, 'partners.json');
+const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 
 // Admin Password Gate (Default: sirmyk26)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sirmyk26';
@@ -79,7 +80,11 @@ const MIME_TYPES = {
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
   '.ttf': 'font/ttf',
-  '.webp': 'image/webp'
+  '.webp': 'image/webp',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.mov': 'video/quicktime',
+  '.ogg': 'video/ogg'
 };
 
 // Helper: Read JSON file safely (supports serverless /tmp fallback)
@@ -145,8 +150,8 @@ function parseBody(req) {
     let body = '';
     req.on('data', chunk => {
       body += chunk;
-      // Protect against gigantic payloads (25MB limit for image uploads)
-      if (body.length > 2.5e7) {
+      // Protect against gigantic payloads (75MB limit for video/image uploads)
+      if (body.length > 7.5e7) {
         if (req.connection && req.connection.destroy) {
           req.connection.destroy();
         } else if (req.socket && req.socket.destroy) {
@@ -1900,6 +1905,147 @@ async function requestHandler(req, res) {
         } catch (err) {
           console.error('Error deleting partner:', err);
           return sendJson(res, 500, { success: false, message: 'Failed to delete partner: ' + err.message });
+        }
+      }
+
+      // ========================================================
+      // 15. HOMEPAGE HERO VIDEO & SITE MEDIA CMS
+      // ========================================================
+
+      // 15a. GET /api/content/hero-video - Public Hero Video Configuration
+      if (pathname === '/api/content/hero-video' && method === 'GET') {
+        let settings = await supabaseDb.getSiteSettings();
+        if (!settings) {
+          settings = readJsonFile(SETTINGS_FILE, {
+            videoUrl: '',
+            videoEnabled: false,
+            videoOpacity: 0.25,
+            posterUrl: ''
+          });
+        }
+        return sendJson(res, 200, {
+          success: true,
+          videoUrl: settings.videoUrl || '',
+          videoEnabled: !!settings.videoEnabled,
+          videoOpacity: settings.videoOpacity !== undefined ? Number(settings.videoOpacity) : 0.25,
+          posterUrl: settings.posterUrl || '',
+          data: {
+            videoUrl: settings.videoUrl || '',
+            videoEnabled: !!settings.videoEnabled,
+            videoOpacity: settings.videoOpacity !== undefined ? Number(settings.videoOpacity) : 0.25,
+            posterUrl: settings.posterUrl || '',
+            updatedAt: settings.updatedAt || null
+          }
+        });
+      }
+
+      // 15b. PUT /api/admin/hero-video - Update Hero Video Configuration (Admin Only)
+      if (pathname === '/api/admin/hero-video' && method === 'PUT') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const body = await parseBody(req);
+          let currentSettings = await supabaseDb.getSiteSettings();
+          if (!currentSettings) {
+            currentSettings = readJsonFile(SETTINGS_FILE, {});
+          }
+
+          const updated = {
+            ...currentSettings,
+            videoUrl: body.videoUrl !== undefined ? String(body.videoUrl).trim() : (currentSettings.videoUrl || ''),
+            videoEnabled: body.videoEnabled !== undefined ? !!body.videoEnabled : (currentSettings.videoEnabled !== undefined ? !!currentSettings.videoEnabled : false),
+            videoOpacity: body.videoOpacity !== undefined ? Math.max(0.05, Math.min(1.0, Number(body.videoOpacity) || 0.25)) : (currentSettings.videoOpacity || 0.25),
+            posterUrl: body.posterUrl !== undefined ? String(body.posterUrl).trim() : (currentSettings.posterUrl || ''),
+            updatedAt: new Date().toISOString()
+          };
+
+          writeJsonFile(SETTINGS_FILE, updated);
+          await supabaseDb.updateSiteSettings(updated);
+
+          return sendJson(res, 200, {
+            success: true,
+            message: 'Hero background video settings saved successfully.',
+            data: updated
+          });
+        } catch (err) {
+          console.error('Error saving hero video settings:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to save settings: ' + err.message });
+        }
+      }
+
+      // 15c. POST /api/admin/upload-video - Upload Video File (Admin Only)
+      if (pathname === '/api/admin/upload-video' && method === 'POST') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const body = await parseBody(req);
+          const video = body.video || body.videoData;
+          const filename = body.filename;
+
+          if (!video) {
+            return sendJson(res, 400, { success: false, message: 'No video data provided.' });
+          }
+
+          let ext = '.mp4';
+          let base64Data = video;
+
+          const matches = video.match(/^data:video\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+          if (matches) {
+            const rawExt = matches[1].toLowerCase();
+            if (rawExt === 'quicktime') ext = '.mov';
+            else if (['mp4', 'webm', 'ogg'].includes(rawExt)) ext = '.' + rawExt;
+            base64Data = matches[2];
+          } else if (filename) {
+            const fileExt = path.extname(filename).toLowerCase();
+            if (['.mp4', '.webm', '.mov', '.ogg'].includes(fileExt)) {
+              ext = fileExt;
+            }
+          }
+
+          const buffer = Buffer.from(base64Data, 'base64');
+          if (buffer.length === 0) {
+            return sendJson(res, 400, { success: false, message: 'Invalid video buffer.' });
+          }
+
+          const cleanName = (filename || 'hero_video')
+            .replace(/\.[^/.]+$/, '')
+            .replace(/[^a-zA-Z0-9_-]/g, '_')
+            .substring(0, 30);
+          const uniqueFilename = `${Date.now()}_${crypto.randomBytes(4).toString('hex')}_${cleanName}${ext}`;
+          const mimeType = ext === '.webm' ? 'video/webm' : (ext === '.mov' ? 'video/quicktime' : 'video/mp4');
+
+          // Write to local UPLOADS_DIR for local development and cache
+          try {
+            const targetPath = path.join(UPLOADS_DIR, uniqueFilename);
+            fs.writeFileSync(targetPath, buffer);
+          } catch (fsErr) {
+            console.warn('Local file write error (may be serverless):', fsErr.message);
+          }
+
+          let finalUrl = `/uploads/${uniqueFilename}`;
+
+          // Upload to Supabase public storage bucket for permanent global CDN hosting
+          try {
+            const mediaResult = await supabaseDb.uploadMedia(uniqueFilename, buffer, mimeType);
+            if (mediaResult && mediaResult.url) {
+              finalUrl = mediaResult.url;
+            }
+          } catch (storageErr) {
+            console.warn('Supabase media upload fallback:', storageErr.message);
+          }
+
+          return sendJson(res, 201, {
+            success: true,
+            url: finalUrl,
+            publicUrl: finalUrl,
+            filename: uniqueFilename,
+            size: buffer.length
+          });
+        } catch (err) {
+          console.error('Error uploading video:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to upload video: ' + err.message });
         }
       }
 

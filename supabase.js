@@ -456,6 +456,53 @@ async function uploadMedia(filename, buffer, contentType = 'image/jpeg') {
   }
 }
 
+// --- Site Settings (Hero Video, Media & Preferences) ---
+async function getSiteSettings() {
+  if (!supabase) return null;
+  try {
+    const bucket = 'adabah-media';
+    // Fetch directly with timestamp query to bypass CDN edge caching
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/site-settings.json?t=${Date.now()}`;
+    const res = await fetch(publicUrl, { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && typeof data === 'object') return data;
+    }
+
+    // Fallback to client download
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .download('site-settings.json');
+
+    if (error || !data) return null;
+    const text = await data.text();
+    return JSON.parse(text);
+  } catch (err) {
+    return null;
+  }
+}
+
+async function updateSiteSettings(settings) {
+  if (!supabase || !settings) return null;
+  try {
+    const bucket = 'adabah-media';
+    const buffer = Buffer.from(JSON.stringify(settings, null, 2), 'utf-8');
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .upload('site-settings.json', buffer, {
+        contentType: 'application/json',
+        cacheControl: '0',
+        upsert: true
+      });
+
+    if (error) throw error;
+    return settings;
+  } catch (err) {
+    console.error('Supabase updateSiteSettings error:', err.message);
+    return null;
+  }
+}
+
 module.exports = {
   client: supabase,
   checkConnection,
@@ -470,6 +517,9 @@ module.exports = {
   savePartner,
   updatePartner,
   deletePartner,
-  uploadMedia
+  uploadMedia,
+  getSiteSettings,
+  updateSiteSettings
 };
+
 

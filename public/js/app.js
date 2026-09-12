@@ -673,10 +673,48 @@ async function initPublicBlogs() {
   }
 }
 
+// Hero Background Video Streamer
+async function initHeroBackgroundVideo() {
+  const wrap = document.getElementById('hero-video-wrap');
+  const video = document.getElementById('hero-bg-video');
+  if (!wrap || !video) return;
+
+  try {
+    const res = await fetch('/api/content/hero-video');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !data.success || !data.videoEnabled || !data.videoUrl) {
+      wrap.classList.add('hidden');
+      return;
+    }
+
+    video.src = data.videoUrl;
+    if (data.posterUrl) {
+      video.poster = data.posterUrl;
+    }
+    const targetOpacity = typeof data.videoOpacity === 'number' ? data.videoOpacity : 0.25;
+
+    wrap.classList.remove('hidden');
+    video.load();
+    video.play().catch(err => {
+      console.log('Hero video autoplay deferred by browser:', err);
+    });
+
+    // Fade in gracefully
+    setTimeout(() => {
+      wrap.style.opacity = targetOpacity.toString();
+    }, 50);
+
+  } catch (err) {
+    console.warn('Hero background video failed to initialize:', err);
+  }
+}
+
 // Global initialization
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initCountdown();
+  initHeroBackgroundVideo();
   initFaq();
   initEligibilityQuiz();
   initStatusTracker();

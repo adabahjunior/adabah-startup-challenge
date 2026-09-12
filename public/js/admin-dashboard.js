@@ -208,6 +208,7 @@ function startAdminDashboard() {
     setupTeamsFilters();
     setupFounderControls();
     setupPartnerControls();
+    setupHeroVideoControls();
 
     // Check URL hash or query for initial tab
     const urlParams = new URLSearchParams(window.location.search);
@@ -250,7 +251,8 @@ function startAdminDashboard() {
         loadBlogsData(),
         loadBroadcastsData(),
         loadFounderData(),
-        loadPartnersData()
+        loadPartnersData(),
+        loadHeroVideoData()
       ]);
     } catch (err) {
       console.error('Error initializing admin data:', err);
@@ -294,7 +296,7 @@ function startAdminDashboard() {
   }
 
   function switchAdminPage(pageId, pushState = true) {
-    const validPages = ['overview', 'submissions', 'teams', 'blogs', 'broadcast', 'founder', 'partners'];
+    const validPages = ['overview', 'submissions', 'teams', 'blogs', 'broadcast', 'founder', 'partners', 'hero-video'];
     if (!validPages.includes(pageId)) pageId = 'overview';
 
     // Toggle pages
@@ -329,7 +331,8 @@ function startAdminDashboard() {
       blogs: 'Blog CMS',
       broadcast: 'SMS Broadcast',
       founder: 'Founder Profile',
-      partners: 'Partners & Sponsors'
+      partners: 'Partners & Sponsors',
+      'hero-video': 'Hero Background Video'
     };
     if (mobilePageTitle) {
       mobilePageTitle.textContent = titles[pageId] || 'Overview';
@@ -340,6 +343,8 @@ function startAdminDashboard() {
       loadFounderData();
     } else if (pageId === 'partners') {
       loadPartnersData();
+    } else if (pageId === 'hero-video') {
+      loadHeroVideoData();
     }
 
     // Reset scroll
@@ -2230,8 +2235,340 @@ function startAdminDashboard() {
       } else {
         showToast(data.message || 'Failed to delete partner', 'error');
       }
+  }
+
+  // ==========================================
+  // 8. HERO BACKGROUND VIDEO CONTROLS
+  // ==========================================
+  let heroVideoSettings = {
+    videoUrl: '',
+    videoEnabled: false,
+    videoOpacity: 0.25,
+    posterUrl: ''
+  };
+
+  async function loadHeroVideoData() {
+    try {
+      const res = await fetch('/api/content/hero-video');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.success) {
+        heroVideoSettings = {
+          videoUrl: data.videoUrl || '',
+          videoEnabled: !!data.videoEnabled,
+          videoOpacity: typeof data.videoOpacity === 'number' ? data.videoOpacity : 0.25,
+          posterUrl: data.posterUrl || ''
+        };
+        renderHeroVideoUI();
+      }
     } catch (err) {
-      showToast('Network error deleting partner.', 'error');
+      console.error('Error loading hero video settings:', err);
+    }
+  }
+
+  function renderHeroVideoUI() {
+    const enabledCb = document.getElementById('hero-video-enabled-cb');
+    const urlInput = document.getElementById('hero-video-url-input');
+    const opacitySlider = document.getElementById('hero-video-opacity-slider');
+    const opacityVal = document.getElementById('hero-video-opacity-val');
+    const posterInput = document.getElementById('hero-video-poster-input');
+    
+    const previewVideo = document.getElementById('admin-hero-preview-video');
+    const previewEmpty = document.getElementById('admin-hero-preview-empty');
+    const previewOverlay = document.getElementById('admin-hero-preview-overlay');
+    const previewBadge = document.getElementById('admin-hero-preview-badge');
+    
+    const statStatus = document.getElementById('stat-hero-video-status');
+    const statOpacity = document.getElementById('stat-hero-video-opacity');
+    const statStorage = document.getElementById('stat-hero-video-storage');
+
+    if (enabledCb) enabledCb.checked = heroVideoSettings.videoEnabled;
+    if (urlInput) urlInput.value = heroVideoSettings.videoUrl;
+    if (opacitySlider) opacitySlider.value = heroVideoSettings.videoOpacity;
+    if (opacityVal) opacityVal.textContent = Math.round(heroVideoSettings.videoOpacity * 100) + '%';
+    if (posterInput) posterInput.value = heroVideoSettings.posterUrl;
+
+    if (statOpacity) statOpacity.textContent = Math.round(heroVideoSettings.videoOpacity * 100) + '%';
+    if (previewOverlay) previewOverlay.style.opacity = heroVideoSettings.videoOpacity;
+
+    if (statStatus) {
+      if (heroVideoSettings.videoEnabled && heroVideoSettings.videoUrl) {
+        statStatus.innerHTML = `
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="font-display font-bold text-base text-emerald-600 dark:text-emerald-400">Live Active</span>
+        `;
+      } else {
+        statStatus.innerHTML = `
+          <span class="w-2.5 h-2.5 rounded-full bg-neutral-400"></span>
+          <span class="font-display font-bold text-base text-[#1A0F09] dark:text-white">${heroVideoSettings.videoUrl ? 'Disabled' : 'No Video'}</span>
+        `;
+      }
+    }
+
+    if (statStorage) {
+      if (!heroVideoSettings.videoUrl) {
+        statStorage.textContent = 'None configured';
+      } else if (heroVideoSettings.videoUrl.includes('supabase.co')) {
+        statStorage.textContent = 'Supabase Cloud CDN';
+      } else if (heroVideoSettings.videoUrl.startsWith('/uploads')) {
+        statStorage.textContent = 'Local Server Upload';
+      } else {
+        statStorage.textContent = 'External Web Source';
+      }
+    }
+
+    if (heroVideoSettings.videoUrl) {
+      if (previewVideo) {
+        previewVideo.classList.remove('hidden');
+        if (previewVideo.src !== heroVideoSettings.videoUrl) {
+          previewVideo.src = heroVideoSettings.videoUrl;
+          previewVideo.load();
+        }
+        previewVideo.play().catch(() => {});
+      }
+      if (previewEmpty) previewEmpty.classList.add('hidden');
+      if (previewBadge) {
+        if (heroVideoSettings.videoEnabled) {
+          previewBadge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+          previewBadge.textContent = 'Active on Homepage';
+        } else {
+          previewBadge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30';
+          previewBadge.textContent = 'Inactive (Toggled Off)';
+        }
+      }
+    } else {
+      if (previewVideo) {
+        previewVideo.classList.add('hidden');
+        previewVideo.src = '';
+      }
+      if (previewEmpty) previewEmpty.classList.remove('hidden');
+      if (previewBadge) {
+        previewBadge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-white/10 text-[#5C3D2E] dark:text-[#f5d6b4]/80';
+        previewBadge.textContent = 'Awaiting Video';
+      }
+    }
+  }
+
+  function setupHeroVideoControls() {
+    const enabledCb = document.getElementById('hero-video-enabled-cb');
+    const urlInput = document.getElementById('hero-video-url-input');
+    const previewBtn = document.getElementById('hero-video-preview-btn');
+    const opacitySlider = document.getElementById('hero-video-opacity-slider');
+    const opacityVal = document.getElementById('hero-video-opacity-val');
+    const posterInput = document.getElementById('hero-video-poster-input');
+    const saveBtn = document.getElementById('save-hero-video-btn');
+    const saveText = document.getElementById('save-hero-video-text');
+    const clearBtn = document.getElementById('clear-hero-video-btn');
+
+    const fileInput = document.getElementById('hero-video-file-input');
+    const dropzone = document.getElementById('hero-video-dropzone');
+    const progressContainer = document.getElementById('hero-video-upload-progress');
+    const progressBar = document.getElementById('hero-video-upload-bar');
+    const progressPct = document.getElementById('hero-video-upload-pct');
+    const progressStatus = document.getElementById('hero-video-upload-status');
+    const previewVideo = document.getElementById('admin-hero-preview-video');
+    const previewOverlay = document.getElementById('admin-hero-preview-overlay');
+
+    if (opacitySlider) {
+      opacitySlider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        heroVideoSettings.videoOpacity = val;
+        if (opacityVal) opacityVal.textContent = Math.round(val * 100) + '%';
+        if (previewOverlay) previewOverlay.style.opacity = val;
+        const statOpacity = document.getElementById('stat-hero-video-opacity');
+        if (statOpacity) statOpacity.textContent = Math.round(val * 100) + '%';
+      });
+    }
+
+    if (enabledCb) {
+      enabledCb.addEventListener('change', (e) => {
+        heroVideoSettings.videoEnabled = e.target.checked;
+        renderHeroVideoUI();
+      });
+    }
+
+    if (previewBtn) {
+      previewBtn.addEventListener('click', () => {
+        const testUrl = urlInput ? urlInput.value.trim() : '';
+        if (!testUrl) {
+          showToast('Please enter a video URL first.', 'error');
+          return;
+        }
+        heroVideoSettings.videoUrl = testUrl;
+        renderHeroVideoUI();
+        showToast('Testing video source in preview player.', 'info');
+      });
+    }
+
+    if (dropzone && fileInput) {
+      dropzone.addEventListener('click', () => fileInput.click());
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('border-[#865237]', 'dark:border-[#dfa04e]', 'bg-[#865237]/10');
+      });
+      dropzone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('border-[#865237]', 'dark:border-[#dfa04e]', 'bg-[#865237]/10');
+      });
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('border-[#865237]', 'dark:border-[#dfa04e]', 'bg-[#865237]/10');
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+          handleVideoUpload(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files && fileInput.files[0]) {
+          handleVideoUpload(fileInput.files[0]);
+        }
+      });
+    }
+
+    async function handleVideoUpload(file) {
+      // Validate format
+      const validTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'];
+      if (!validTypes.includes(file.type) && !file.name.match(/\.(mp4|webm|mov|ogg)$/i)) {
+        showToast('Please select a valid video file (.mp4, .webm, .mov, .ogg)', 'error');
+        return;
+      }
+
+      // Validate size: 50MB
+      const maxSize = 50 * 1024 * 1024;
+      if (file.size > maxSize) {
+        showToast(`Video file too large (${(file.size / (1024 * 1024)).toFixed(1)}MB). Limit is 50MB.`, 'error');
+        return;
+      }
+
+      if (progressContainer) progressContainer.classList.remove('hidden');
+      if (progressBar) progressBar.style.width = '15%';
+      if (progressPct) progressPct.textContent = '15%';
+      if (progressStatus) progressStatus.textContent = 'Reading video file...';
+
+      try {
+        // Read file as base64 DataURL
+        const reader = new FileReader();
+        reader.onprogress = (evt) => {
+          if (evt.lengthComputable) {
+            const pct = Math.round((evt.loaded / evt.total) * 35);
+            if (progressBar) progressBar.style.width = pct + '%';
+            if (progressPct) progressPct.textContent = pct + '%';
+          }
+        };
+
+        const base64Data = await new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('Failed to read file'));
+          reader.readAsDataURL(file);
+        });
+
+        if (progressBar) progressBar.style.width = '50%';
+        if (progressPct) progressPct.textContent = '50%';
+        if (progressStatus) progressStatus.textContent = 'Streaming to cloud bucket...';
+
+        const res = await adminFetch('/api/admin/upload-video', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            video: base64Data,
+            videoData: base64Data,
+            filename: file.name,
+            contentType: file.type || 'video/mp4'
+          })
+        });
+
+        const data = await res.json();
+        const videoUrl = data.publicUrl || data.url;
+        if (res.ok && data.success && videoUrl) {
+          if (progressBar) progressBar.style.width = '100%';
+          if (progressPct) progressPct.textContent = '100%';
+          if (progressStatus) progressStatus.textContent = 'Upload complete!';
+
+          heroVideoSettings.videoUrl = videoUrl;
+          heroVideoSettings.videoEnabled = true;
+          if (urlInput) urlInput.value = videoUrl;
+          if (enabledCb) enabledCb.checked = true;
+
+          renderHeroVideoUI();
+          showToast(`Video successfully uploaded to cloud storage! (${(file.size / (1024 * 1024)).toFixed(1)}MB)`, 'success');
+
+          setTimeout(() => {
+            if (progressContainer) progressContainer.classList.add('hidden');
+          }, 2500);
+        } else {
+          showToast(data.message || 'Error uploading video file', 'error');
+          if (progressContainer) progressContainer.classList.add('hidden');
+        }
+      } catch (err) {
+        console.error('Video upload error:', err);
+        showToast('Network error while uploading video.', 'error');
+        if (progressContainer) progressContainer.classList.add('hidden');
+      } finally {
+        if (fileInput) fileInput.value = '';
+      }
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (!heroVideoSettings.videoUrl && !urlInput.value) {
+          showToast('No video is currently configured.', 'info');
+          return;
+        }
+        if (confirm('Are you sure you want to remove the hero background video? The homepage will revert to the standard ambient background.')) {
+          heroVideoSettings.videoUrl = '';
+          heroVideoSettings.videoEnabled = false;
+          if (urlInput) urlInput.value = '';
+          if (enabledCb) enabledCb.checked = false;
+          renderHeroVideoUI();
+          showToast('Video removed. Remember to click "Save Settings" to publish changes.', 'warning');
+        }
+      });
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', async () => {
+        const videoUrl = urlInput ? urlInput.value.trim() : '';
+        const videoEnabled = enabledCb ? enabledCb.checked : false;
+        const videoOpacity = opacitySlider ? parseFloat(opacitySlider.value) : 0.25;
+        const posterUrl = posterInput ? posterInput.value.trim() : '';
+
+        heroVideoSettings = { videoUrl, videoEnabled, videoOpacity, posterUrl };
+
+        if (saveBtn) saveBtn.disabled = true;
+        if (saveText) saveText.textContent = 'Saving...';
+
+        try {
+          const res = await adminFetch('/api/admin/hero-video', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(heroVideoSettings)
+          });
+
+          const data = await res.json();
+          if (res.ok && data.success) {
+            showToast('Hero background video settings saved and published!', 'success');
+            renderHeroVideoUI();
+          } else {
+            showToast(data.message || 'Error saving hero video settings.', 'error');
+          }
+        } catch (err) {
+          showToast('Network error saving hero video settings.', 'error');
+        } finally {
+          if (saveBtn) saveBtn.disabled = false;
+          if (saveText) saveText.textContent = 'Save Settings';
+        }
+      });
+    }
+
+    if (previewVideo) {
+      previewVideo.addEventListener('loadedmetadata', () => {
+        const durSpan = document.getElementById('admin-hero-preview-duration');
+        if (durSpan && previewVideo.duration) {
+          const m = Math.floor(previewVideo.duration / 60);
+          const s = Math.floor(previewVideo.duration % 60);
+          durSpan.textContent = `${m}:${s < 10 ? '0' : ''}${s} (${previewVideo.videoWidth}x${previewVideo.videoHeight})`;
+        }
+      });
     }
   }
 

@@ -145,8 +145,24 @@
   <main class="relative z-10 w-full max-w-full overflow-x-hidden">
 
     <!-- HERO SECTION (Spacious, Minimal & Animated) -->
-    <section class="pt-16 pb-20 sm:pt-24 sm:pb-28 lg:pt-32 lg:pb-36 hero-glow text-center px-4 fade-up">
-      <div class="max-w-4xl mx-auto px-2 sm:px-6">
+    <section id="hero-section" class="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28 lg:pt-32 lg:pb-36 hero-glow text-center px-4 fade-up">
+      
+      <!-- Background Video Layer (Admin Configurable) -->
+      <div id="hero-video-wrap" class="absolute inset-0 z-0 overflow-hidden pointer-events-none transition-opacity duration-1000 hidden" style="opacity: 0;">
+        <video
+          id="hero-bg-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          class="w-full h-full object-cover object-center"
+        ></video>
+        <!-- Soft Contrast Dimming Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#FAF7F2]/80 via-[#FAF7F2]/60 to-[#FAF7F2] dark:from-[#120904]/80 dark:via-[#120904]/60 dark:to-[#120904] pointer-events-none"></div>
+      </div>
+
+      <div class="relative z-10 max-w-4xl mx-auto px-2 sm:px-6">
         
         <!-- Main Architectural Title -->
         <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-7xl text-[#1A0F09] dark:text-white tracking-tight leading-[1.08] mb-4 break-words">
