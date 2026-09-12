@@ -5,9 +5,10 @@ const crypto = require('crypto');
 const path = require('path');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://shvnajqmpwnppnvvienx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 
-  process.env.SUPABASE_ANON_KEY || 
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodm5hanFtcHducHBudnZpZW54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNTMzMjIsImV4cCI6MjEwNDcyOTMyMn0.f65SueQ2n387QaPLw2yr3M1o7eukp-e3JReR_szJp68';
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodm5hanFtcHducHBudnZpZW54Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4OTE1MzMyMiwiZXhwIjoyMTA0NzI5MzIyfQ.-JbHBQgYPkhLzX2TsF5ziv1jolQ_55wm9Ftwp8KvpaU';
+const SUPABASE_KEY = SUPABASE_SERVICE_ROLE_KEY || 
+  process.env.SUPABASE_ANON_KEY;
 
 let supabase = null;
 
@@ -496,7 +497,7 @@ async function getSiteSettings() {
   try {
     const bucket = 'adabah-media';
     // Fetch directly with timestamp query to bypass CDN edge caching
-    const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/site-settings.json?t=${Date.now()}`;
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${bucket}/site-settings.json?t=${Date.now()}`;
     const res = await fetch(publicUrl, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
