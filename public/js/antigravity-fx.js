@@ -1,8 +1,8 @@
 /**
  * antigravity-fx.js
  * Interactive zero-gravity physics for "ADABAH MICHAEL",
- * track tab switcher, FAQ accordion, floating navigation dock,
- * and high-energy micro-interactions inspired by https://antigravity.google
+ * scroll reveal entrance engine, SVG track tab switcher,
+ * FAQ accordion, floating navigation dock, and minimal micro-interactions.
  */
 
 (function () {
@@ -60,7 +60,7 @@
 
         if (isZeroG) {
           wrapper.classList.add('defying-gravity');
-          defyBtn.innerHTML = '<span>⚡ Ground Gravity</span>';
+          defyBtn.innerHTML = '<span>✦ Ground Gravity</span>';
           defyBtn.classList.add('ring-2', 'ring-[#dfa04e]');
           createZeroGravityParticles(wrapper);
 
@@ -79,93 +79,93 @@
   // Particle Dust Burst
   function createZeroGravityParticles(container) {
     const rect = container.getBoundingClientRect();
-    const particleCount = 24;
+    const particleCount = 20;
 
     for (let i = 0; i < particleCount; i++) {
       const p = document.createElement('div');
       p.className = 'fixed pointer-events-none rounded-full z-50';
-      const size = Math.random() * 6 + 3;
+      const size = Math.random() * 5 + 3;
       p.style.width = `${size}px`;
       p.style.height = `${size}px`;
       p.style.background = Math.random() > 0.5 ? '#dfa04e' : '#ebb364';
-      p.style.boxShadow = '0 0 10px #dfa04e';
+      p.style.boxShadow = '0 0 8px #dfa04e';
       p.style.left = `${rect.left + Math.random() * rect.width}px`;
       p.style.top = `${rect.top + rect.height * 0.65 + (Math.random() - 0.5) * 40}px`;
       p.style.opacity = '1';
-      p.style.transition = 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+      p.style.transition = 'all 1.1s cubic-bezier(0.16, 1, 0.3, 1)';
 
       document.body.appendChild(p);
 
       requestAnimationFrame(() => {
-        const liftY = -(120 + Math.random() * 180);
-        const driftX = (Math.random() - 0.5) * 140;
+        const liftY = -(100 + Math.random() * 150);
+        const driftX = (Math.random() - 0.5) * 120;
         p.style.transform = `translate(${driftX}px, ${liftY}px) scale(0)`;
         p.style.opacity = '0';
       });
 
       setTimeout(() => {
         if (p.parentNode) p.parentNode.removeChild(p);
-      }, 1300);
+      }, 1200);
     }
   }
 
-  // 2. Interactive Sector Track Explorer (Replaces long text walls)
+  // 2. Minimalist SVG Sector Track Explorer
   const trackData = {
     fintech: {
-      icon: '💳',
-      name: 'FinTech & Digital Payments',
-      tag: 'FINANCIAL INCLUSION',
-      headline: 'Next-Generation Financial Infrastructure for Emerging Markets',
-      desc: 'Digital campus wallets, micro-savings, automated inventory credit scoring, decentralized remittances, and frictionless mobile transactions.',
-      ideas: ['Campus Merchant Micro-POS', 'Student Credit Identity Engine', 'Peer-to-Peer Group Savings (Susu 2.0)']
+      icon: '<svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>',
+      name: 'FinTech & Payments',
+      tag: 'FINANCIAL INFRASTRUCTURE',
+      headline: 'Next-Gen Financial Rails for Emerging Markets',
+      desc: 'Campus wallets, micro-savings, inventory credit scoring, and frictionless mobile transactions.',
+      ideas: ['Merchant Micro-POS', 'Campus Credit Identity', 'Digital Group Savings']
     },
     agritech: {
-      icon: '🌾',
+      icon: '<svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>',
       name: 'AgriTech & Food Security',
-      tag: 'AGRICULTURE & SUPPLY CHAIN',
-      headline: 'Transforming Farm Productivity & Direct Farmer-to-Consumer Logistics',
-      desc: 'Drone soil analytics, IoT greenhouse sensors, cold-chain solar storage, predictive harvest pricing, and smart wholesale marketplaces.',
-      ideas: ['Solar Cold-Hub Network', 'Crop Disease Vision Scanner', 'Direct Farm-to-Kitchen Wholesale']
+      tag: 'SUPPLY CHAIN & FARMS',
+      headline: 'Transforming Farm Yields & Direct Market Logistics',
+      desc: 'Soil analytics, IoT greenhouse controls, solar cold storage, and direct farm-to-table networks.',
+      ideas: ['Solar Cold Storage', 'Crop Disease Scanner', 'Farm-to-Kitchen Wholesale']
     },
     healthtech: {
-      icon: '🏥',
+      icon: '<svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>',
       name: 'HealthTech & BioCare',
       tag: 'ACCESSIBLE HEALTHCARE',
-      headline: 'Digitizing Diagnostic Access, Pharmacy Deliveries & Maternal Care',
-      desc: 'Telehealth triage, digital pharmacy fulfillment, point-of-care diagnostics, and automated emergency ambulance dispatch networks.',
-      ideas: ['Campus Drone Medicine Delivery', 'AI Symptom & Triage Assistant', 'Preventative Maternal Alert App']
+      headline: 'Digitizing Diagnostic Access, Triage & Deliveries',
+      desc: 'Telehealth triage, digital pharmacy fulfillment, point-of-care diagnostics, and emergency dispatch.',
+      ideas: ['Fast Med Delivery', 'AI Triage Assistant', 'Maternal Alert Monitor']
     },
     deeptech: {
-      icon: '🤖',
-      name: 'AI, DeepTech & Robotics',
+      icon: '<svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>',
+      name: 'AI, DeepTech & Hardware',
       tag: 'FRONTIER ENGINEERING',
-      headline: 'Autonomous Hardware, Edge AI & Applied Machine Learning',
-      desc: 'Embedded systems, local-language AI models, robotics for mining/agriculture, and autonomous aerial or ground sensor systems.',
-      ideas: ['Akan/Twi Voice AI Agent', 'Smart Mining Safety Drones', 'Automated Lab Sensor Telemetry']
+      headline: 'Autonomous Hardware, Edge AI & Applied Computing',
+      desc: 'Embedded IoT telemetry, local-language AI models, and autonomous mining/safety inspection drones.',
+      ideas: ['Local Voice AI', 'Mining Safety Sensors', 'Autonomous Campus Robotics']
     },
     climatetech: {
-      icon: '🌱',
-      name: 'ClimateTech & Clean Energy',
-      tag: 'SUSTAINABILITY & CIRCULARITY',
-      headline: 'Decentralized Clean Energy, Waste Upcycling & Carbon Reduction',
-      desc: 'Off-grid solar micro-grids, plastic-to-building-material recycling, clean cooking fuel, and EV charging for two-wheelers.',
-      ideas: ['Solar Battery Swapping Station', 'Smart Campus E-Waste Hub', 'Biofuel Briquette Manufacturing']
+      icon: '<svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+      name: 'ClimateTech & Energy',
+      tag: 'SUSTAINABILITY',
+      headline: 'Decentralized Clean Energy, Recycling & Carbon Reduction',
+      desc: 'Off-grid solar micro-grids, plastic upcycling, clean cooking fuel, and EV two-wheeler swapping.',
+      ideas: ['Solar Battery Swapping', 'Smart E-Waste Hub', 'Biofuel Briquette Tech']
     },
     edtech: {
-      icon: '📚',
-      name: 'EdTech & Campus Innovation',
-      tag: 'EDUCATION & SKILLS',
-      headline: 'Empowering Student Learning, Practical STEM & Career Acceleration',
-      desc: 'Interactive university study portals, offline-first digital textbooks, peer tutoring micro-marketplaces, and practical coding labs.',
-      ideas: ['University Lecture Companion AI', 'Gamified STEM Lab Simulation', 'Campus Freelance Talent Bureau']
+      icon: '<svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5"/></svg>',
+      name: 'EdTech & Skills',
+      tag: 'EDUCATION & WORK',
+      headline: 'Empowering Student Learning & Practical STEM Mastery',
+      desc: 'Interactive university study portals, offline digital labs, peer tutoring, and skill marketplaces.',
+      ideas: ['Lecture Companion AI', 'Gamified Lab Simulation', 'Campus Talent Bureau']
     },
     consumer: {
-      icon: '🛍️',
+      icon: '<svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>',
       name: 'Consumer Goods & Retail',
       tag: 'HIGH-VELOCITY PRODUCTS',
-      headline: 'Modern Made-in-Ghana Consumer Brands & Social Commerce',
-      desc: 'Sustainable packaging, organic cosmetics, local food processing, and hyper-local campus quick-commerce delivery.',
-      ideas: ['Artisanal Packaged Snacks', 'Natural Shea Skincare Brand', '15-Minute Campus Essentials Delivery']
+      headline: 'Modern Ghanaian Consumer Brands & Quick Commerce',
+      desc: 'Sustainable packaging, organic cosmetics, local food processing, and hyper-local delivery.',
+      ideas: ['Packaged Agro-Snacks', 'Organic Shea Skincare', 'Hyper-Local Delivery']
     }
   };
 
@@ -197,10 +197,10 @@
       // Smooth card transition
       const card = document.getElementById('track-spotlight-card');
       if (card) {
-        card.style.opacity = '0.4';
+        card.style.opacity = '0.35';
         card.style.transform = 'translateY(6px)';
         setTimeout(() => {
-          if (cardIcon) cardIcon.textContent = data.icon;
+          if (cardIcon) cardIcon.innerHTML = data.icon;
           if (cardTag) cardTag.textContent = data.tag;
           if (cardTitle) cardTitle.textContent = data.name;
           if (cardHeadline) cardHeadline.textContent = data.headline;
@@ -210,14 +210,14 @@
             cardIdeas.innerHTML = data.ideas
               .map(
                 (idea) =>
-                  `<span class="px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[11px] sm:text-xs font-semibold text-[#1A0F09] dark:text-[#f5d6b4] inline-flex items-center gap-1.5"><span class="text-[#dfa04e]">✦</span> ${idea}</span>`
+                  `<span class="px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[11px] sm:text-xs font-semibold text-[#1A0F09] dark:text-[#f5d6b4] inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> ${idea}</span>`
               )
               .join('');
           }
 
           card.style.opacity = '1';
           card.style.transform = 'translateY(0)';
-        }, 150);
+        }, 140);
       }
     }
 
@@ -275,8 +275,8 @@
 
     const phrases = [
       'Experience liftoff with The ADABAH Startup Challenge 2026',
-      'From campus dorms to scalable enterprise ventures',
-      'GH₵3,000 equity-free seed prize + elite venture mentorship',
+      'From campus ideas to scalable enterprises',
+      'GH₵3,000 equity-free seed prize + venture mentorship',
       'Your idea deserves a stage. Build what comes next.'
     ];
 
@@ -322,7 +322,7 @@
     const sections = ['about', 'tracks', 'how-it-works', 'prize', 'stories', 'tracker'];
 
     window.addEventListener('scroll', () => {
-      const scrollPos = window.scrollY + 200;
+      const scrollPos = window.scrollY + 220;
 
       sections.forEach((secId) => {
         const sec = document.getElementById(secId);
@@ -340,7 +340,36 @@
           }
         }
       });
-    });
+    }, { passive: true });
+  }
+
+  // 6. Scroll Reveal Animation Engine (IntersectionObserver)
+  function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.fade-up, .scroll-reveal');
+    if (!revealElements.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      revealElements.forEach((el) => el.classList.add('revealed'));
+      return;
+    }
+
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.08
+      }
+    );
+
+    revealElements.forEach((el) => revealObserver.observe(el));
   }
 
   // Initialize all components
@@ -350,6 +379,7 @@
     initFaqAccordion();
     initPreFooterTyping();
     initFloatingDock();
+    initScrollReveal();
   }
 
   if (document.readyState === 'loading') {

@@ -1008,5 +1008,70 @@ html.dark .dock-link.active {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ======================================================== */
+/* SCROLL REVEAL & ENTRANCE ANIMATIONS                     */
+/* ======================================================== */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.fade-up.revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.delay-100 { transition-delay: 80ms; }
+.delay-200 { transition-delay: 160ms; }
+.delay-300 { transition-delay: 240ms; }
+.delay-400 { transition-delay: 320ms; }
+
+/* Refined Minimalist Card Hover & Glow */
+.clean-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clean-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -15px rgba(26, 15, 9, 0.08);
+}
+
+html.dark .clean-card:hover {
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  border-color: rgba(223, 160, 78, 0.4);
+}
+
+/* Minimalist Icon Container */
+.minimal-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.875rem;
+  background: rgba(134, 82, 55, 0.08);
+  color: #865237;
+  transition: all 0.25s ease;
+}
+
+html.dark .minimal-icon-box {
+  background: rgba(223, 160, 78, 0.12);
+  color: #dfa04e;
+}
+
+.clean-card:hover .minimal-icon-box {
+  transform: scale(1.06);
+  background: #865237;
+  color: #ffffff;
+}
+
+html.dark .clean-card:hover .minimal-icon-box {
+  background: #dfa04e;
+  color: #120904;
+}
+
+
 
 
