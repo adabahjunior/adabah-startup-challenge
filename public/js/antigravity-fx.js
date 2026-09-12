@@ -210,7 +210,7 @@
             cardIdeas.innerHTML = data.ideas
               .map(
                 (idea) =>
-                  `<span class="px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[11px] sm:text-xs font-semibold text-[#1A0F09] dark:text-[#f5d6b4] inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> ${idea}</span>`
+                  `<span class="track-idea-badge px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[11px] sm:text-xs font-semibold text-[#1A0F09] dark:text-[#f5d6b4] inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> ${idea}</span>`
               )
               .join('');
           }

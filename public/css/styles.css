@@ -1072,6 +1072,112 @@ html.dark .clean-card:hover .minimal-icon-box {
   color: #120904;
 }
 
+/* ======================================================== */
+/* LIGHT CONTRAST SECTIONS (Rhythmic Contrast in Dark Mode) */
+/* ======================================================== */
+.light-contrast-section {
+  background-color: #FAF7F2 !important;
+  color: #1A0F09 !important;
+  position: relative;
+}
+
+html.dark .light-contrast-section {
+  background-color: #FAF7F2 !important;
+  color: #1A0F09 !important;
+}
+
+.light-contrast-section h2,
+.light-contrast-section h3,
+.light-contrast-section h4,
+html.dark .light-contrast-section h2,
+html.dark .light-contrast-section h3,
+html.dark .light-contrast-section h4 {
+  color: #1A0F09 !important;
+}
+
+.light-contrast-section p,
+html.dark .light-contrast-section p {
+  color: #5C3D2E !important;
+}
+
+.light-contrast-section .clean-card,
+html.dark .light-contrast-section .clean-card {
+  background-color: #ffffff !important;
+  color: #1A0F09 !important;
+  border-color: rgba(134, 82, 55, 0.18) !important;
+  box-shadow: 0 4px 20px -2px rgba(26, 15, 9, 0.06) !important;
+}
+
+.light-contrast-section .clean-card:hover,
+html.dark .light-contrast-section .clean-card:hover {
+  border-color: #865237 !important;
+  box-shadow: 0 16px 32px -8px rgba(26, 15, 9, 0.12) !important;
+}
+
+.light-contrast-section .track-pill-tab,
+html.dark .light-contrast-section .track-pill-tab {
+  background-color: #ffffff !important;
+  color: #5C3D2E !important;
+  border-color: rgba(134, 82, 55, 0.22) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+.light-contrast-section .track-pill-tab:hover,
+html.dark .light-contrast-section .track-pill-tab:hover {
+  background-color: #FAF7F2 !important;
+  color: #1A0F09 !important;
+  border-color: #865237 !important;
+}
+
+.light-contrast-section .track-pill-tab.active,
+html.dark .light-contrast-section .track-pill-tab.active {
+  background: #1A0F09 !important;
+  color: #ffffff !important;
+  border-color: #1A0F09 !important;
+  box-shadow: 0 4px 14px rgba(26, 15, 9, 0.25) !important;
+}
+
+.light-contrast-section .track-idea-badge,
+html.dark .light-contrast-section .track-idea-badge {
+  background-color: #FAF7F2 !important;
+  border-color: rgba(134, 82, 55, 0.18) !important;
+  color: #1A0F09 !important;
+}
+
+.light-contrast-section .minimal-icon-box,
+html.dark .light-contrast-section .minimal-icon-box {
+  background: rgba(134, 82, 55, 0.08) !important;
+  color: #865237 !important;
+}
+
+.light-contrast-section .clean-card:hover .minimal-icon-box,
+html.dark .light-contrast-section .clean-card:hover .minimal-icon-box {
+  background: #865237 !important;
+  color: #ffffff !important;
+}
+
+.light-contrast-section .faq-item,
+html.dark .light-contrast-section .faq-item {
+  background-color: #ffffff !important;
+  border-color: rgba(134, 82, 55, 0.18) !important;
+}
+
+.light-contrast-section .faq-toggle,
+html.dark .light-contrast-section .faq-toggle {
+  color: #1A0F09 !important;
+}
+
+.light-contrast-section .faq-content,
+html.dark .light-contrast-section .faq-content {
+  color: #5C3D2E !important;
+}
+
+.light-contrast-section .faq-chevron,
+html.dark .light-contrast-section .faq-chevron {
+  color: #865237 !important;
+}
+
+
 
 
 

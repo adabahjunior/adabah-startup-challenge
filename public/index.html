@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>THE ADABAH STARTUP CHALLENGE 2026 | Build. Pitch. Grow.</title>
   
-  <!-- Early Theme Init to avoid flash of wrong theme -->
+  <!-- Early Theme Init: Dark Theme Default -->
   <script>
     (function() {
       try {
         var theme = localStorage.getItem('adabah_theme');
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
+        if (theme === 'light') {
           document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
         }
       } catch(e) {}
     })();
@@ -321,92 +321,98 @@
     <!-- 2. INTERACTIVE SECTOR TRACK EXPLORER                     -->
     <!-- (Clean SVG icons, dynamic spotlight, zero emojis)        -->
     <!-- ======================================================== -->
-    <section id="tracks" class="py-20 sm:py-28 lg:py-32 max-w-6xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 fade-up">
-      <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest font-mono">SECTOR TRACKS</span>
-        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">
-          Challenge Arenas
-        </h2>
-        <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/75 mt-2">
-          Select a sector track to explore market opportunities and high-impact ideas.
-        </p>
-      </div>
+    <!-- ======================================================== -->
+    <!-- 2. INTERACTIVE SECTOR TRACK EXPLORER (LIGHT CONTRAST)    -->
+    <!-- (Clean SVG icons, dynamic spotlight, zero emojis)        -->
+    <!-- ======================================================== -->
+    <section id="tracks" class="light-contrast-section w-full border-t border-b border-[#865237]/20 py-20 sm:py-28 lg:py-32 fade-up">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+          <span class="text-xs uppercase font-bold text-[#865237] tracking-widest font-mono">SECTOR TRACKS</span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] mt-1">
+            Challenge Arenas
+          </h2>
+          <p class="text-xs sm:text-sm text-[#5C3D2E] mt-2">
+            Select a sector track to explore market opportunities and high-impact ideas.
+          </p>
+        </div>
 
-      <!-- Horizontal Pill Tabs with Clean SVG Icons -->
-      <div id="track-tabs-container" class="flex items-center justify-start sm:justify-center gap-2.5 overflow-x-auto pb-4 mb-8 scrollbar-none">
-        <button type="button" class="track-pill-tab active" data-track="fintech">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-          <span>FinTech</span>
-        </button>
-        <button type="button" class="track-pill-tab" data-track="agritech">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-          <span>AgriTech</span>
-        </button>
-        <button type="button" class="track-pill-tab" data-track="healthtech">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-          <span>HealthTech</span>
-        </button>
-        <button type="button" class="track-pill-tab" data-track="deeptech">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
-          <span>AI & Robotics</span>
-        </button>
-        <button type="button" class="track-pill-tab" data-track="climatetech">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          <span>ClimateTech</span>
-        </button>
-        <button type="button" class="track-pill-tab" data-track="edtech">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5"/></svg>
-          <span>EdTech</span>
-        </button>
-        <button type="button" class="track-pill-tab" data-track="consumer">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-          <span>Consumer</span>
-        </button>
-      </div>
+        <!-- Horizontal Pill Tabs with Clean SVG Icons -->
+        <div id="track-tabs-container" class="flex items-center justify-start sm:justify-center gap-2.5 overflow-x-auto pb-4 mb-8 scrollbar-none">
+          <button type="button" class="track-pill-tab active" data-track="fintech">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            <span>FinTech</span>
+          </button>
+          <button type="button" class="track-pill-tab" data-track="agritech">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            <span>AgriTech</span>
+          </button>
+          <button type="button" class="track-pill-tab" data-track="healthtech">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <span>HealthTech</span>
+          </button>
+          <button type="button" class="track-pill-tab" data-track="deeptech">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+            <span>AI & Robotics</span>
+          </button>
+          <button type="button" class="track-pill-tab" data-track="climatetech">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <span>ClimateTech</span>
+          </button>
+          <button type="button" class="track-pill-tab" data-track="edtech">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5"/></svg>
+            <span>EdTech</span>
+          </button>
+          <button type="button" class="track-pill-tab" data-track="consumer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            <span>Consumer</span>
+          </button>
+        </div>
 
-      <!-- Dynamic Spotlight Card (Driven by antigravity-fx.js) -->
-      <div id="track-spotlight-card" class="clean-card p-8 sm:p-12 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/20 dark:border-[#dfa04e]/30 shadow-lg transition-all duration-300 relative overflow-hidden">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-          <div class="space-y-4 max-w-2xl">
-            <div class="flex items-center gap-3.5">
-              <div id="track-spotlight-icon" class="minimal-icon-box">
-                <svg class="w-6 h-6 text-[#865237] dark:text-[#dfa04e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        <!-- Dynamic Spotlight Card (Driven by antigravity-fx.js) -->
+        <div id="track-spotlight-card" class="clean-card p-8 sm:p-12 rounded-3xl bg-white border border-[#865237]/20 shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div class="space-y-4 max-w-2xl">
+              <div class="flex items-center gap-3.5">
+                <div id="track-spotlight-icon" class="minimal-icon-box">
+                  <svg class="w-6 h-6 text-[#865237]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                </div>
+                <div>
+                  <span id="track-spotlight-tag" class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#865237] block">FINANCIAL INFRASTRUCTURE</span>
+                  <h3 id="track-spotlight-title" class="font-display font-black text-xl sm:text-2xl text-[#1A0F09]">FinTech & Payments</h3>
+                </div>
               </div>
-              <div>
-                <span id="track-spotlight-tag" class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e] block">FINANCIAL INFRASTRUCTURE</span>
-                <h3 id="track-spotlight-title" class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white">FinTech & Payments</h3>
+              
+              <h4 id="track-spotlight-headline" class="font-display font-bold text-sm sm:text-base text-[#865237] leading-snug">
+                Next-Gen Financial Rails for Emerging Markets
+              </h4>
+              
+              <p id="track-spotlight-desc" class="text-xs sm:text-sm text-[#5C3D2E] leading-relaxed">
+                Campus wallets, micro-savings, inventory credit scoring, and frictionless mobile transactions.
+              </p>
+
+              <div class="pt-2">
+                <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#865237] mb-2.5">Focus Venture Areas:</div>
+                <div id="track-spotlight-ideas" class="flex flex-wrap gap-2">
+                  <span class="track-idea-badge px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#865237]/15 text-[11px] sm:text-xs font-semibold text-[#1A0F09] inline-flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> Merchant Micro-POS
+                  </span>
+                  <span class="track-idea-badge px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#865237]/15 text-[11px] sm:text-xs font-semibold text-[#1A0F09] inline-flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> Campus Credit Identity
+                  </span>
+                  <span class="track-idea-badge px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#865237]/15 text-[11px] sm:text-xs font-semibold text-[#1A0F09] inline-flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> Digital Group Savings
+                  </span>
+                </div>
               </div>
             </div>
-            
-            <h4 id="track-spotlight-headline" class="font-display font-bold text-sm sm:text-base text-[#865237] dark:text-[#dfa04e] leading-snug">
-              Next-Gen Financial Rails for Emerging Markets
-            </h4>
-            
-            <p id="track-spotlight-desc" class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed">
-              Campus wallets, micro-savings, inventory credit scoring, and frictionless mobile transactions.
-            </p>
 
-            <div class="pt-2">
-              <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e] mb-2.5">Focus Venture Areas:</div>
-              <div id="track-spotlight-ideas" class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[11px] sm:text-xs font-semibold text-[#1A0F09] dark:text-[#f5d6b4] inline-flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> Merchant Micro-POS
-                </span>
-                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[11px] sm:text-xs font-semibold text-[#1A0F09] dark:text-[#f5d6b4] inline-flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> Campus Credit Identity
-                </span>
-                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-[#865237]/15 dark:border-white/10 text-[11px] sm:text-xs font-semibold text-[#1A0F09] dark:text-[#f5d6b4] inline-flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#dfa04e]"></span> Digital Group Savings
-                </span>
-              </div>
+            <div class="lg:text-right flex flex-col justify-center items-start lg:items-end gap-3.5 border-t lg:border-t-0 lg:border-l border-[#865237]/15 pt-6 lg:pt-0 lg:pl-10 flex-shrink-0">
+              <span class="text-xs text-[#5C3D2E]">Building in this space?</span>
+              <button class="apply-trigger-btn px-6 py-3 rounded-full btn-antigravity-primary text-xs font-bold whitespace-nowrap shadow-md cursor-pointer">
+                Apply in This Track →
+              </button>
             </div>
-          </div>
-
-          <div class="lg:text-right flex flex-col justify-center items-start lg:items-end gap-3.5 border-t lg:border-t-0 lg:border-l border-[#865237]/15 dark:border-[#f5d6b4]/10 pt-6 lg:pt-0 lg:pl-10 flex-shrink-0">
-            <span class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">Building in this space?</span>
-            <button class="apply-trigger-btn px-6 py-3 rounded-full btn-antigravity-primary text-xs font-bold whitespace-nowrap shadow-md cursor-pointer">
-              Apply in This Track →
-            </button>
           </div>
         </div>
       </div>
@@ -493,73 +499,75 @@
     </section>
 
     <!-- ======================================================== -->
-    <!-- 4. PRIZE & PERKS BENTO GRID                              -->
+    <!-- ======================================================== -->
+    <!-- 4. PRIZE & PERKS BENTO GRID (LIGHT CONTRAST)             -->
     <!-- (Minimalist SVG icons, spacious layout, zero emojis)     -->
     <!-- ======================================================== -->
-    <section id="prize" class="py-20 sm:py-28 lg:py-32 max-w-6xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
-      
-      <div class="clean-card p-10 sm:p-16 rounded-3xl bg-gradient-to-b from-[#F4EDE4] via-white to-[#FAF7F2] dark:from-[#24140b] dark:via-[#1a0f09] dark:to-[#120904] border-2 border-[#865237] dark:border-[#dfa04e]/60 shadow-xl mb-10 fade-up">
-        <div class="max-w-3xl mx-auto text-center space-y-5">
-          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#865237]/10 dark:bg-[#dfa04e]/20 text-[#865237] dark:text-[#dfa04e] text-xs font-mono font-bold">
-            <span>NON-DILUTIVE SEED CAPITAL</span>
-          </span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-[#1A0F09] dark:text-white tracking-tight">
-            GH₵3,000 CASH PRIZE
-          </h2>
-          <p class="text-xs sm:text-base text-[#5C3D2E] dark:text-[#f5d6b4]/85 max-w-lg mx-auto leading-relaxed">
-            Equity-free capital awarded immediately to the winning venture to finance prototype tooling, inventory, or commercial launch.
-          </p>
-          <div class="pt-2">
-            <button class="apply-trigger-btn px-8 py-3.5 rounded-full btn-antigravity-primary text-xs font-black shadow-lg cursor-pointer">
-              Compete for GH₵3,000 →
-            </button>
+    <section id="prize" class="light-contrast-section w-full border-t border-b border-[#865237]/20 py-20 sm:py-28 lg:py-32 fade-up">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="clean-card p-10 sm:p-16 rounded-3xl bg-white border-2 border-[#865237] shadow-xl mb-10 fade-up">
+          <div class="max-w-3xl mx-auto text-center space-y-5">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#865237]/10 text-[#865237] text-xs font-mono font-bold">
+              <span>NON-DILUTIVE SEED CAPITAL</span>
+            </span>
+            <h2 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-[#1A0F09] tracking-tight">
+              GH₵3,000 CASH PRIZE
+            </h2>
+            <p class="text-xs sm:text-base text-[#5C3D2E] max-w-lg mx-auto leading-relaxed">
+              Equity-free capital awarded immediately to the winning venture to finance prototype tooling, inventory, or commercial launch.
+            </p>
+            <div class="pt-2">
+              <button class="apply-trigger-btn px-8 py-3.5 rounded-full btn-antigravity-primary text-xs font-black shadow-lg cursor-pointer">
+                Compete for GH₵3,000 →
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Perks Quad Bento (Clean SVG Icons) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-        
-        <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-3 fade-up">
-          <div class="minimal-icon-box">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <!-- Perks Quad Bento (Clean SVG Icons) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+          
+          <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white border border-[#865237]/15 shadow-sm space-y-3 fade-up">
+            <div class="minimal-icon-box">
+              <svg class="w-5 h-5 text-[#865237]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h4 class="font-display font-bold text-base text-[#1A0F09]">0% Equity Dilution</h4>
+            <p class="text-xs text-[#5C3D2E] leading-relaxed">
+              Founders retain 100% of equity, ownership, and intellectual property.
+            </p>
           </div>
-          <h4 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">0% Equity Dilution</h4>
-          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
-            Founders retain 100% of equity, ownership, and intellectual property.
-          </p>
-        </div>
 
-        <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-3 fade-up delay-100">
-          <div class="minimal-icon-box">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white border border-[#865237]/15 shadow-sm space-y-3 fade-up delay-100">
+            <div class="minimal-icon-box">
+              <svg class="w-5 h-5 text-[#865237]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <h4 class="font-display font-bold text-base text-[#1A0F09]">1-on-1 Mentorship</h4>
+            <p class="text-xs text-[#5C3D2E] leading-relaxed">
+              Direct working sessions with seasoned founders, operators, and tech leaders.
+            </p>
           </div>
-          <h4 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">1-on-1 Mentorship</h4>
-          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
-            Direct working sessions with seasoned founders, operators, and tech leaders.
-          </p>
-        </div>
 
-        <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-3 fade-up delay-200">
-          <div class="minimal-icon-box">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
+          <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white border border-[#865237]/15 shadow-sm space-y-3 fade-up delay-200">
+            <div class="minimal-icon-box">
+              <svg class="w-5 h-5 text-[#865237]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
+            </div>
+            <h4 class="font-display font-bold text-base text-[#1A0F09]">Live Pitch Stage</h4>
+            <p class="text-xs text-[#5C3D2E] leading-relaxed">
+              Present in front of an invited audience of investors and campus leadership.
+            </p>
           </div>
-          <h4 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">Live Pitch Stage</h4>
-          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
-            Present in front of an invited audience of investors and campus leadership.
-          </p>
-        </div>
 
-        <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-3 fade-up delay-300">
-          <div class="minimal-icon-box">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <div class="clean-card p-6 sm:p-8 rounded-2xl bg-white border border-[#865237]/15 shadow-sm space-y-3 fade-up delay-300">
+            <div class="minimal-icon-box">
+              <svg class="w-5 h-5 text-[#865237]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h4 class="font-display font-bold text-base text-[#1A0F09]">Campus Community</h4>
+            <p class="text-xs text-[#5C3D2E] leading-relaxed">
+              Join an active network of top student builders and founders at UMaT, Tarkwa.
+            </p>
           </div>
-          <h4 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">Campus Community</h4>
-          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 leading-relaxed">
-            Join an active network of top student builders and founders at UMaT, Tarkwa.
-          </p>
-        </div>
 
+        </div>
       </div>
     </section>
 
@@ -695,105 +703,109 @@
       </div>
     </section>
 
-    <!-- FREQUENTLY ASKED QUESTIONS -->
-    <section id="faq" class="py-20 sm:py-28 lg:py-32 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 fade-up">
-      <div class="text-center mb-10">
-        <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">Clarifications</span>
-        <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">Frequently Asked Questions</h2>
-      </div>
-
-      <div class="space-y-3" id="faq-accordion">
-        
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>Who can apply?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            Students with an existing business, startup or promising venture may apply.
-          </div>
+    <!-- ======================================================== -->
+    <!-- FREQUENTLY ASKED QUESTIONS (LIGHT CONTRAST)              -->
+    <!-- ======================================================== -->
+    <section id="faq" class="light-contrast-section w-full border-t border-b border-[#865237]/20 py-20 sm:py-28 lg:py-32 fade-up">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10">
+          <span class="text-xs uppercase font-bold text-[#865237] tracking-widest">Clarifications</span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] mt-1">Frequently Asked Questions</h2>
         </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>Do I need to have a registered company?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            Not necessarily. The focus is on the strength and potential of the venture.
+        <div class="space-y-3" id="faq-accordion">
+          
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>Who can apply?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              Students with an existing business, startup or promising venture may apply.
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>Is there an application fee?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            No. Applying is completely free.
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>Do I need to have a registered company?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              Not necessarily. The focus is on the strength and potential of the venture.
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>Is the programme free?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            Yes. Selected participants will participate in the programme at no cost.
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>Is there an application fee?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              No. Applying is completely free.
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>What can I win?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            The winner will receive a GH₵3,000 cash prize, alongside the exposure and opportunities provided through the programme.
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>Is the programme free?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              Yes. Selected participants will participate in the programme at no cost.
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>Do I need to already be making money?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            No. However, existing businesses and ventures with demonstrated progress are encouraged to apply.
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>What can I win?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              The winner will receive a GH₵3,000 cash prize, alongside the exposure and opportunities provided through the programme.
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>How will participants be selected?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            Applications will be reviewed based on factors including the problem, solution, market opportunity, business model, traction, innovation and growth potential.
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>Do I need to already be making money?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              No. However, existing businesses and ventures with demonstrated progress are encouraged to apply.
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>Can I apply with a business I am already running?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            Yes. Existing student-owned businesses are welcome to apply.
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>How will participants be selected?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              Applications will be reviewed based on factors including the problem, solution, market opportunity, business model, traction, innovation and growth potential.
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm overflow-hidden">
-          <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] dark:text-white hover:text-[#865237] dark:hover:text-[#dfa04e] transition-colors cursor-pointer">
-            <span>What happens after I apply?</span>
-            <svg class="faq-chevron w-4 h-4 text-[#865237] dark:text-[#f5d6b4] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
-            Your application will be reviewed. Selected applicants will be contacted with information about the next stage of the programme.
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>Can I apply with a business I am already running?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              Yes. Existing student-owned businesses are welcome to apply.
+            </div>
           </div>
-        </div>
 
+          <div class="faq-item rounded-2xl bg-white border border-[#865237]/15 shadow-sm overflow-hidden">
+            <button class="faq-toggle w-full p-4 sm:p-5 text-left flex items-center justify-between text-sm font-bold text-[#1A0F09] hover:text-[#865237] transition-colors cursor-pointer">
+              <span>What happens after I apply?</span>
+              <svg class="faq-chevron w-4 h-4 text-[#865237] transform transition-transform duration-300 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-content hidden px-4 sm:px-5 pb-5 text-xs text-[#5C3D2E] leading-relaxed">
+              Your application will be reviewed. Selected applicants will be contacted with information about the next stage of the programme.
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
 

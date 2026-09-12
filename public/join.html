@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Join Startup Team | THE ADABAH STARTUP CHALLENGE 2026</title>
 
-  <!-- Early Theme Init to avoid flash of wrong theme -->
+  <!-- Early Theme Init: Dark Theme Default -->
   <script>
     (function() {
       try {
         var theme = localStorage.getItem('adabah_theme');
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
+        if (theme === 'light') {
           document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
         }
       } catch(e) {}
     })();
