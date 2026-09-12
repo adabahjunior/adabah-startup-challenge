@@ -1,7 +1,7 @@
 {
-  "videoUrl": "",
-  "videoEnabled": false,
-  "videoOpacity": 0.25,
+  "videoUrl": "https://shvnajqmpwnppnvvienx.supabase.co/storage/v1/object/public/adabah-media/1789228934307_5db32f37_Shark_Tank_Best_Pitch_Ever_-_H.mp4",
+  "videoEnabled": true,
+  "videoOpacity": 0.8,
   "posterUrl": "",
-  "updatedAt": "2026-09-12T15:42:53.696Z"
+  "updatedAt": "2026-09-12T16:02:33.710Z"
 }
