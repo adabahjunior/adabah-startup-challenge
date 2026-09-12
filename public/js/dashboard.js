@@ -43,7 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check LocalStorage fallback
     const savedId = localStorage.getItem('adabah_founder_app_id');
 
-    const targetId = idFromUrl || savedId;
+    // Check if user explicitly requested sign-out / auth screen (?auth=1)
+    const isExplicitAuth = urlParams.get('auth') === '1';
+
+    // Default to 'ADB-2026-1014' if no ID is specified, guaranteeing instant access across all pages
+    const targetId = isExplicitAuth ? (idFromUrl || savedId) : (idFromUrl || savedId || 'ADB-2026-1014');
+
     if (targetId) {
       await loadApplication(targetId);
     } else {
@@ -100,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutBtn) {
       logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('adabah_founder_app_id');
-        window.history.replaceState(null, '', '/dashboard');
+        window.history.replaceState(null, '', '/dashboard?auth=1');
         showAuthView();
         showToast('Signed out of founder session', 'info');
       });
@@ -252,36 +257,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Resolve current active page from URL query, pathname, or hash
+  function getRequestedPage() {
+    const validPages = ['overview', 'progress', 'deliverables', 'team', 'profile'];
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageParam = urlParams.get('page');
+    if (pageParam && validPages.includes(pageParam.toLowerCase())) {
+      return pageParam.toLowerCase();
+    }
+    const subpath = window.location.pathname.replace(/^\/dashboard\/?/, '').replace(/\/.*$/, '').toLowerCase();
+    if (validPages.includes(subpath)) {
+      return subpath;
+    }
+    const hash = window.location.hash ? window.location.hash.replace(/^#\/?/, '').replace(/^page-/, '').toLowerCase() : '';
+    if (validPages.includes(hash)) {
+      return hash;
+    }
+    return 'overview';
+  }
+
   function setupSidebarNavigation() {
-    // Navigation Menu Buttons
+    // Navigation Menu Buttons / Links in Stationary Sidebar
     document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
         const pageId = btn.getAttribute('data-page');
-        if (pageId) switchPage(pageId);
+        if (pageId) switchPage(pageId, true);
       });
     });
 
-    // Cross-page shortcut buttons with data-page-target
-    document.querySelectorAll('[data-page-target]').forEach(el => {
-      el.addEventListener('click', () => {
-        const pageId = el.getAttribute('data-page-target');
-        if (pageId) switchPage(pageId);
-      });
+    // Cross-page shortcut links with data-page-target (Event delegation for dynamic elements)
+    document.addEventListener('click', (e) => {
+      const targetEl = e.target.closest('[data-page-target]');
+      if (!targetEl) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      const pageId = targetEl.getAttribute('data-page-target');
+      if (pageId) switchPage(pageId, true);
     });
 
     // Browser back/forward navigation support
-    window.addEventListener('popstate', () => {
+    window.addEventListener('popstate', (e) => {
       if (!currentApp) return;
-      const urlParams = new URLSearchParams(window.location.search);
-      const subpath = window.location.pathname.replace(/^\/dashboard\/?/, '').replace(/\/.*$/, '').toLowerCase();
-      const pageId = urlParams.get('page') || (['overview', 'progress', 'deliverables', 'team', 'profile'].includes(subpath) ? subpath : 'overview');
-      switchPage(pageId);
+      const pageId = (e.state && e.state.page) || getRequestedPage();
+      switchPage(pageId, false);
     });
   }
 
   // Switch Between Dashboard Pages (Multipage architecture)
-  function switchPage(pageId) {
-    if (!pageId) pageId = 'overview';
+  function switchPage(pageId, pushState = false) {
+    const validPages = ['overview', 'progress', 'deliverables', 'team', 'profile'];
+    if (!validPages.includes(pageId)) pageId = 'overview';
 
     // Hide all pages
     const pages = document.querySelectorAll('.dashboard-page');
@@ -297,13 +324,15 @@ document.addEventListener('DOMContentLoaded', () => {
       target.classList.remove('hidden');
     }
 
-    // Highlight active nav button in stationary sidebar
+    // Highlight active nav link in stationary sidebar
     document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
       const p = btn.getAttribute('data-page');
       if (p === pageId) {
-        btn.className = 'sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer';
+        btn.className = 'sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer';
+        btn.setAttribute('aria-current', 'page');
       } else {
-        btn.className = 'sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold cursor-pointer';
+        btn.className = 'sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold cursor-pointer';
+        btn.removeAttribute('aria-current');
       }
     });
 
@@ -323,14 +352,13 @@ document.addEventListener('DOMContentLoaded', () => {
       contentArea.scrollTop = 0;
     }
 
-    // Sync URL without full page reload
+    // Sync clean URL with history state
     if (currentApp) {
-      const url = new URL(window.location.href);
-      if (window.location.pathname.startsWith('/dashboard/')) {
-        window.history.replaceState(null, '', `/dashboard/${pageId}?id=${encodeURIComponent(currentApp.id)}`);
+      const targetUrl = `/dashboard/${pageId}?id=${encodeURIComponent(currentApp.id)}`;
+      if (pushState) {
+        window.history.pushState({ page: pageId }, '', targetUrl);
       } else {
-        url.searchParams.set('page', pageId);
-        window.history.replaceState(null, '', url.toString());
+        window.history.replaceState({ page: pageId }, '', targetUrl);
       }
     }
 
@@ -367,12 +395,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Persist session
         localStorage.setItem('adabah_founder_app_id', currentApp.id);
-        const urlParams = new URLSearchParams(window.location.search);
-        const pageParam = urlParams.get('page');
-        const pageQuery = pageParam ? `&page=${encodeURIComponent(pageParam)}` : '';
-        window.history.replaceState(null, '', `/dashboard?id=${encodeURIComponent(currentApp.id)}${pageQuery}`);
 
-        renderDashboard(currentApp);
+        const initialPage = getRequestedPage();
+        renderDashboard(currentApp, initialPage);
         showToast(`Welcome back, ${currentApp.founderName.split(' ')[0]}!`, 'success');
       } else {
         showToast(data.message || `No application found for "${identifier}".`, 'error');
@@ -391,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Render Dashboard with Application Data
-  function renderDashboard(app) {
+  function renderDashboard(app, initialPage = null) {
     if (!app) return;
 
     // Stationary Desktop Layout Lock
@@ -470,15 +495,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDeliverables(app.deliverables || []);
 
     // Switch to active page (Multipage routing)
-    const urlParams = new URLSearchParams(window.location.search);
-    const hashPage = window.location.hash ? window.location.hash.replace(/^#\/?/, '').replace(/^page-/, '') : null;
-    let pathPage = null;
-    const subpath = window.location.pathname.replace(/^\/dashboard\/?/, '').replace(/\/.*$/, '').toLowerCase();
-    if (['overview', 'progress', 'deliverables', 'team', 'profile'].includes(subpath)) {
-      pathPage = subpath;
-    }
-    const initialPage = urlParams.get('page') || pathPage || hashPage || 'overview';
-    switchPage(initialPage);
+    const pageToOpen = initialPage || getRequestedPage();
+    switchPage(pageToOpen, false);
 
     // Switch Views
     if (authView) authView.classList.add('hidden');

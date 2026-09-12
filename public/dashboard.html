@@ -218,50 +218,50 @@
 
         <!-- Navigation Menu (Multipage Selectors) -->
         <nav class="space-y-1 text-xs font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
-          <button
-            type="button"
+          <a
+            href="/dashboard/overview"
             data-page="overview"
-            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📊</span>
             <span class="truncate">Overview</span>
-          </button>
+          </a>
 
-          <button
-            type="button"
+          <a
+            href="/dashboard/progress"
             data-page="progress"
-            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📈</span>
             <span class="truncate">Evaluation Stage</span>
-          </button>
+          </a>
 
-          <button
-            type="button"
+          <a
+            href="/dashboard/deliverables"
             data-page="deliverables"
-            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📤</span>
             <span class="truncate">Submissions &amp; Pitch</span>
-          </button>
+          </a>
 
-          <button
-            type="button"
+          <a
+            href="/dashboard/team"
             data-page="team"
-            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">👥</span>
             <span class="truncate">Startup Team</span>
-          </button>
+          </a>
 
-          <button
-            type="button"
+          <a
+            href="/dashboard/profile"
             data-page="profile"
-            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📝</span>
             <span class="truncate">Venture Profile</span>
-          </button>
+          </a>
         </nav>
 
       </div>
@@ -359,30 +359,30 @@
 
           <!-- Fast Stats Strip (Clickable to switch pages) -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 text-xs">
-            <button
-              type="button"
+            <a
+              href="/dashboard/team"
               data-page-target="team"
               class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
               <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Team Size →</span>
               <span id="stat-team-size" class="font-bold text-[#1A0F09] dark:text-white text-sm">1 Member</span>
-            </button>
-            <button
-              type="button"
+            </a>
+            <a
+              href="/dashboard/deliverables"
               data-page-target="deliverables"
               class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
               <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Submissions →</span>
               <span id="stat-submissions-count" class="font-bold text-[#1A0F09] dark:text-white text-sm">0 Items</span>
-            </button>
-            <button
-              type="button"
+            </a>
+            <a
+              href="/dashboard/deliverables"
               data-page-target="deliverables"
               class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
               <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Pitch Deck →</span>
               <span id="stat-deck-status" class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Attached</span>
-            </button>
+            </a>
             <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
               <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Cohort Starts</span>
               <span class="font-bold text-[#865237] dark:text-[#dfa04e] text-sm">2 Nov 2026</span>
@@ -399,13 +399,13 @@
               </h3>
               <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">Current stage in the selection process</p>
             </div>
-            <button
-              type="button"
+            <a
+              href="/dashboard/progress"
               data-page-target="progress"
               class="px-3 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer flex items-center gap-1"
             >
               <span>View Evaluation Page</span> →
-            </button>
+            </a>
           </div>
 
           <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2 text-xs">
@@ -431,13 +431,13 @@
               </p>
             </div>
             <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 flex items-center justify-between">
-              <button
-                type="button"
+              <a
+                href="/dashboard/team"
                 data-page-target="team"
                 class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
               >
                 Manage Team →
-              </button>
+              </a>
               <button
                 type="button"
                 onclick="document.getElementById('add-team-modal').classList.remove('hidden')"
@@ -458,13 +458,13 @@
               </p>
             </div>
             <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 flex items-center justify-between">
-              <button
-                type="button"
+              <a
+                href="/dashboard/deliverables"
                 data-page-target="deliverables"
                 class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
               >
                 Open Submissions →
-              </button>
+              </a>
               <button
                 type="button"
                 onclick="document.getElementById('submit-deliverable-modal').classList.remove('hidden')"
@@ -485,19 +485,13 @@
               </p>
             </div>
             <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 flex items-center justify-between">
-              <button
-                type="button"
+              <a
+                href="/dashboard/profile"
                 data-page-target="profile"
                 class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
               >
                 View Profile →
-              </button>
-              <button
-                type="button"
-                class="open-profile-modal-btn px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-xs font-semibold text-[#1A0F09] dark:text-white cursor-pointer"
-              >
-                Edit
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -507,6 +501,13 @@
       <!-- PAGE 2: EVALUATION STAGE -->
       <!-- ======================================================== -->
       <div id="page-progress" class="dashboard-page hidden space-y-6">
+        <div class="flex items-center gap-2 text-xs">
+          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+            <span>←</span> Overview
+          </a>
+          <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold">Evaluation Stage</span>
+        </div>
         <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/10 dark:border-[#f5d6b4]/10 pb-4">
             <div>
@@ -609,6 +610,13 @@
       <!-- PAGE 3: SUBMISSIONS & PITCH -->
       <!-- ======================================================== -->
       <div id="page-deliverables" class="dashboard-page hidden space-y-6">
+        <div class="flex items-center gap-2 text-xs">
+          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+            <span>←</span> Overview
+          </a>
+          <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold">Submissions &amp; Pitch</span>
+        </div>
         <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/10 dark:border-[#f5d6b4]/10 pb-4">
             <div>
@@ -723,6 +731,13 @@
       <!-- PAGE 4: STARTUP TEAM -->
       <!-- ======================================================== -->
       <div id="page-team" class="dashboard-page hidden space-y-6">
+        <div class="flex items-center gap-2 text-xs">
+          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+            <span>←</span> Overview
+          </a>
+          <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold">Startup Team</span>
+        </div>
         <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/10 dark:border-[#f5d6b4]/10 pb-4">
             <div class="flex items-center gap-2">
@@ -784,6 +799,13 @@
       <!-- PAGE 5: VENTURE PROFILE -->
       <!-- ======================================================== -->
       <div id="page-profile" class="dashboard-page hidden space-y-6">
+        <div class="flex items-center gap-2 text-xs">
+          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+            <span>←</span> Overview
+          </a>
+          <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold">Venture Profile</span>
+        </div>
         <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5 text-xs">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-4">
             <div>
