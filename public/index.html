@@ -953,9 +953,11 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="adabah-field-label">
-                <span>University / Institution / Campus <span class="text-[#B91C1C] dark:text-[#F87171] font-bold">*</span></span>
+                <span>University / Campus <span class="text-[#B91C1C] dark:text-[#F87171] font-bold">*</span></span>
               </label>
-              <input type="text" name="city" placeholder="e.g. University of Ghana / KNUST / Ashesi" required />
+              <select name="city" class="adabah-select" required>
+                <option value="UMaT, Tarkwa" selected>UMaT, Tarkwa</option>
+              </select>
             </div>
             <div>
               <label class="adabah-field-label">
@@ -1292,7 +1294,7 @@
 
   <!-- Scripts -->
   <script src="/js/app.js"></script>
-  <script src="/js/application.js"></script>
+  <script src="/js/application.js?v=20260912-8"></script>
   <script src="/js/admin.js"></script>
 </body>
 </html>

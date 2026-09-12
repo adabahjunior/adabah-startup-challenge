@@ -60,7 +60,7 @@
     "founderPhone": "+233550617425",
     "founderRole": "Founder",
     "academicLevel": "Undergraduate (Year 1 - 2)",
-    "teamSize": 3,
+    "teamSize": 2,
     "primaryGoal": "",
     "problem": "iho;ehoijheaodiuidoiuiiecjedcb jdbcjllqw",
     "solution": "iqwkxwqicniqwknxoqwxoknwwwwxwsoxl'w;icjf",
@@ -69,35 +69,8 @@
     "deckUrl": "https://www.h.com",
     "videoUrl": "",
     "heardFrom": "Direct Website",
-    "team": [
-      {
-        "id": "TM-1789208431511-173",
-        "name": "Kofi Mensah",
-        "role": "Co-Founder & CTO",
-        "email": "teammate.1789208430819@knust.edu.gh",
-        "phone": "0245741757",
-        "campus": "Kwame Nkrumah University of Science and Technology (KNUST)",
-        "school": "Kwame Nkrumah University of Science and Technology (KNUST)",
-        "joinedAt": "2026-09-12T10:20:31.511Z",
-        "linkedin": "https://linkedin.com/in/kofimensah",
-        "studentId": "20819284",
-        "academicLevel": "Undergraduate (Level 300)"
-      },
-      {
-        "id": "TM-1789208498220-675",
-        "name": "Kofi Mensah",
-        "email": "teammate.1789208497656@knust.edu.gh",
-        "phone": "0243055968",
-        "role": "Co-Founder & CTO",
-        "school": "Kwame Nkrumah University of Science and Technology (KNUST)",
-        "campus": "Kwame Nkrumah University of Science and Technology (KNUST)",
-        "academicLevel": "Undergraduate (Level 300)",
-        "studentId": "20819284",
-        "linkedin": "https://linkedin.com/in/kofimensah",
-        "joinedAt": "2026-09-12T10:21:38.220Z"
-      }
-    ],
+    "team": [],
     "deliverables": [],
-    "inviteCode": "INV-2026-1014-9AD5B9"
+    "inviteCode": "INV-2026-1014-EA9B99"
   }
 ]

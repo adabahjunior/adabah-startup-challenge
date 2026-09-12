@@ -22,8 +22,6 @@
   const customRoleInput = document.getElementById('join-custom-role');
 
   const schoolSelect = document.getElementById('join-school-select');
-  const customSchoolContainer = document.getElementById('custom-school-container');
-  const customSchoolInput = document.getElementById('join-custom-school');
 
   const form = document.getElementById('team-join-form');
   const submitBtn = document.getElementById('join-submit-btn');
@@ -50,21 +48,6 @@
         customRoleContainer.classList.add('hidden');
         customRoleInput.required = false;
         customRoleInput.value = '';
-      }
-    });
-  }
-
-  // School dropdown toggle custom input
-  if (schoolSelect && customSchoolContainer && customSchoolInput) {
-    schoolSelect.addEventListener('change', () => {
-      if (schoolSelect.value === 'Other') {
-        customSchoolContainer.classList.remove('hidden');
-        customSchoolInput.required = true;
-        customSchoolInput.focus();
-      } else {
-        customSchoolContainer.classList.add('hidden');
-        customSchoolInput.required = false;
-        customSchoolInput.value = '';
       }
     });
   }
@@ -175,10 +158,7 @@
         role = customRoleInput ? customRoleInput.value.trim() : '';
       }
 
-      let school = schoolSelect ? schoolSelect.value : '';
-      if (school === 'Other') {
-        school = customSchoolInput ? customSchoolInput.value.trim() : '';
-      }
+      let school = schoolSelect && schoolSelect.value ? schoolSelect.value.trim() : 'UMaT, Tarkwa';
 
       const academicLevel = document.getElementById('join-academic').value;
       const studentId = document.getElementById('join-studentid').value.trim();

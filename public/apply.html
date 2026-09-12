@@ -290,13 +290,10 @@
                 <label class="adabah-field-label">
                   <span>University / Campus <span class="text-[#B91C1C] dark:text-[#F87171] font-bold">*</span></span>
                 </label>
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="e.g. UMaT, KNUST, UG Legon, UCC"
-                  required
-                />
-                <p class="adabah-field-hint">Name of your school or campus</p>
+                <select name="city" class="adabah-select" required>
+                  <option value="UMaT, Tarkwa" selected>UMaT, Tarkwa</option>
+                </select>
+                <p class="adabah-field-hint">Eligible university campus</p>
               </div>
 
               <div>
@@ -612,6 +609,6 @@
 
   <!-- Scripts -->
   <script src="/js/app.js"></script>
-  <script src="/js/application.js"></script>
+  <script src="/js/application.js?v=20260912-8"></script>
 </body>
 </html>
