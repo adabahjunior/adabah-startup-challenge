@@ -83,12 +83,13 @@
       </a>
 
       <!-- Clean Header Links (Desktop) -->
-      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+      <nav class="hidden md:flex items-center gap-5 text-sm font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
         <a href="#about" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">About</a>
         <a href="#who-it-is-for" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Who It's For</a>
         <a href="#how-it-works" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">How It Works</a>
         <a href="#criteria" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Judging</a>
         <a href="#prize" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Prize</a>
+        <a href="#stories" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Stories</a>
         <a href="#faq" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">FAQ</a>
         <a href="/dashboard" class="hover:text-[#1A0F09] dark:hover:text-white transition-colors">Dashboard</a>
         <a href="#tracker" class="text-[#865237] dark:text-[#dfa04e] hover:underline flex items-center gap-1">
@@ -123,12 +124,17 @@
       <a href="#how-it-works" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">How It Works</a>
       <a href="#criteria" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Judging Criteria</a>
       <a href="#prize" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Prize (GH₵3,000)</a>
+      <a href="#stories" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Stories & News</a>
       <a href="#faq" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">FAQ</a>
+      <a href="/dashboard" class="block py-2 text-sm text-[#5C3D2E] dark:text-[#f5d6b4] font-semibold">Founder Dashboard</a>
       <a href="#tracker" class="block py-2 text-sm text-[#865237] dark:text-[#dfa04e] font-bold">Application Tracker</a>
       <div class="pt-3 flex flex-col gap-2">
         <button id="mobile-apply-btn" class="w-full py-3 rounded-xl btn-adabah-primary font-bold text-sm text-center">
           Apply for Challenge
         </button>
+        <a href="/admin" class="w-full py-2.5 rounded-xl border border-[#865237]/25 dark:border-[#dfa04e]/30 text-center text-xs font-bold text-[#865237] dark:text-[#dfa04e] hover:bg-black/5">
+          Admin Portal ↗
+        </a>
       </div>
     </div>
   </header>
@@ -627,6 +633,29 @@
       </p>
     </section>
 
+    <!-- LATEST UPDATES & STORIES -->
+    <section id="stories" class="py-16 sm:py-20 max-w-6xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+        <div>
+          <span class="text-xs uppercase font-bold text-[#865237] dark:text-[#dfa04e] tracking-widest">News & Insights</span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-[#1A0F09] dark:text-white mt-1">Latest Updates & Stories</h2>
+          <p class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1 max-w-lg">
+            Stay informed with official announcements, founder advice, and key milestones from the challenge organizing team.
+          </p>
+        </div>
+        <a href="/admin" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#865237] dark:text-[#dfa04e] hover:underline whitespace-nowrap">
+          <span>Admin & Editorial Desk</span> →
+        </a>
+      </div>
+
+      <!-- Dynamic Public Blogs Grid -->
+      <div id="public-blogs-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="col-span-full text-center py-12 text-[#5C3D2E] dark:text-[#f5d6b4]/60 text-xs">
+          Loading stories and updates...
+        </div>
+      </div>
+    </section>
+
     <!-- FREQUENTLY ASKED QUESTIONS -->
     <section id="faq" class="py-14 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10">
       <div class="text-center mb-10">
@@ -789,10 +818,12 @@
         <a href="#about" class="hover:text-white">About</a>
         <a href="#how-it-works" class="hover:text-white">How It Works</a>
         <a href="#prize" class="hover:text-white">Prize</a>
+        <a href="#stories" class="hover:text-white">Stories</a>
         <a href="#faq" class="hover:text-white">FAQ</a>
         <a href="#tracker" class="hover:text-white">Tracker</a>
+        <a href="/dashboard" class="hover:text-white">Dashboard</a>
         <a href="/apply" class="text-[#dfa04e] hover:underline font-bold">Apply Portal ↗</a>
-        <button id="open-admin-btn" class="text-[#dfa04e] hover:underline font-bold cursor-pointer">Reviewer Portal</button>
+        <a href="/admin" class="text-[#dfa04e] hover:underline font-bold">Admin Portal ↗</a>
       </div>
     </div>
   </footer>
@@ -1236,6 +1267,32 @@
           <option value="rejected">Rejected</option>
         </select>
         <button id="save-status-btn" class="px-4 py-2 rounded-lg btn-adabah-primary font-bold cursor-pointer">Save Status</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG ARTICLE READER MODAL -->
+  <div id="blog-reader-modal" class="fixed inset-0 z-50 hidden overflow-y-auto modal-overlay flex items-center justify-center p-3 sm:p-6">
+    <div class="relative w-full max-w-3xl bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/20 dark:border-[#f5d6b4]/30 shadow-2xl overflow-hidden my-6 max-h-[90vh] flex flex-col">
+      <div class="px-5 sm:px-6 py-4 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-center justify-between bg-[#FAF7F2] dark:bg-[#120904] flex-shrink-0">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#865237] dark:text-[#dfa04e]" id="reader-blog-tag">Official Announcement</span>
+        <button id="close-reader-modal-btn" class="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 flex items-center justify-center text-[#5C3D2E] dark:text-[#f5d6b4]/70 hover:text-[#1A0F09] dark:hover:text-white transition-colors text-sm cursor-pointer">✕</button>
+      </div>
+      <div class="p-6 sm:p-8 overflow-y-auto space-y-5 flex-1">
+        <div id="reader-cover-container" class="w-full h-52 sm:h-72 rounded-2xl overflow-hidden bg-[#865237]/10 hidden">
+          <img id="reader-blog-cover" src="" alt="Article cover" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mb-2">
+            <span id="reader-blog-author" class="font-bold text-[#865237] dark:text-[#dfa04e]">Adabah Team</span>
+            <span>•</span>
+            <span id="reader-blog-date">Date</span>
+            <span>•</span>
+            <span id="reader-blog-readtime">5 min read</span>
+          </div>
+          <h2 id="reader-blog-title" class="font-display font-black text-2xl sm:text-3xl text-[#1A0F09] dark:text-white leading-tight"></h2>
+        </div>
+        <div id="reader-blog-content" class="text-xs sm:text-sm leading-relaxed text-[#5C3D2E] dark:text-[#f5d6b4]/90 space-y-3 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10"></div>
       </div>
     </div>
   </div>

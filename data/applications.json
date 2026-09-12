@@ -1,5 +1,47 @@
 [
   {
+    "id": "ADB-2026-8308",
+    "submittedAt": "2026-09-12T08:54:04.466Z",
+    "status": "submitted",
+    "statusNotes": "Application submitted successfully. Under preliminary compliance and eligibility screening.",
+    "score": null,
+    "startupName": "Afriklow",
+    "tagline": "kwjnkoqpwoijceo",
+    "foundedYear": "2026",
+    "stage": "idea",
+    "track": "fintech",
+    "website": "",
+    "country": "Ghana",
+    "city": "Dawhenya",
+    "founderName": "Adabah Junior",
+    "founderEmail": "adabahjunio@gmail.com",
+    "founderPhone": "+233550617425",
+    "founderRole": "Founder & CEO",
+    "academicLevel": "Undergraduate (Year 1 - 2)",
+    "teamSize": 2,
+    "primaryGoal": "Mentorship & Coaching",
+    "problem": "gfvfdvvfwertytkotioridngoswjw\\iojjw",
+    "solution": "iorjiozegnzieoiiehhuhkrgzroliriowaeuog",
+    "traction": "",
+    "fundingRaised": "Bootstrapped",
+    "deckUrl": "https://www.h.com",
+    "videoUrl": "",
+    "heardFrom": "Direct Website",
+    "team": [],
+    "deliverables": [
+      {
+        "id": "DEL-1789203244465-deck",
+        "title": "Initial Pitch Deck",
+        "milestone": "pitch_deck",
+        "deliverableType": "deck",
+        "url": "https://www.h.com",
+        "notes": "Submitted during application registration",
+        "submittedAt": "2026-09-12T08:54:04.465Z",
+        "status": "submitted"
+      }
+    ]
+  },
+  {
     "id": "ADB-2026-1014",
     "submittedAt": "2026-09-11T08:27:22.490Z",
     "status": "submitted",

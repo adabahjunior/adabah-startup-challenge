@@ -1,0 +1,14 @@
+[
+  {
+    "id": "BC-2026-101",
+    "timestamp": "2026-09-02T11:00:00.000Z",
+    "target": "All Applicants",
+    "targetType": "all",
+    "recipientCount": 1,
+    "recipients": ["0550617425"],
+    "message": "Welcome to The ADABAH Startup Challenge 2026! Access your founder dashboard at startup-challenge.adabah.org/dashboard to complete milestones.",
+    "sender": "Adabah",
+    "status": "DELIVERED",
+    "creditsUsed": 1
+  }
+]

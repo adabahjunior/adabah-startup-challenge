@@ -1,0 +1,44 @@
+[
+  {
+    "id": "BLOG-2026-001",
+    "title": "Announcing The ADABAH Startup Challenge 2026: GH₵3,000 Cash Prize for Student Founders",
+    "slug": "announcing-adabah-startup-challenge-2026",
+    "excerpt": "Empowering Ghanaian student entrepreneurs across tertiary institutions to build high-impact tech ventures with non-dilutive equity-free grants and executive mentorship.",
+    "category": "Announcements",
+    "author": "Michael Akrofi Junior Adabah",
+    "coverImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+    "published": true,
+    "publishedAt": "2026-09-01T10:00:00.000Z",
+    "views": 412,
+    "readingTime": "4 min read",
+    "content": "### The Journey Begins\n\nWe are beyond thrilled to announce the official opening of **The ADABAH Startup Challenge 2026**! Across campuses in Ghana, bold ideas are taking root—from financial inclusion and climate resilience to agricultural automation and decentralized healthcare.\n\nYet, the hardest milestone for any student founder is moving from theoretical validation to a working prototype in front of real customers. The ADABAH Challenge was created to bridge this exact funding and advisory gap.\n\n### What the Challenge Offers\n\n- **GH₵3,000 Non-Dilutive Equity-Free Cash Prize**: Capital that goes directly into customer acquisition, server infrastructure, and pilot deployment.\n- **Direct Mentorship with Industry Leaders**: Weekly hands-on workshops with seasoned venture builders, operators, and tech leads.\n- **Showcase at Demo Day**: Pitch your product directly to early-stage angel syndicates, venture capitalists, and ecosystem partners.\n\n### Eligible Tracks\n\n1. **FinTech**: Micro-savings, payments, remittances, cross-border commerce.\n2. **AgriTech**: Supply chain logistics, yield tracking, market price transparency.\n3. **HealthTech**: Telemedicine, prescription logistics, maternal wellness.\n4. **ClimateTech & Clean Energy**: Solar micro-grids, e-waste, sustainable packaging.\n5. **AI & DeepTech**: Applied computer vision, localized NLP, robotics.\n\nApplications close **November 2, 2026**. Ready to take your business to the next level? Apply today through the portal!"
+  },
+  {
+    "id": "BLOG-2026-002",
+    "title": "What Judges Look for in a Winning Student Startup Pitch Deck",
+    "slug": "what-judges-look-for-pitch-deck",
+    "excerpt": "A deep dive into the evaluation criteria for The ADABAH Startup Challenge: problem severity, unit economics, market size, and team velocity.",
+    "category": "Founder Guide",
+    "author": "Adabah Selection Committee",
+    "coverImage": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80",
+    "published": true,
+    "publishedAt": "2026-09-05T14:30:00.000Z",
+    "views": 289,
+    "readingTime": "5 min read",
+    "content": "### Beyond the Slides: What Really Moves the Needle\n\nWhen evaluating student applications, judges don't look for vanity metrics or buzzwords. They look for genuine insight into a real customer problem. Here are the four pillars our panel evaluates:\n\n#### 1. Problem Obsession Over Solution Romance\nCan you describe the pain point in visceral, specific terms? Have you spoken to 30+ real target users? Founders who understand user frustration in detail always outperform those who simply say 'we are the Uber for X'.\n\n#### 2. Realistic Unit Economics\nHow does this business actually make money? Even at an early stage, showing that you understand cost-to-serve versus willingness-to-pay signals operational maturity.\n\n#### 3. Execution Velocity\nHow fast is your team shipping? If you started 3 months ago, do you have a prototype, early pre-orders, or a waiting list? Velocity is the #1 predictor of student startup success.\n\n#### 4. Team Complementarity\nDoes your team have both building (engineering/product) and distribution (sales/marketing) capability? Balanced co-founding teams have a massive statistical advantage.\n\nMake sure your deliverables are updated on your Founder Dashboard before the review cutoff!"
+  },
+  {
+    "id": "BLOG-2026-003",
+    "title": "Building Products from Campus: 5 Lessons from West African Student Innovators",
+    "slug": "building-products-from-campus",
+    "excerpt": "Balancing academic deadlines with software releases: how student founders overcome early-stage hurdles and acquire their first 100 paying customers.",
+    "category": "Ecosystem",
+    "author": "Ecosystem Insights",
+    "coverImage": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",
+    "published": true,
+    "publishedAt": "2026-09-08T09:15:00.000Z",
+    "views": 341,
+    "readingTime": "3 min read",
+    "content": "### Turning Campus Dorms into Innovation Hubs\n\nSome of Africa's most transformative companies began inside university residence halls. Universities offer concentrated demographic density, zero-cost word-of-mouth distribution, and a sandbox of tech-native early adopters.\n\nHere are 5 battle-tested principles:\n\n1. **Treat Your Campus as a Micro-Market**: If you cannot dominate your university of 20,000 students, you cannot dominate a country of 30 million. Validate here first.\n2. **Leverage Campus Ambassadors**: Student networks travel faster via WhatsApp status updates and hostel group chats than any paid Meta ad campaign.\n3. **Set Ruthless Priorities**: Block dedicated startup sprints during lecture breaks and weekends.\n4. **Build With No-Code / Fast Stacks First**: Don't spend 6 months building custom microservices when a solid monolithic web app or Supabase backend solves the user problem today.\n5. **Apply for Non-Dilutive Competitions**: Contests like The ADABAH Challenge provide non-dilutive capital that doesn't dilute your cap table early on.\n\nStay focused, keep talking to users, and submit your deliverables on time!"
+  }
+]

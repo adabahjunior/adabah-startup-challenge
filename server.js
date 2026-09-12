@@ -15,6 +15,8 @@ const PUBLIC_DIR = path.join(__dirname, 'public');
 const DATA_DIR = path.join(__dirname, 'data');
 const APPLICATIONS_FILE = path.join(DATA_DIR, 'applications.json');
 const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
+const BLOGS_FILE = path.join(DATA_DIR, 'blogs.json');
+const BROADCASTS_FILE = path.join(DATA_DIR, 'broadcasts.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -886,6 +888,345 @@ const server = http.createServer(async (req, res) => {
         }
       }
 
+      // ========================================================
+      // 10. BLOGS & NEWS CMS ENDPOINTS
+      // ========================================================
+
+      // 10a. GET /api/blogs - List blogs (public or admin ?all=true)
+      if (pathname === '/api/blogs' && method === 'GET') {
+        const blogs = readJsonFile(BLOGS_FILE, []);
+        const { all, category, search } = parsedUrl.query;
+
+        let filtered = [...blogs];
+        if (all !== 'true') {
+          filtered = filtered.filter(b => b.published !== false);
+        }
+        if (category && category !== 'all') {
+          filtered = filtered.filter(b => b.category && b.category.toLowerCase() === category.toLowerCase());
+        }
+        if (search) {
+          const q = search.toLowerCase();
+          filtered = filtered.filter(b =>
+            (b.title && b.title.toLowerCase().includes(q)) ||
+            (b.excerpt && b.excerpt.toLowerCase().includes(q)) ||
+            (b.content && b.content.toLowerCase().includes(q))
+          );
+        }
+
+        filtered.sort((a, b) => new Date(b.publishedAt || b.createdAt || 0) - new Date(a.publishedAt || a.createdAt || 0));
+        return sendJson(res, 200, { success: true, count: filtered.length, blogs: filtered, data: filtered });
+      }
+
+      // 10b. GET /api/blogs/:id - Get single blog details & increment view count
+      const blogMatch = pathname.match(/^\/api\/blogs\/([^\/]+)$/);
+      if (blogMatch && method === 'GET') {
+        const idOrSlug = blogMatch[1].trim().toLowerCase();
+        const blogs = readJsonFile(BLOGS_FILE, []);
+        const blogIndex = blogs.findIndex(b =>
+          (b.id && b.id.toLowerCase() === idOrSlug) ||
+          (b.slug && b.slug.toLowerCase() === idOrSlug)
+        );
+
+        if (blogIndex === -1) {
+          return sendJson(res, 404, { success: false, message: 'Article not found' });
+        }
+
+        // Increment view count
+        blogs[blogIndex].views = (blogs[blogIndex].views || 0) + 1;
+        writeJsonFile(BLOGS_FILE, blogs);
+
+        return sendJson(res, 200, { success: true, data: blogs[blogIndex] });
+      }
+
+      // 10c. POST /api/blogs - Create new blog article
+      if (pathname === '/api/blogs' && method === 'POST') {
+        const body = await parseBody(req);
+        if (!body.title || !body.title.trim()) {
+          return sendJson(res, 400, { success: false, message: 'Article title is required.' });
+        }
+        if (!body.content || !body.content.trim()) {
+          return sendJson(res, 400, { success: false, message: 'Article content is required.' });
+        }
+
+        const blogs = readJsonFile(BLOGS_FILE, []);
+        const randomSuffix = Math.floor(100 + Math.random() * 900);
+        const slug = body.slug ? body.slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') : body.title.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        
+        const wordCount = body.content.trim().split(/\s+/).length;
+        const readingTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
+
+        const newBlog = {
+          id: 'BLOG-2026-' + randomSuffix,
+          title: body.title.trim(),
+          slug: slug,
+          excerpt: body.excerpt ? body.excerpt.trim() : body.content.trim().slice(0, 180) + '...',
+          category: body.category || 'Challenge News',
+          author: body.author ? body.author.trim() : 'ADABAH Editorial',
+          coverImage: body.coverImage ? body.coverImage.trim() : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
+          published: body.published !== false,
+          publishedAt: body.published !== false ? new Date().toISOString() : null,
+          createdAt: new Date().toISOString(),
+          views: 0,
+          readingTime: readingTime,
+          content: body.content.trim()
+        };
+
+        blogs.unshift(newBlog);
+        writeJsonFile(BLOGS_FILE, blogs);
+
+        return sendJson(res, 201, {
+          success: true,
+          message: 'Article created successfully!',
+          data: newBlog
+        });
+      }
+
+      // 10d. PUT/PATCH /api/blogs/:id - Update existing blog article
+      if (blogMatch && (method === 'PUT' || method === 'PATCH')) {
+        const id = blogMatch[1].trim();
+        const body = await parseBody(req);
+        const blogs = readJsonFile(BLOGS_FILE, []);
+        const idx = blogs.findIndex(b => b.id.toLowerCase() === id.toLowerCase() || b.slug.toLowerCase() === id.toLowerCase());
+
+        if (idx === -1) {
+          return sendJson(res, 404, { success: false, message: 'Article not found.' });
+        }
+
+        if (body.title) blogs[idx].title = body.title.trim();
+        if (body.slug) blogs[idx].slug = body.slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        if (body.excerpt) blogs[idx].excerpt = body.excerpt.trim();
+        if (body.category) blogs[idx].category = body.category;
+        if (body.author) blogs[idx].author = body.author.trim();
+        if (body.coverImage !== undefined) blogs[idx].coverImage = body.coverImage.trim();
+        if (body.content) {
+          blogs[idx].content = body.content.trim();
+          const wordCount = blogs[idx].content.split(/\s+/).length;
+          blogs[idx].readingTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
+        }
+        if (body.published !== undefined) {
+          blogs[idx].published = !!body.published;
+          if (blogs[idx].published && !blogs[idx].publishedAt) {
+            blogs[idx].publishedAt = new Date().toISOString();
+          }
+        }
+        blogs[idx].updatedAt = new Date().toISOString();
+
+        writeJsonFile(BLOGS_FILE, blogs);
+        return sendJson(res, 200, { success: true, message: 'Article updated successfully.', data: blogs[idx] });
+      }
+
+      // 10e. DELETE /api/blogs/:id - Delete blog article
+      if (blogMatch && method === 'DELETE') {
+        const id = blogMatch[1].trim();
+        const blogs = readJsonFile(BLOGS_FILE, []);
+        const filtered = blogs.filter(b => b.id.toLowerCase() !== id.toLowerCase() && b.slug.toLowerCase() !== id.toLowerCase());
+
+        if (filtered.length === blogs.length) {
+          return sendJson(res, 404, { success: false, message: 'Article not found.' });
+        }
+
+        writeJsonFile(BLOGS_FILE, filtered);
+        return sendJson(res, 200, { success: true, message: 'Article deleted successfully.' });
+      }
+
+      // ========================================================
+      // 11. STARTUP TEAMS DIRECTORY API
+      // ========================================================
+
+      // 11a. GET /api/admin/teams - Directory of all teams & members
+      if (pathname === '/api/admin/teams' && method === 'GET') {
+        let apps = await supabaseDb.getApplications();
+        if (!apps) {
+          apps = readJsonFile(APPLICATIONS_FILE, []);
+        }
+
+        let totalMembersCount = 0;
+        const teams = apps.map(app => {
+          const members = Array.isArray(app.team) ? app.team : [];
+          const teamSize = members.length + 1; // Founder + team members
+          totalMembersCount += teamSize;
+
+          return {
+            appId: app.id,
+            startupName: app.startupName,
+            tagline: app.tagline || '',
+            track: app.track,
+            stage: app.stage,
+            status: app.status,
+            country: app.country,
+            city: app.city,
+            academicLevel: app.academicLevel,
+            leadFounder: {
+              name: app.founderName,
+              email: app.founderEmail,
+              phone: app.founderPhone,
+              role: app.founderRole || 'Lead Founder / CEO',
+              academicLevel: app.academicLevel
+            },
+            members: members,
+            teamSize: teamSize,
+            submittedAt: app.submittedAt
+          };
+        });
+
+        return sendJson(res, 200, {
+          success: true,
+          count: teams.length,
+          totalMembers: totalMembersCount,
+          teams: teams,
+          data: teams
+        });
+      }
+
+      // ========================================================
+      // 12. SMS BROADCAST CENTER APIs (via BMS Africa)
+      // ========================================================
+
+      // 12a. POST /api/admin/broadcast-sms - Dispatch Broadcast Campaign
+      if (pathname === '/api/admin/broadcast-sms' && method === 'POST') {
+        const body = await parseBody(req);
+        const { targetType, targetValue, message, customRecipients } = body;
+
+        if (!message || !message.trim()) {
+          return sendJson(res, 400, { success: false, message: 'Broadcast message content cannot be empty.' });
+        }
+
+        let apps = await supabaseDb.getApplications();
+        if (!apps) {
+          apps = readJsonFile(APPLICATIONS_FILE, []);
+        }
+
+        let targetApps = [...apps];
+        let phoneList = [];
+
+        if (targetType === 'track') {
+          targetApps = targetApps.filter(a => a.track && a.track.toLowerCase() === String(targetValue).toLowerCase());
+        } else if (targetType === 'status') {
+          targetApps = targetApps.filter(a => a.status && a.status.toLowerCase() === String(targetValue).toLowerCase());
+        }
+
+        if (targetType === 'custom') {
+          if (customRecipients) {
+            phoneList = String(customRecipients).split(/[\n,;]+/).map(p => p.trim()).filter(Boolean);
+          }
+        } else {
+          // Gather founder phones and team member phones
+          targetApps.forEach(a => {
+            if (a.founderPhone) phoneList.push(a.founderPhone);
+            if (Array.isArray(a.team)) {
+              a.team.forEach(m => {
+                if (m.phone) phoneList.push(m.phone);
+              });
+            }
+          });
+        }
+
+        // Deduplicate and normalize phones
+        const uniquePhones = Array.from(new Set(phoneList.map(p => bmsService.formatBmsPhone(p)).filter(Boolean)));
+
+        if (uniquePhones.length === 0) {
+          return sendJson(res, 400, {
+            success: false,
+            message: 'No recipients with valid mobile phone numbers found for the selected target.'
+          });
+        }
+
+        console.log(`\n=======================================================`);
+        console.log(`📢 [ADMIN BROADCAST INITIATED]`);
+        console.log(`🎯 Target: ${targetType} ${targetValue ? '(' + targetValue + ')' : ''}`);
+        console.log(`👥 Recipient Count: ${uniquePhones.length}`);
+        console.log(`💬 Message: "${message.trim()}"`);
+        console.log(`=======================================================\n`);
+
+        const sendResults = [];
+        for (const phone of uniquePhones) {
+          const sendRes = await bmsService.sendBmsSms(phone, message.trim());
+          sendResults.push({ phone, ...sendRes });
+        }
+
+        const deliveredCount = sendResults.filter(r => r.success).length;
+
+        // Record campaign to broadcast history
+        const broadcasts = readJsonFile(BROADCASTS_FILE, []);
+        const campaignRecord = {
+          id: 'BC-' + Date.now(),
+          timestamp: new Date().toISOString(),
+          target: targetType || 'All Applicants',
+          targetValue: targetValue || '',
+          recipientCount: uniquePhones.length,
+          deliveredCount: deliveredCount,
+          recipients: uniquePhones,
+          message: message.trim(),
+          sender: bmsService.BMS_SENDER_ID,
+          status: deliveredCount > 0 ? 'DELIVERED' : 'FAILED',
+          creditsUsed: deliveredCount
+        };
+
+        broadcasts.unshift(campaignRecord);
+        writeJsonFile(BROADCASTS_FILE, broadcasts);
+
+        // Fetch remaining BMS balance
+        const bmsInfo = await bmsService.checkBmsAccount();
+
+        return sendJson(res, 200, {
+          success: true,
+          message: `Broadcast sent successfully to ${deliveredCount} of ${uniquePhones.length} recipients.`,
+          recipientCount: uniquePhones.length,
+          deliveredCount: deliveredCount,
+          bmsBalanceRemaining: bmsInfo.balance,
+          campaign: campaignRecord
+        });
+      }
+
+      // 12b. GET /api/admin/broadcasts - Broadcast Campaign History
+      if (pathname === '/api/admin/broadcasts' && method === 'GET') {
+        const broadcasts = readJsonFile(BROADCASTS_FILE, []);
+        return sendJson(res, 200, { success: true, count: broadcasts.length, data: broadcasts });
+      }
+
+      // ========================================================
+      // 13. ADMIN CENTRAL OVERVIEW METRICS
+      // ========================================================
+
+      // 13a. GET /api/admin/summary - Central Metrics
+      if (pathname === '/api/admin/summary' && method === 'GET') {
+        let apps = await supabaseDb.getApplications();
+        if (!apps) {
+          apps = readJsonFile(APPLICATIONS_FILE, []);
+        }
+
+        const blogs = readJsonFile(BLOGS_FILE, []);
+        const broadcasts = readJsonFile(BROADCASTS_FILE, []);
+        const bmsInfo = await bmsService.checkBmsAccount();
+
+        let totalTeamMembers = 0;
+        const trackBreakdown = {};
+        const statusBreakdown = {};
+
+        apps.forEach(a => {
+          totalTeamMembers += 1 + (Array.isArray(a.team) ? a.team.length : 0);
+          trackBreakdown[a.track || 'general'] = (trackBreakdown[a.track || 'general'] || 0) + 1;
+          statusBreakdown[a.status || 'submitted'] = (statusBreakdown[a.status || 'submitted'] || 0) + 1;
+        });
+
+        return sendJson(res, 200, {
+          success: true,
+          data: {
+            totalApplications: apps.length,
+            totalTeams: apps.length,
+            totalTeamMembers: totalTeamMembers,
+            totalBlogs: blogs.length,
+            publishedBlogs: blogs.filter(b => b.published !== false).length,
+            totalBroadcasts: broadcasts.length,
+            bmsBalance: bmsInfo.balance !== undefined ? bmsInfo.balance : 'N/A',
+            bmsSenderId: bmsInfo.senderId || 'Adabah',
+            bmsStatus: bmsInfo.senderStatus || 'approved',
+            trackBreakdown,
+            statusBreakdown
+          }
+        });
+      }
+
       // Unhandled API Route
       return sendJson(res, 404, { success: false, message: 'API Endpoint not found' });
     } catch (apiError) {
@@ -907,6 +1248,11 @@ const server = http.createServer(async (req, res) => {
   // Route /dashboard or /dashboard/* to public/dashboard.html
   if (parsedUrl.pathname === '/dashboard' || parsedUrl.pathname.startsWith('/dashboard/')) {
     filePath = path.join(PUBLIC_DIR, 'dashboard.html');
+  }
+
+  // Route /admin or /admin/* to public/admin.html
+  if (parsedUrl.pathname === '/admin' || parsedUrl.pathname.startsWith('/admin/')) {
+    filePath = path.join(PUBLIC_DIR, 'admin.html');
   }
 
   // Clean URL support: e.g. /apply -> apply.html

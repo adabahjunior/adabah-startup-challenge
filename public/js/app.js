@@ -492,6 +492,181 @@ function initTheme() {
   });
 }
 
+// Public Blog Stories Logic
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function renderArticleMarkdown(text) {
+  if (!text) return '';
+  const blocks = text.split(/\n\n+/);
+  return blocks.map(block => {
+    block = block.trim();
+    if (!block) return '';
+    if (block.startsWith('### ')) {
+      return `<h4 class="font-display font-bold text-base sm:text-lg text-[#1A0F09] dark:text-white mt-4 mb-1">${escapeHtml(block.slice(4))}</h4>`;
+    }
+    if (block.startsWith('## ')) {
+      return `<h3 class="font-display font-bold text-lg sm:text-xl text-[#1A0F09] dark:text-white mt-5 mb-2">${escapeHtml(block.slice(3))}</h3>`;
+    }
+    if (block.startsWith('# ')) {
+      return `<h2 class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white mt-6 mb-2">${escapeHtml(block.slice(2))}</h2>`;
+    }
+    if (block.startsWith('- ') || block.startsWith('* ')) {
+      const items = block.split('\n').map(li => {
+        const clean = li.replace(/^[-*]\s+/, '');
+        return `<li class="ml-4 list-disc">${formatInline(clean)}</li>`;
+      }).join('');
+      return `<ul class="space-y-1.5 my-2.5 text-[#5C3D2E] dark:text-[#f5d6b4]/85">${items}</ul>`;
+    }
+    return `<p class="mb-3 leading-relaxed text-[#5C3D2E] dark:text-[#f5d6b4]/90">${formatInline(block)}</p>`;
+  }).join('');
+}
+
+function formatInline(str) {
+  let clean = escapeHtml(str);
+  clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-[#1A0F09] dark:text-white">$1</strong>');
+  clean = clean.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  clean = clean.replace(/\[(.*?)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-[#865237] dark:text-[#dfa04e] underline font-semibold">$1</a>');
+  return clean;
+}
+
+let publicBlogsCache = [];
+
+function openBlogReader(blogId) {
+  const blog = publicBlogsCache.find(b => b.id === blogId);
+  if (!blog) return;
+
+  const modal = document.getElementById('blog-reader-modal');
+  if (!modal) return;
+
+  const tagEl = document.getElementById('reader-blog-tag');
+  const authorEl = document.getElementById('reader-blog-author');
+  const dateEl = document.getElementById('reader-blog-date');
+  const readtimeEl = document.getElementById('reader-blog-readtime');
+  const titleEl = document.getElementById('reader-blog-title');
+  const coverContainer = document.getElementById('reader-cover-container');
+  const coverEl = document.getElementById('reader-blog-cover');
+  const contentEl = document.getElementById('reader-blog-content');
+
+  if (tagEl) tagEl.textContent = (blog.tags && blog.tags[0]) ? blog.tags[0].toUpperCase() : 'ANNOUNCEMENT';
+  if (authorEl) authorEl.textContent = blog.author || 'Adabah Team';
+  if (dateEl) dateEl.textContent = blog.createdAt ? new Date(blog.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '2026';
+  if (readtimeEl) readtimeEl.textContent = blog.readTime || '4 min read';
+  if (titleEl) titleEl.textContent = blog.title;
+
+  if (coverContainer && coverEl) {
+    if (blog.coverImage) {
+      coverEl.src = blog.coverImage;
+      coverContainer.classList.remove('hidden');
+    } else {
+      coverContainer.classList.add('hidden');
+    }
+  }
+
+  if (contentEl) {
+    contentEl.innerHTML = renderArticleMarkdown(blog.content || blog.excerpt || '');
+  }
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBlogReader() {
+  const modal = document.getElementById('blog-reader-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+window.openBlogReader = openBlogReader;
+window.closeBlogReader = closeBlogReader;
+
+async function initPublicBlogs() {
+  const grid = document.getElementById('public-blogs-grid');
+  if (!grid) return;
+
+  const closeBtn = document.getElementById('close-reader-modal-btn');
+  const modal = document.getElementById('blog-reader-modal');
+  if (closeBtn) closeBtn.addEventListener('click', closeBlogReader);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeBlogReader();
+    });
+  }
+
+  try {
+    const res = await fetch('/api/blogs');
+    const data = await res.json();
+    const blogList = (data && (data.blogs || data.data)) || [];
+    if (!res.ok || !data.success || blogList.length === 0) {
+      grid.innerHTML = `
+        <div class="col-span-full text-center py-10 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15">
+          <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">No articles published yet. Check back soon for challenge updates!</p>
+        </div>
+      `;
+      return;
+    }
+
+    publicBlogsCache = blogList;
+
+    grid.innerHTML = blogList.map(blog => {
+      const dateStr = blog.createdAt ? new Date(blog.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '2026';
+      const mainTag = (blog.tags && blog.tags[0]) ? blog.tags[0] : 'Insight';
+      const coverHtml = blog.coverImage
+        ? `<div class="w-full h-44 overflow-hidden bg-[#865237]/10"><img src="${escapeHtml(blog.coverImage)}" alt="${escapeHtml(blog.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy"></div>`
+        : `<div class="w-full h-44 bg-gradient-to-tr from-[#865237] via-[#a46543] to-[#dfa04e] flex items-center justify-center p-6 text-center text-white"><span class="font-display font-black text-xl text-[#f5d6b4]">${escapeHtml(blog.title.slice(0, 30))}...</span></div>`;
+
+      return `
+        <article class="group rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm hover:shadow-xl hover:border-[#865237]/30 transition-all duration-300 flex flex-col overflow-hidden">
+          ${coverHtml}
+          <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <span class="px-2.5 py-1 rounded-full bg-[#865237]/10 dark:bg-[#dfa04e]/15 text-[#865237] dark:text-[#dfa04e] text-[10px] font-bold uppercase tracking-wider">
+                  ${escapeHtml(mainTag)}
+                </span>
+                <span class="text-[11px] text-[#5C3D2E]/70 dark:text-[#f5d6b4]/60 font-medium">${escapeHtml(blog.readTime || '4 min')}</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white leading-snug group-hover:text-[#865237] dark:group-hover:text-[#dfa04e] transition-colors line-clamp-2">
+                ${escapeHtml(blog.title)}
+              </h3>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 mt-2 line-clamp-3 leading-relaxed">
+                ${escapeHtml(blog.excerpt || '')}
+              </p>
+            </div>
+
+            <div class="pt-4 mt-4 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 flex items-center justify-between">
+              <div class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+                <span class="font-bold text-[#1A0F09] dark:text-white block truncate max-w-[120px]">${escapeHtml(blog.author || 'Adabah')}</span>
+                <span>${escapeHtml(dateStr)}</span>
+              </div>
+              <button type="button" onclick="openBlogReader('${escapeHtml(blog.id)}')" class="px-3.5 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs shadow-sm hover:scale-[1.02] cursor-pointer">
+                Read Story →
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+  } catch (err) {
+    console.error('Error fetching blogs:', err);
+    grid.innerHTML = `
+      <div class="col-span-full text-center py-8 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+        Unable to load stories at this moment. Please refresh later.
+      </div>
+    `;
+  }
+}
+
 // Global initialization
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -503,6 +678,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNewsletterForm();
   initMobileMenu();
   initPartnerModal();
+  initPublicBlogs();
 });
 
 
