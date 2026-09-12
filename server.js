@@ -39,9 +39,13 @@ function validateAdminToken(req) {
   return true;
 }
 
-// Ensure data directory exists
+// Ensure data and uploads directories exist
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+const UPLOADS_DIR = path.join(PUBLIC_DIR, 'uploads');
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
 
 // MIME types for static assets
@@ -94,8 +98,8 @@ function parseBody(req) {
     let body = '';
     req.on('data', chunk => {
       body += chunk;
-      // Protect against gigantic payloads (10MB limit)
-      if (body.length > 1e7) {
+      // Protect against gigantic payloads (25MB limit for image uploads)
+      if (body.length > 2.5e7) {
         req.connection.destroy();
         reject(new Error('Payload too large'));
       }
@@ -118,7 +122,7 @@ function sendJson(res, statusCode, payload) {
     'Content-Type': 'application/json; charset=utf-8',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type'
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-admin-token'
   });
   res.end(JSON.stringify(payload));
 }
@@ -186,7 +190,7 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-admin-token'
     });
     return res.end();
   }
@@ -962,6 +966,61 @@ const server = http.createServer(async (req, res) => {
           adminSessions.delete(token);
         }
         return sendJson(res, 200, { success: true, message: 'Admin session terminated.' });
+      }
+
+      // 9d. POST /api/admin/upload-image - Upload image for blog CMS
+      if (pathname === '/api/admin/upload-image' && method === 'POST') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+
+        try {
+          const body = await parseBody(req);
+          const { image, filename } = body;
+
+          if (!image) {
+            return sendJson(res, 400, { success: false, message: 'No image data provided.' });
+          }
+
+          let ext = '.jpg';
+          let base64Data = image;
+
+          const matches = image.match(/^data:image\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+          if (matches) {
+            const rawExt = matches[1].toLowerCase();
+            if (rawExt === 'jpeg') ext = '.jpg';
+            else if (['png', 'gif', 'webp', 'svg+xml'].includes(rawExt)) {
+              ext = rawExt === 'svg+xml' ? '.svg' : '.' + rawExt;
+            } else {
+              ext = '.' + rawExt;
+            }
+            base64Data = matches[2];
+          }
+
+          const buffer = Buffer.from(base64Data, 'base64');
+          if (buffer.length === 0) {
+            return sendJson(res, 400, { success: false, message: 'Invalid image buffer.' });
+          }
+
+          const cleanName = (filename || 'blog')
+            .replace(/\.[^/.]+$/, '')
+            .replace(/[^a-zA-Z0-9_-]/g, '_')
+            .substring(0, 30);
+          const uniqueFilename = `${Date.now()}_${crypto.randomBytes(4).toString('hex')}_${cleanName}${ext}`;
+          const targetPath = path.join(UPLOADS_DIR, uniqueFilename);
+
+          fs.writeFileSync(targetPath, buffer);
+
+          return sendJson(res, 201, {
+            success: true,
+            url: `/uploads/${uniqueFilename}`,
+            filename: uniqueFilename,
+            size: buffer.length
+          });
+        } catch (err) {
+          console.error('Error uploading image:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to upload image: ' + err.message });
+        }
       }
 
       // ========================================================

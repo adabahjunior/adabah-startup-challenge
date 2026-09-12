@@ -750,6 +750,112 @@ function startAdminDashboard() {
     }).join('');
   }
 
+  function resetBlogCover() {
+    const valInput = document.getElementById('blog-cover-val');
+    const fileInput = document.getElementById('blog-cover-file');
+    const dropzone = document.getElementById('blog-cover-dropzone');
+    const preview = document.getElementById('blog-cover-preview');
+    const previewImg = document.getElementById('blog-cover-preview-img');
+    const filenameBadge = document.getElementById('blog-cover-filename');
+    const statusEl = document.getElementById('blog-upload-status');
+
+    if (valInput) valInput.value = '';
+    if (fileInput) fileInput.value = '';
+    if (previewImg) previewImg.src = '';
+    if (preview) preview.classList.add('hidden');
+    if (dropzone) dropzone.classList.remove('hidden');
+    if (statusEl) statusEl.classList.add('hidden');
+    if (filenameBadge) filenameBadge.textContent = 'Uploaded Cover';
+  }
+
+  function setBlogCoverPreview(url, name = 'Uploaded Cover') {
+    const valInput = document.getElementById('blog-cover-val');
+    const dropzone = document.getElementById('blog-cover-dropzone');
+    const preview = document.getElementById('blog-cover-preview');
+    const previewImg = document.getElementById('blog-cover-preview-img');
+    const filenameBadge = document.getElementById('blog-cover-filename');
+
+    if (valInput) valInput.value = url;
+    if (previewImg) previewImg.src = url;
+    if (filenameBadge) filenameBadge.textContent = name;
+    if (dropzone) dropzone.classList.add('hidden');
+    if (preview) preview.classList.remove('hidden');
+  }
+
+  function readFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1600;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.85));
+        };
+        img.onerror = () => resolve(e.target.result);
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadBlogImageFile(file) {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      showToast('Please select a valid image file (PNG, JPG, WebP, GIF)', 'error');
+      return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+      showToast('Image file size must be under 15MB', 'warning');
+      return;
+    }
+
+    const statusEl = document.getElementById('blog-upload-status');
+    if (statusEl) statusEl.classList.remove('hidden');
+
+    try {
+      const base64Data = await readFileAsBase64(file);
+
+      const res = await adminFetch('/api/admin/upload-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: base64Data,
+          filename: file.name
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setBlogCoverPreview(data.url, file.name);
+        showToast('Image uploaded successfully!', 'success');
+      } else {
+        showToast(data.message || 'Failed to upload image', 'error');
+      }
+    } catch (err) {
+      console.error('Image upload failed:', err);
+      showToast('Failed to upload image.', 'error');
+    } finally {
+      if (statusEl) statusEl.classList.add('hidden');
+    }
+  }
+
   function setupBlogControls() {
     if (openCreateBlogBtn) {
       openCreateBlogBtn.addEventListener('click', () => {
@@ -757,6 +863,7 @@ function startAdminDashboard() {
         document.getElementById('blog-edit-id').value = '';
         document.getElementById('blog-modal-title').textContent = 'Write New Story / Announcement';
         document.getElementById('blog-published-input').checked = true;
+        resetBlogCover();
         blogModal.classList.remove('hidden');
       });
     }
@@ -779,6 +886,52 @@ function startAdminDashboard() {
       });
     }
 
+    // Image Upload & Dropzone setup
+    const dropzone = document.getElementById('blog-cover-dropzone');
+    const fileInput = document.getElementById('blog-cover-file');
+    const changeBtn = document.getElementById('blog-cover-change-btn');
+    const removeBtn = document.getElementById('blog-cover-remove-btn');
+
+    if (dropzone && fileInput) {
+      dropzone.addEventListener('click', () => fileInput.click());
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('border-[#865237]', 'bg-[#865237]/5');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('border-[#865237]', 'bg-[#865237]/5');
+        });
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+          uploadBlogImageFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          uploadBlogImageFile(e.target.files[0]);
+        }
+      });
+    }
+
+    if (changeBtn && fileInput) {
+      changeBtn.addEventListener('click', () => fileInput.click());
+    }
+
+    if (removeBtn) {
+      removeBtn.addEventListener('click', () => resetBlogCover());
+    }
+
     if (blogForm) {
       blogForm.addEventListener('submit', handleSaveBlog);
     }
@@ -791,7 +944,8 @@ function startAdminDashboard() {
     const category = document.getElementById('blog-category-select').value;
     const author = document.getElementById('blog-author-input').value.trim();
     const slug = document.getElementById('blog-slug-input').value.trim();
-    const coverImage = document.getElementById('blog-cover-input').value.trim();
+    const coverValEl = document.getElementById('blog-cover-val');
+    const coverImage = coverValEl ? coverValEl.value.trim() : '';
     const excerpt = document.getElementById('blog-excerpt-input').value.trim();
     const content = document.getElementById('blog-content-input').value.trim();
     const published = document.getElementById('blog-published-input').checked;
@@ -858,7 +1012,13 @@ function startAdminDashboard() {
     document.getElementById('blog-category-select').value = blog.category || 'Announcements';
     document.getElementById('blog-author-input').value = blog.author || '';
     document.getElementById('blog-slug-input').value = blog.slug || '';
-    document.getElementById('blog-cover-input').value = blog.coverImage || '';
+    
+    if (blog.coverImage) {
+      setBlogCoverPreview(blog.coverImage, 'Current Cover');
+    } else {
+      resetBlogCover();
+    }
+
     document.getElementById('blog-excerpt-input').value = blog.excerpt || '';
     document.getElementById('blog-content-input').value = blog.content || '';
     document.getElementById('blog-published-input').checked = blog.published !== false;

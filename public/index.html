@@ -878,7 +878,7 @@
 
           <div class="flex flex-col items-center gap-1 sm:gap-1.5 cursor-pointer" onclick="goToStep(4)">
             <div class="step-circle" id="step-circle-4">4</div>
-            <span class="step-label text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/60 hidden sm:block" id="step-lbl-4">Deck</span>
+            <span class="step-label text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/60 hidden sm:block" id="step-lbl-4">Confirm</span>
           </div>
 
           <div class="flex flex-col items-center gap-1 sm:gap-1.5 cursor-pointer" onclick="goToStep(5)">
@@ -1064,29 +1064,19 @@
           </div>
         </div>
 
-        <!-- STEP 4: DECK -->
+        <!-- STEP 4: CONFIRMATION & MEDIA -->
         <div class="app-step hidden space-y-5" id="app-step-4">
           <div class="border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 pb-3">
-            <h4 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Pitch Deck & Supporting Documents</h4>
-            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">Share your presentation slides or business summary.</p>
+            <h4 class="font-display font-bold text-lg text-[#1A0F09] dark:text-white">Supporting Media & Confirmation</h4>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">Optional video showcase and participant agreement.</p>
           </div>
 
           <div>
             <label class="adabah-field-label">
-              <span>Pitch Deck or Business Summary Link <span class="text-[#B91C1C] dark:text-[#F87171] font-bold">*</span></span>
-            </label>
-            <input type="url" name="deckUrl" placeholder="https://docs.google.com/presentation/... or Canva / Drive link" required />
-            <div class="mt-2 p-3 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-start gap-2 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80">
-              <span class="text-[#865237] dark:text-[#dfa04e] font-bold">💡</span>
-              <span>Ensure permissions are set to <strong>"Anyone with the link can view"</strong>.</span>
-            </div>
-          </div>
-
-          <div>
-            <label class="adabah-field-label">
-              <span>Optional Demo Video Link</span>
+              <span>Optional Demo Video or Prototype Link</span>
             </label>
             <input type="url" name="videoUrl" placeholder="https://youtube.com/... or Loom link" />
+            <p class="adabah-field-hint">Optional: A 60-second video demo or product link helps showcase your venture.</p>
           </div>
 
           <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#1a0f09] border border-[#865237]/15 dark:border-[#f5d6b4]/15">

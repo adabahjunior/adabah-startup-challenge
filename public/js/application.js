@@ -9,7 +9,7 @@ const stepTitles = [
   { step: 1, name: 'Founder Profile', desc: 'Lead founder & student status' },
   { step: 2, name: 'Venture & Track', desc: 'Startup identity & stage' },
   { step: 3, name: 'Problem & Solution', desc: 'Value proposition & progress' },
-  { step: 4, name: 'Pitch Deck & Links', desc: 'Presentation & verification' },
+  { step: 4, name: 'Supporting Media', desc: 'Video demo & confirmation' },
   { step: 5, name: 'Review & Submit', desc: 'Final application review' }
 ];
 
@@ -194,13 +194,7 @@ function validateCurrentStep() {
   }
 
   if (currentStep === 4) {
-    const deckUrl = form.deckUrl ? form.deckUrl.value.trim() : '';
     const terms = document.getElementById('terms-check');
-
-    if (!deckUrl || !deckUrl.startsWith('http')) {
-      showToast('Please provide a valid pitch deck or summary link (starting with https://)', 'error');
-      return false;
-    }
     if (terms && !terms.checked) {
       showToast('Please accept the accuracy and participation terms', 'error');
       return false;
@@ -300,19 +294,21 @@ function renderReviewSummary() {
       </div>
     </div>
 
-    <!-- Traction & Deck -->
+    <!-- Traction & Demo Video -->
     <div class="p-4 rounded-2xl bg-[#faf7f2] dark:bg-[#1a0f09] border border-[#865237]/20 dark:border-[#f5d6b4]/15 space-y-2 text-xs">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px] font-semibold block">Traction & Progress:</span>
           <span class="text-[#1a0f09] dark:text-white font-medium">${escapeHtml(data.traction || 'Early development stage')}</span>
         </div>
+        ${data.videoUrl ? `
         <div class="sm:text-right">
-          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px] font-semibold block">Pitch Deck / Summary:</span>
-          <a href="${escapeHtml(data.deckUrl || '#')}" target="_blank" class="inline-flex items-center gap-1.5 text-[#8F4C15] dark:text-[#dfa04e] font-bold hover:underline">
-            <span>Open Link ↗</span>
+          <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px] font-semibold block">Demo Video:</span>
+          <a href="${escapeHtml(data.videoUrl)}" target="_blank" class="inline-flex items-center gap-1.5 text-[#8F4C15] dark:text-[#dfa04e] font-bold hover:underline">
+            <span>Watch Video ↗</span>
           </a>
         </div>
+        ` : ''}
       </div>
     </div>
 
