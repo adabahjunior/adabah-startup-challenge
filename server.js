@@ -247,9 +247,13 @@ async function requestHandler(req, res) {
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname || '/';
 
-  // Support Vercel serverless rewrites where req.url was mapped to /api/index.js
-  if (pathname === '/api/index.js' || pathname === '/api' || pathname === '/api/') {
-    const matched = req.headers['x-matched-path'] || req.headers['x-now-route-matches'];
+  // Support Vercel serverless rewrites (__endpoint query parameter or headers)
+  if (parsedUrl.query && parsedUrl.query.__endpoint !== undefined) {
+    pathname = '/api' + (parsedUrl.query.__endpoint ? '/' + parsedUrl.query.__endpoint : '');
+  } else if (parsedUrl.query && parsedUrl.query.__upload) {
+    pathname = '/uploads/' + parsedUrl.query.__upload;
+  } else if (pathname === '/api/index.js' || pathname === '/api' || pathname === '/api/') {
+    const matched = req.headers['x-matched-path'] || req.headers['x-vercel-matched-path'] || req.headers['x-now-route-matches'];
     if (matched && matched.startsWith('/api')) {
       pathname = url.parse(matched).pathname;
     }
