@@ -637,3 +637,264 @@ html.dark .status-rejected {
   display: block !important;
 }
 
+/* ======================================================== */
+/* GOOGLE ANTIGRAVITY (antigravity.google) DESIGN TOKENS & FX */
+/* ======================================================== */
+
+/* Antigravity Pill Buttons */
+.btn-antigravity-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px !important;
+  background: linear-gradient(135deg, #dfa04e 0%, #ebb364 50%, #a46543 100%);
+  color: #120904 !important;
+  font-family: "Outfit", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding: 0.75rem 1.75rem;
+  border: none;
+  box-shadow: 0 4px 20px rgba(223, 160, 78, 0.35);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease;
+  cursor: pointer;
+}
+.btn-antigravity-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(223, 160, 78, 0.55);
+  filter: brightness(1.05);
+}
+.btn-antigravity-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-antigravity-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px !important;
+  background: rgba(134, 82, 55, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(134, 82, 55, 0.25);
+  color: var(--adabah-text) !important;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  padding: 0.75rem 1.6rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+html.dark .btn-antigravity-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(245, 214, 180, 0.2);
+  color: #fbf1e6 !important;
+}
+.btn-antigravity-secondary:hover {
+  background: rgba(134, 82, 55, 0.15);
+  border-color: #dfa04e;
+  transform: translateY(-2px);
+}
+html.dark .btn-antigravity-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #ebb364;
+  color: #ffffff !important;
+}
+
+/* Antigravity Pill Floating Badge */
+.antigravity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 9999px;
+  background: rgba(223, 160, 78, 0.14);
+  border: 1px solid rgba(223, 160, 78, 0.35);
+  color: #865237;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(223, 160, 78, 0.15);
+}
+html.dark .antigravity-badge {
+  background: rgba(223, 160, 78, 0.12);
+  border-color: rgba(223, 160, 78, 0.3);
+  color: #dfa04e;
+  box-shadow: 0 0 15px rgba(223, 160, 78, 0.1);
+}
+
+/* Antigravity Glass Cards with Hairline Borders */
+.antigravity-card {
+  border-radius: 1.75rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(134, 82, 55, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+html.dark .antigravity-card {
+  background: rgba(36, 20, 11, 0.7);
+  border-color: rgba(245, 214, 180, 0.12);
+}
+.antigravity-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(223, 160, 78, 0.5);
+  box-shadow: 0 16px 36px -10px rgba(134, 82, 55, 0.15);
+}
+html.dark .antigravity-card:hover {
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(223, 160, 78, 0.15);
+  border-color: rgba(223, 160, 78, 0.4);
+}
+
+/* Pre-Footer Hero CTA Card (Inspired by Antigravity's Download Section) */
+.antigravity-cta-section {
+  position: relative;
+  width: 100%;
+  border-radius: 2.25rem;
+  background: radial-gradient(circle at 50% 0%, rgba(223, 160, 78, 0.22), transparent 60%), #120904;
+  border: 1px solid rgba(223, 160, 78, 0.25);
+  color: #FAF7F2;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(18, 9, 4, 0.7);
+}
+.antigravity-cta-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.antigravity-cta-backdrop::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(223, 160, 78, 0.25) 0%, rgba(134, 82, 55, 0.1) 50%, transparent 70%);
+  filter: blur(40px);
+  border-radius: 50%;
+}
+
+/* Blinking Terminal Cursor */
+.blinking-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.15em;
+  background: #dfa04e;
+  vertical-align: -0.15em;
+  margin-left: 4px;
+  animation: cursorBlink 1s step-end infinite;
+  box-shadow: 0 0 8px rgba(223, 160, 78, 0.7);
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ======================================================== */
+/* SIGNATURE COLOSSAL "ANTIGRAVITY" PRE-FOOTER WORDMARK     */
+/* (Direct Geometry & Zero-Gravity Letter Physics)           */
+/* ======================================================== */
+
+#antigravity-footer-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  padding: 3rem 0 1.5rem;
+  user-select: none;
+}
+
+.footer-antigravity {
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  display: block;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+.footer-antigravity path {
+  fill: #1A0F09;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), fill 0.3s ease, filter 0.3s ease;
+  transform-origin: center bottom;
+  cursor: pointer;
+  will-change: transform;
+}
+
+html.dark .footer-antigravity path {
+  fill: #dfa04e;
+}
+
+/* Individual letter hover zero-gravity lift */
+.footer-antigravity path:hover {
+  transform: translateY(-24px) scale(1.03);
+  filter: drop-shadow(0 10px 18px rgba(223, 160, 78, 0.5));
+}
+html:not(.dark) .footer-antigravity path:hover {
+  fill: #865237;
+  filter: drop-shadow(0 10px 16px rgba(134, 82, 55, 0.35));
+}
+
+/* Zero-Gravity Defying Mode (When activated by scroll or Defy Gravity trigger) */
+#antigravity-footer-wrapper.defying-gravity #letter-A {
+  transform: translateY(-22px) rotate(-1deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-N {
+  transform: translateY(-38px) rotate(1.5deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-T {
+  transform: translateY(-50px) rotate(-2deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-I {
+  transform: translateY(-32px);
+}
+#antigravity-footer-wrapper.defying-gravity #dot-I1 {
+  transform: translateY(-68px) scale(1.15);
+  fill: #ebb364 !important;
+  filter: drop-shadow(0 0 12px rgba(223, 160, 78, 0.8));
+}
+#antigravity-footer-wrapper.defying-gravity #letter-G {
+  transform: translateY(-44px) rotate(1.2deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-R {
+  transform: translateY(-28px) rotate(-1deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-A2 {
+  transform: translateY(-46px) rotate(1.8deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-V {
+  transform: translateY(-34px) rotate(-1.5deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-I2 {
+  transform: translateY(-52px);
+}
+#antigravity-footer-wrapper.defying-gravity #dot-I2 {
+  transform: translateY(-80px) scale(1.15);
+  fill: #ebb364 !important;
+  filter: drop-shadow(0 0 12px rgba(223, 160, 78, 0.8));
+}
+#antigravity-footer-wrapper.defying-gravity #letter-T2 {
+  transform: translateY(-40px) rotate(-2deg);
+}
+#antigravity-footer-wrapper.defying-gravity #letter-Y {
+  transform: translateY(-56px) rotate(2deg);
+}
+
+/* Subtle idle levitation animation */
+@keyframes zeroGravityFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.zero-gravity-idle {
+  animation: zeroGravityFloat 5s ease-in-out infinite;
+}
+
+
