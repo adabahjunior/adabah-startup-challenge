@@ -1381,43 +1381,380 @@ function startAdminDashboard() {
     }
   }
 
-  function setupFounderControls() {
-    const photoFileInput = document.getElementById('founder-edit-photo-file');
-    const photoUrlInput = document.getElementById('founder-edit-photo-url');
-    const photoPreview = document.getElementById('founder-edit-photo-preview');
-    const form = document.getElementById('founder-editor-form');
-    const topSaveBtn = document.getElementById('save-founder-btn-top');
+  // ========================================================
+  // FOUNDER PHOTO CROPPER & ADJUSTMENT CONTROLLER
+  // ========================================================
+  let cropperImg = null;
+  let cropperScale = 1.0;
+  let cropperOffsetX = 0;
+  let cropperOffsetY = 0;
+  let isDraggingCropper = false;
+  let cropperDragStartX = 0;
+  let cropperDragStartY = 0;
+  let cropperInitialOffsetX = 0;
+  let cropperInitialOffsetY = 0;
+  let cropperInitialized = false;
 
-    if (photoUrlInput && photoPreview) {
-      photoUrlInput.addEventListener('input', () => {
-        const val = photoUrlInput.value.trim();
-        if (val) photoPreview.src = val;
+  function initCropperListeners() {
+    if (cropperInitialized) return;
+    cropperInitialized = true;
+
+    const modal = document.getElementById('founder-cropper-modal');
+    const closeBtn = document.getElementById('close-founder-cropper-btn');
+    const cancelBtn = document.getElementById('cancel-founder-cropper-btn');
+    const applyBtn = document.getElementById('apply-founder-cropper-btn');
+    const viewport = document.getElementById('cropper-viewport');
+    const canvas = document.getElementById('cropper-canvas');
+
+    const zoomSlider = document.getElementById('cropper-zoom-slider');
+    const zoomInBtn = document.getElementById('cropper-zoom-in');
+    const zoomOutBtn = document.getElementById('cropper-zoom-out');
+
+    const moveUpBtn = document.getElementById('cropper-move-up');
+    const moveDownBtn = document.getElementById('cropper-move-down');
+    const moveLeftBtn = document.getElementById('cropper-move-left');
+    const moveRightBtn = document.getElementById('cropper-move-right');
+    const centerBtn = document.getElementById('cropper-center-btn');
+    const resetBtn = document.getElementById('cropper-reset-btn');
+
+    if (closeBtn) closeBtn.addEventListener('click', closeFounderCropperModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeFounderCropperModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeFounderCropperModal();
       });
     }
 
-    if (photoFileInput && photoPreview) {
-      photoFileInput.addEventListener('change', async (e) => {
+    // Zoom controls
+    if (zoomSlider) {
+      zoomSlider.addEventListener('input', () => {
+        cropperScale = parseFloat(zoomSlider.value) || 1.0;
+        updateZoomBadge();
+        renderCropperCanvas();
+      });
+    }
+
+    if (zoomInBtn) {
+      zoomInBtn.addEventListener('click', () => {
+        cropperScale = Math.min(3.5, parseFloat((cropperScale + 0.15).toFixed(2)));
+        if (zoomSlider) zoomSlider.value = cropperScale;
+        updateZoomBadge();
+        renderCropperCanvas();
+      });
+    }
+
+    if (zoomOutBtn) {
+      zoomOutBtn.addEventListener('click', () => {
+        cropperScale = Math.max(1.0, parseFloat((cropperScale - 0.15).toFixed(2)));
+        if (zoomSlider) zoomSlider.value = cropperScale;
+        updateZoomBadge();
+        renderCropperCanvas();
+      });
+    }
+
+    // Nudge and Directional Controls (Move Left, Right, Up, Down)
+    const NUDGE_STEP = 20;
+    if (moveUpBtn) {
+      moveUpBtn.addEventListener('click', () => {
+        cropperOffsetY -= NUDGE_STEP;
+        renderCropperCanvas();
+      });
+    }
+
+    if (moveDownBtn) {
+      moveDownBtn.addEventListener('click', () => {
+        cropperOffsetY += NUDGE_STEP;
+        renderCropperCanvas();
+      });
+    }
+
+    if (moveLeftBtn) {
+      moveLeftBtn.addEventListener('click', () => {
+        cropperOffsetX -= NUDGE_STEP;
+        renderCropperCanvas();
+      });
+    }
+
+    if (moveRightBtn) {
+      moveRightBtn.addEventListener('click', () => {
+        cropperOffsetX += NUDGE_STEP;
+        renderCropperCanvas();
+      });
+    }
+
+    if (centerBtn) {
+      centerBtn.addEventListener('click', () => {
+        cropperOffsetX = 0;
+        cropperOffsetY = 0;
+        renderCropperCanvas();
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        cropperOffsetX = 0;
+        cropperOffsetY = 0;
+        cropperScale = 1.0;
+        if (zoomSlider) zoomSlider.value = 1.0;
+        updateZoomBadge();
+        renderCropperCanvas();
+      });
+    }
+
+    // Direct Drag & Pan Handling on Viewport (Mouse & Touch)
+    if (viewport) {
+      // Mouse events
+      viewport.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        isDraggingCropper = true;
+        cropperDragStartX = e.clientX;
+        cropperDragStartY = e.clientY;
+        cropperInitialOffsetX = cropperOffsetX;
+        cropperInitialOffsetY = cropperOffsetY;
+        viewport.classList.remove('cursor-grab');
+        viewport.classList.add('cursor-grabbing');
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDraggingCropper || !canvas) return;
+        const rect = viewport.getBoundingClientRect();
+        const ratio = canvas.width / (rect.width || 1);
+        cropperOffsetX = cropperInitialOffsetX + (e.clientX - cropperDragStartX) * ratio;
+        cropperOffsetY = cropperInitialOffsetY + (e.clientY - cropperDragStartY) * ratio;
+        renderCropperCanvas();
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDraggingCropper) {
+          isDraggingCropper = false;
+          if (viewport) {
+            viewport.classList.remove('cursor-grabbing');
+            viewport.classList.add('cursor-grab');
+          }
+        }
+      });
+
+      // Touch events (mobile / tablets)
+      let initialPinchDist = null;
+      let initialPinchScale = 1.0;
+
+      viewport.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDraggingCropper = true;
+          cropperDragStartX = e.touches[0].clientX;
+          cropperDragStartY = e.touches[0].clientY;
+          cropperInitialOffsetX = cropperOffsetX;
+          cropperInitialOffsetY = cropperOffsetY;
+        } else if (e.touches.length === 2) {
+          isDraggingCropper = false;
+          initialPinchDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          initialPinchScale = cropperScale;
+        }
+      }, { passive: false });
+
+      viewport.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (isDraggingCropper && e.touches.length === 1 && canvas) {
+          const rect = viewport.getBoundingClientRect();
+          const ratio = canvas.width / (rect.width || 1);
+          cropperOffsetX = cropperInitialOffsetX + (e.touches[0].clientX - cropperDragStartX) * ratio;
+          cropperOffsetY = cropperInitialOffsetY + (e.touches[0].clientY - cropperDragStartY) * ratio;
+          renderCropperCanvas();
+        } else if (e.touches.length === 2 && initialPinchDist) {
+          const currentDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          const factor = currentDist / initialPinchDist;
+          cropperScale = Math.min(3.5, Math.max(1.0, parseFloat((initialPinchScale * factor).toFixed(2))));
+          if (zoomSlider) zoomSlider.value = cropperScale;
+          updateZoomBadge();
+          renderCropperCanvas();
+        }
+      }, { passive: false });
+
+      viewport.addEventListener('touchend', (e) => {
+        if (e.touches.length === 0) {
+          isDraggingCropper = false;
+          initialPinchDist = null;
+        }
+      });
+
+      // Mouse wheel to zoom
+      viewport.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.08 : -0.08;
+        cropperScale = Math.min(3.5, Math.max(1.0, parseFloat((cropperScale + delta).toFixed(2))));
+        if (zoomSlider) zoomSlider.value = cropperScale;
+        updateZoomBadge();
+        renderCropperCanvas();
+      }, { passive: false });
+    }
+
+    // Apply Crop & Save
+    if (applyBtn) {
+      applyBtn.addEventListener('click', async () => {
+        await applyFounderCrop();
+      });
+    }
+  }
+
+  function updateZoomBadge() {
+    const badge = document.getElementById('cropper-zoom-badge');
+    if (badge) badge.textContent = `${Math.round(cropperScale * 100)}%`;
+  }
+
+  function openFounderCropper(imageSource) {
+    initCropperListeners();
+
+    const modal = document.getElementById('founder-cropper-modal');
+    const zoomSlider = document.getElementById('cropper-zoom-slider');
+    const canvas = document.getElementById('cropper-canvas');
+
+    if (!modal || !canvas) return;
+
+    // Reset crop offsets and scale
+    cropperScale = 1.0;
+    cropperOffsetX = 0;
+    cropperOffsetY = 0;
+    if (zoomSlider) zoomSlider.value = 1.0;
+    updateZoomBadge();
+
+    // High resolution canvas for sharp retina export (aspect ratio 5:6)
+    canvas.width = 600;
+    canvas.height = 720;
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      cropperImg = img;
+      modal.classList.remove('hidden');
+      renderCropperCanvas();
+    };
+    img.onerror = () => {
+      showToast('Could not load image for adjustment.', 'error');
+    };
+    img.src = imageSource;
+  }
+
+  function closeFounderCropperModal() {
+    const modal = document.getElementById('founder-cropper-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function renderCropperCanvas() {
+    const canvas = document.getElementById('cropper-canvas');
+    if (!canvas || !cropperImg) return;
+    const ctx = canvas.getContext('2d');
+    const cw = canvas.width;
+    const ch = canvas.height;
+
+    ctx.clearRect(0, 0, cw, ch);
+
+    // Cover scale so image fills the 5:6 canvas
+    const baseScale = Math.max(cw / cropperImg.width, ch / cropperImg.height);
+    const drawWidth = cropperImg.width * baseScale * cropperScale;
+    const drawHeight = cropperImg.height * baseScale * cropperScale;
+
+    const x = (cw - drawWidth) / 2 + cropperOffsetX;
+    const y = (ch - drawHeight) / 2 + cropperOffsetY;
+
+    ctx.drawImage(cropperImg, x, y, drawWidth, drawHeight);
+  }
+
+  async function applyFounderCrop() {
+    const canvas = document.getElementById('cropper-canvas');
+    const applyBtn = document.getElementById('apply-founder-cropper-btn');
+    const applyText = document.getElementById('apply-cropper-btn-text');
+    const photoPreview = document.getElementById('founder-edit-photo-preview');
+    const photoUrlInput = document.getElementById('founder-edit-photo-url');
+
+    if (!canvas || !cropperImg) return;
+
+    if (applyBtn) applyBtn.disabled = true;
+    if (applyText) applyText.textContent = 'Processing Crop...';
+
+    try {
+      // Export high-quality cropped JPEG
+      const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.90);
+
+      // Upload to server / Supabase storage
+      showToast('Saving adjusted portrait...', 'info');
+      let finalUrl = croppedDataUrl;
+
+      try {
+        const res = await adminFetch('/api/admin/upload-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            image: croppedDataUrl,
+            filename: `founder_portrait_${Date.now()}.jpg`
+          })
+        });
+        const json = await res.json();
+        if (res.ok && json.success && json.url) {
+          finalUrl = json.url;
+        }
+      } catch (uploadErr) {
+        console.warn('Network upload fallback to base64:', uploadErr);
+      }
+
+      // Update form state and preview
+      if (photoPreview) photoPreview.src = finalUrl;
+      if (photoUrlInput) photoUrlInput.value = finalUrl;
+
+      closeFounderCropperModal();
+      showToast('Portrait adjusted! Click "Save Changes" to publish.', 'success');
+    } catch (err) {
+      console.error('Error applying crop:', err);
+      showToast('Error adjusting image: ' + err.message, 'error');
+    } finally {
+      if (applyBtn) applyBtn.disabled = false;
+      if (applyText) applyText.textContent = 'Apply Crop & Use Photo';
+    }
+  }
+
+  function setupFounderControls() {
+    const photoFileInput = document.getElementById('founder-edit-photo-file');
+    const photoPreview = document.getElementById('founder-edit-photo-preview');
+    const openCropperBtn = document.getElementById('open-founder-cropper-btn');
+    const form = document.getElementById('founder-editor-form');
+    const topSaveBtn = document.getElementById('save-founder-btn-top');
+
+    // When an image file is chosen from device, immediately open the interactive cropper!
+    if (photoFileInput) {
+      photoFileInput.addEventListener('change', (e) => {
         const file = e.target.files && e.target.files[0];
         if (!file) return;
 
-        // Show immediate local preview
+        if (!file.type.startsWith('image/')) {
+          showToast('Please select a valid image file (JPG, PNG, WebP)', 'error');
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = (re) => {
-          photoPreview.src = re.target.result;
+          openFounderCropper(re.target.result);
         };
         reader.readAsDataURL(file);
 
-        // Upload to server
-        try {
-          showToast('Uploading photo...', 'info');
-          const uploadedUrl = await uploadImageFile(file, 'founder_photo');
-          if (uploadedUrl) {
-            photoUrlInput.value = uploadedUrl;
-            photoPreview.src = uploadedUrl;
-            showToast('Photo uploaded successfully!', 'success');
-          }
-        } catch (err) {
-          showToast('Error uploading photo: ' + err.message, 'error');
+        // Reset file input so re-selecting same image triggers change
+        photoFileInput.value = '';
+      });
+    }
+
+    // Button to adjust / reposition existing photo
+    if (openCropperBtn) {
+      openCropperBtn.addEventListener('click', () => {
+        const currentSrc = (photoPreview && photoPreview.src) || (currentFounderData && currentFounderData.photo);
+        if (currentSrc) {
+          openFounderCropper(currentSrc);
+        } else {
+          showToast('Please upload a photo first.', 'info');
+          if (photoFileInput) photoFileInput.click();
         }
       });
     }

@@ -1315,18 +1315,36 @@ async function requestHandler(req, res) {
             return sendJson(res, 400, { success: false, message: 'Invalid image buffer.' });
           }
 
-          const cleanName = (filename || 'blog')
+          const cleanName = (filename || 'image')
             .replace(/\.[^/.]+$/, '')
             .replace(/[^a-zA-Z0-9_-]/g, '_')
             .substring(0, 30);
           const uniqueFilename = `${Date.now()}_${crypto.randomBytes(4).toString('hex')}_${cleanName}${ext}`;
-          const targetPath = path.join(UPLOADS_DIR, uniqueFilename);
+          const mimeType = MIME_TYPES[ext] || (ext === '.png' ? 'image/png' : 'image/jpeg');
 
-          fs.writeFileSync(targetPath, buffer);
+          // Always write to local UPLOADS_DIR for local development and cache
+          try {
+            const targetPath = path.join(UPLOADS_DIR, uniqueFilename);
+            fs.writeFileSync(targetPath, buffer);
+          } catch (fsErr) {
+            console.warn('Local file write error (may be serverless):', fsErr.message);
+          }
+
+          let finalUrl = `/uploads/${uniqueFilename}`;
+
+          // Upload to Supabase public storage bucket for permanent global CDN hosting
+          try {
+            const mediaResult = await supabaseDb.uploadMedia(uniqueFilename, buffer, mimeType);
+            if (mediaResult && mediaResult.url) {
+              finalUrl = mediaResult.url;
+            }
+          } catch (storageErr) {
+            console.warn('Supabase media upload fallback:', storageErr.message);
+          }
 
           return sendJson(res, 201, {
             success: true,
-            url: `/uploads/${uniqueFilename}`,
+            url: finalUrl,
             filename: uniqueFilename,
             size: buffer.length
           });

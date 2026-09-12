@@ -427,6 +427,35 @@ async function deletePartner(id) {
   }
 }
 
+// --- Media & Image Storage ---
+async function uploadMedia(filename, buffer, contentType = 'image/jpeg') {
+  if (!supabase || !buffer) return null;
+  try {
+    const bucket = 'adabah-media';
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .upload(filename, buffer, {
+        contentType: contentType,
+        upsert: true
+      });
+
+    if (error) throw error;
+
+    const { data: publicData } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(filename);
+
+    return {
+      success: true,
+      path: data.path,
+      url: publicData.publicUrl
+    };
+  } catch (err) {
+    console.error('Supabase uploadMedia error:', err.message);
+    return null;
+  }
+}
+
 module.exports = {
   client: supabase,
   checkConnection,
@@ -440,5 +469,7 @@ module.exports = {
   getPartners,
   savePartner,
   updatePartner,
-  deletePartner
+  deletePartner,
+  uploadMedia
 };
+
