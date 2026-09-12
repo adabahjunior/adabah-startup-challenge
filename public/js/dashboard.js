@@ -973,6 +973,116 @@ function startDashboardApp() {
 
       container.appendChild(card);
     });
+
+    // Load and sync invite link
+    loadTeamInviteLink(app);
+  }
+
+  // Load and configure Team Invite Link
+  async function loadTeamInviteLink(app) {
+    const input = document.getElementById('dash-invite-link-input');
+    const badge = document.getElementById('dash-invite-slots-badge');
+    const fullNotice = document.getElementById('dash-invite-full-notice');
+    const waBtn = document.getElementById('dash-whatsapp-invite-btn');
+    const copyBtn = document.getElementById('dash-copy-invite-btn');
+    const regenBtn = document.getElementById('dash-regen-invite-btn');
+
+    if (!input || !app) return;
+
+    try {
+      const res = await fetch(`/api/applications/${encodeURIComponent(app.id)}/invite-link`);
+      const data = await res.json();
+
+      if (res.ok && data.success && data.inviteUrl) {
+        input.value = data.inviteUrl;
+
+        // Slot Badge & Notice
+        const slotsLeft = data.availableSlots !== undefined ? data.availableSlots : Math.max(0, 5 - data.currentTeamSize);
+        if (badge) {
+          if (data.isFull || slotsLeft <= 0) {
+            badge.textContent = 'Team Full (5/5)';
+            badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-500/15 border border-red-500/30 text-red-700 dark:text-red-300';
+          } else {
+            badge.textContent = `${slotsLeft} of 5 Slots Remaining`;
+            badge.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#dfa04e]/15 border border-[#dfa04e]/30 text-[#865237] dark:text-[#dfa04e]';
+          }
+        }
+
+        if (fullNotice) {
+          if (data.isFull || slotsLeft <= 0) {
+            fullNotice.classList.remove('hidden');
+          } else {
+            fullNotice.classList.add('hidden');
+          }
+        }
+
+        // WhatsApp Share Link
+        if (waBtn) {
+          const startupName = app.startupName || 'our startup';
+          const msg = `Join our startup *${startupName}* on The ADABAH Startup Challenge 2026 platform! Fill in your member details to access our shared team dashboard:\n${data.inviteUrl}`;
+          waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+        }
+      } else {
+        input.value = `${window.location.origin}/join?code=INV-${app.id.replace(/^ADB-/, '')}`;
+      }
+    } catch (err) {
+      console.warn('Failed to load team invite link:', err);
+      input.value = `${window.location.origin}/join?code=INV-${app.id.replace(/^ADB-/, '')}`;
+    }
+
+    // Attach listeners once
+    if (copyBtn && !copyBtn.dataset.wired) {
+      copyBtn.dataset.wired = 'true';
+      copyBtn.addEventListener('click', () => {
+        const val = input.value;
+        if (!val) return;
+        navigator.clipboard.writeText(val).then(() => {
+          const label = document.getElementById('dash-copy-invite-label');
+          const icon = document.getElementById('dash-copy-invite-icon');
+          if (label) label.textContent = 'Copied!';
+          if (icon) icon.textContent = '✅';
+          showToast('Team invite link copied to clipboard!', 'success');
+          setTimeout(() => {
+            if (label) label.textContent = 'Copy Link';
+            if (icon) icon.textContent = '📋';
+          }, 2500);
+        }).catch(() => {
+          showToast('Failed to copy. Please copy manually from the input.', 'info');
+        });
+      });
+    }
+
+    if (regenBtn && !regenBtn.dataset.wired) {
+      regenBtn.dataset.wired = 'true';
+      regenBtn.addEventListener('click', async () => {
+        if (!confirm('Are you sure you want to regenerate your team invite link? The previous link will stop working immediately.')) {
+          return;
+        }
+        try {
+          regenBtn.disabled = true;
+          const res = await fetch(`/api/applications/${encodeURIComponent(app.id)}/invite-link/regenerate`, {
+            method: 'POST'
+          });
+          const data = await res.json();
+          if (res.ok && data.success && data.inviteUrl) {
+            input.value = data.inviteUrl;
+            showToast('Team invite link regenerated!', 'success');
+            if (waBtn) {
+              const startupName = app.startupName || 'our startup';
+              const msg = `Join our startup *${startupName}* on The ADABAH Startup Challenge 2026 platform! Fill in your member details to access our shared team dashboard:\n${data.inviteUrl}`;
+              waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+            }
+          } else {
+            showToast(data.message || 'Failed to regenerate invite link.', 'error');
+          }
+        } catch (err) {
+          console.error('Regenerate invite error:', err);
+          showToast('Network error while regenerating link.', 'error');
+        } finally {
+          regenBtn.disabled = false;
+        }
+      });
+    }
   }
 
   // Handle Adding Team Member

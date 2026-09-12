@@ -212,6 +212,7 @@ async function findApplicationByIdentifier(identifier) {
       app = allApps.find(a =>
         (a.id && a.id.toLowerCase() === q) ||
         (a.founderEmail && a.founderEmail.toLowerCase() === q) ||
+        (a.inviteCode && a.inviteCode.toLowerCase() === q) ||
         (normPhone && a.founderPhone && bmsService.formatBmsPhone(a.founderPhone) === normPhone)
       );
     }
@@ -225,6 +226,7 @@ async function findApplicationByIdentifier(identifier) {
     app = localApps.find(a =>
       (a.id && a.id.toLowerCase() === q) ||
       (a.founderEmail && a.founderEmail.toLowerCase() === q) ||
+      (a.inviteCode && a.inviteCode.toLowerCase() === q) ||
       (normPhone && a.founderPhone && bmsService.formatBmsPhone(a.founderPhone) === normPhone)
     );
   }
@@ -783,6 +785,231 @@ async function requestHandler(req, res) {
           success: true,
           message: 'Team member removed.',
           data: updatedApp || (localIdx !== -1 ? localApps[localIdx] : { ...app, team: updatedTeam, teamSize: newTeamSize })
+        });
+      }
+
+      // 6b. GET /api/applications/:id/invite-link - Get or create team invite link
+      const inviteLinkMatch = pathname.match(/^\/api\/applications\/([^\/]+)\/invite-link$/);
+      if (inviteLinkMatch && method === 'GET') {
+        const id = inviteLinkMatch[1].trim();
+        let app = await findApplicationByIdentifier(id);
+
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Application not found.' });
+        }
+
+        let updated = false;
+        if (!app.inviteCode) {
+          const rawCode = app.id.replace(/^ADB-/, '');
+          app.inviteCode = `INV-${rawCode}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+          updated = true;
+        }
+
+        if (updated) {
+          await supabaseDb.updateApplication(app.id, { inviteCode: app.inviteCode });
+          const localApps = readJsonFile(APPLICATIONS_FILE, []);
+          const lIdx = localApps.findIndex(a => a.id && a.id.toLowerCase() === app.id.toLowerCase());
+          if (lIdx !== -1) {
+            localApps[lIdx].inviteCode = app.inviteCode;
+            writeJsonFile(APPLICATIONS_FILE, localApps);
+          }
+        }
+
+        const protocol = req.headers['x-forwarded-proto'] || 'http';
+        const host = req.headers['host'] || 'localhost:3000';
+        const inviteUrl = `${protocol}://${host}/join?code=${encodeURIComponent(app.inviteCode)}`;
+        const teammates = Array.isArray(app.team) ? app.team : [];
+        const currentTeamSize = teammates.length + 1;
+
+        return sendJson(res, 200, {
+          success: true,
+          inviteCode: app.inviteCode,
+          inviteUrl,
+          currentTeamSize,
+          maxTeamSize: 5,
+          availableSlots: Math.max(0, 5 - currentTeamSize),
+          isFull: currentTeamSize >= 5
+        });
+      }
+
+      // 6c. POST /api/applications/:id/invite-link/regenerate - Invalidate old link & generate new code
+      const inviteRegenMatch = pathname.match(/^\/api\/applications\/([^\/]+)\/invite-link\/regenerate$/);
+      if (inviteRegenMatch && method === 'POST') {
+        const id = inviteRegenMatch[1].trim();
+        let app = await findApplicationByIdentifier(id);
+
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Application not found.' });
+        }
+
+        const rawCode = app.id.replace(/^ADB-/, '');
+        app.inviteCode = `INV-${rawCode}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+
+        await supabaseDb.updateApplication(app.id, { inviteCode: app.inviteCode });
+        const localApps = readJsonFile(APPLICATIONS_FILE, []);
+        const lIdx = localApps.findIndex(a => a.id && a.id.toLowerCase() === app.id.toLowerCase());
+        if (lIdx !== -1) {
+          localApps[lIdx].inviteCode = app.inviteCode;
+          writeJsonFile(APPLICATIONS_FILE, localApps);
+        }
+
+        const protocol = req.headers['x-forwarded-proto'] || 'http';
+        const host = req.headers['host'] || 'localhost:3000';
+        const inviteUrl = `${protocol}://${host}/join?code=${encodeURIComponent(app.inviteCode)}`;
+        const teammates = Array.isArray(app.team) ? app.team : [];
+        const currentTeamSize = teammates.length + 1;
+
+        return sendJson(res, 200, {
+          success: true,
+          message: 'Team invite link regenerated successfully.',
+          inviteCode: app.inviteCode,
+          inviteUrl,
+          currentTeamSize,
+          maxTeamSize: 5,
+          availableSlots: Math.max(0, 5 - currentTeamSize),
+          isFull: currentTeamSize >= 5
+        });
+      }
+
+      // 6d. GET /api/team/invite - Public details for join page by invite code
+      if (pathname === '/api/team/invite' && method === 'GET') {
+        const code = parsedUrl.query.code ? String(parsedUrl.query.code).trim() : '';
+
+        if (!code) {
+          return sendJson(res, 400, { success: false, message: 'No invite code provided.' });
+        }
+
+        const app = await findApplicationByIdentifier(code);
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Invalid or expired team invite link.' });
+        }
+
+        const teammates = Array.isArray(app.team) ? app.team : [];
+        const currentTeamSize = teammates.length + 1;
+        const maxTeamSize = 5;
+
+        return sendJson(res, 200, {
+          success: true,
+          data: {
+            appId: app.id,
+            startupName: app.startupName,
+            tagline: app.tagline || '',
+            track: app.track,
+            stage: app.stage || '',
+            country: app.country || '',
+            city: app.city || '',
+            founderName: app.founderName,
+            founderRole: app.founderRole || 'Lead Founder',
+            currentTeamSize,
+            maxTeamSize,
+            availableSlots: Math.max(0, maxTeamSize - currentTeamSize),
+            isFull: currentTeamSize >= maxTeamSize
+          }
+        });
+      }
+
+      // 6e. POST /api/team/join - Submit onboarding form and join startup team
+      if (pathname === '/api/team/join' && method === 'POST') {
+        const body = await parseBody(req);
+        const inviteCode = body.inviteCode ? String(body.inviteCode).trim() : '';
+        const name = body.name ? String(body.name).trim() : '';
+        const phone = body.phone ? String(body.phone).trim() : '';
+        const email = body.email ? String(body.email).trim().toLowerCase() : '';
+        const role = body.role ? String(body.role).trim() : '';
+        const school = body.school ? String(body.school).trim() : (body.campus ? String(body.campus).trim() : '');
+        const academicLevel = body.academicLevel ? String(body.academicLevel).trim() : '';
+        const studentId = body.studentId ? String(body.studentId).trim() : '';
+        const linkedin = body.linkedin ? String(body.linkedin).trim() : '';
+
+        if (!inviteCode) {
+          return sendJson(res, 400, { success: false, message: 'Missing team invite code.' });
+        }
+        if (!name) {
+          return sendJson(res, 400, { success: false, message: 'Full name is required.' });
+        }
+        if (!phone) {
+          return sendJson(res, 400, { success: false, message: 'Phone number is required.' });
+        }
+        if (!role) {
+          return sendJson(res, 400, { success: false, message: 'Role in startup is required.' });
+        }
+        if (!school) {
+          return sendJson(res, 400, { success: false, message: 'Institution / School is required.' });
+        }
+
+        let app = await findApplicationByIdentifier(inviteCode);
+        if (!app) {
+          return sendJson(res, 404, { success: false, message: 'Invalid or expired team invite code.' });
+        }
+
+        const currentTeam = Array.isArray(app.team) ? [...app.team] : [];
+        if (currentTeam.length + 1 >= 5) {
+          return sendJson(res, 400, {
+            success: false,
+            message: 'This startup team has already reached its maximum capacity of 5 members.'
+          });
+        }
+
+        // Check duplicate email or phone within team
+        const normNewPhone = bmsService.formatBmsPhone(phone);
+        const isDuplicate = currentTeam.some(m =>
+          (email && m.email && m.email.toLowerCase() === email) ||
+          (normNewPhone && m.phone && bmsService.formatBmsPhone(m.phone) === normNewPhone)
+        ) || (
+          (email && app.founderEmail && app.founderEmail.toLowerCase() === email) ||
+          (normNewPhone && app.founderPhone && bmsService.formatBmsPhone(app.founderPhone) === normNewPhone)
+        );
+
+        if (isDuplicate) {
+          return sendJson(res, 400, {
+            success: false,
+            message: 'You are already registered as a member of this startup team.'
+          });
+        }
+
+        const newMember = {
+          id: 'TM-' + Date.now() + '-' + Math.floor(100 + Math.random() * 900),
+          name,
+          email,
+          phone,
+          role,
+          school,
+          campus: school,
+          academicLevel,
+          studentId,
+          linkedin,
+          joinedAt: new Date().toISOString()
+        };
+
+        currentTeam.push(newMember);
+        const newTeamSize = currentTeam.length + 1;
+
+        // Persist update in Supabase
+        await supabaseDb.updateApplication(app.id, {
+          team: currentTeam,
+          teamSize: newTeamSize
+        });
+
+        // Persist update in local backup
+        const localApps = readJsonFile(APPLICATIONS_FILE, []);
+        const localIdx = localApps.findIndex(a => a.id && a.id.toLowerCase() === app.id.toLowerCase());
+        if (localIdx !== -1) {
+          localApps[localIdx].team = currentTeam;
+          localApps[localIdx].teamSize = newTeamSize;
+          writeJsonFile(APPLICATIONS_FILE, localApps);
+        }
+
+        // Create authenticated team session for direct dashboard access
+        const sessionRes = bmsService.createTeamMemberSession(app.id, newMember);
+
+        return sendJson(res, 201, {
+          success: true,
+          message: `Welcome to ${app.startupName}! You have successfully joined the team.`,
+          token: sessionRes.token,
+          appId: app.id,
+          member: newMember,
+          startupName: app.startupName,
+          redirectUrl: '/dashboard'
         });
       }
 
@@ -1479,6 +1706,11 @@ async function requestHandler(req, res) {
   // Route /dashboard or /dashboard/* to public/dashboard.html
   if (parsedUrl.pathname === '/dashboard' || parsedUrl.pathname.startsWith('/dashboard/')) {
     filePath = path.join(PUBLIC_DIR, 'dashboard.html');
+  }
+
+  // Route /join or /join/* to public/join.html
+  if (parsedUrl.pathname === '/join' || parsedUrl.pathname.startsWith('/join/')) {
+    filePath = path.join(PUBLIC_DIR, 'join.html');
   }
 
   // Route /admin or /admin/* to public/admin.html

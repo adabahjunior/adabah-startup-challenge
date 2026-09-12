@@ -339,6 +339,33 @@ async function checkBmsAccount() {
   }
 }
 
+/**
+ * Create an active session token for an onboarded team member
+ */
+function createTeamMemberSession(appId, memberInfo = {}) {
+  const token = 'adb_tm_' + crypto.randomBytes(32).toString('hex');
+  const now = Date.now();
+  const sessionData = {
+    token,
+    appId,
+    member: memberInfo,
+    isTeamMember: true,
+    phone: memberInfo.phone || '',
+    email: memberInfo.email || '',
+    createdAt: now,
+    expiresAt: now + SESSION_EXPIRY_MS
+  };
+
+  sessionStore.set(token, sessionData);
+
+  return {
+    success: true,
+    token,
+    appId,
+    session: sessionData
+  };
+}
+
 module.exports = {
   BMS_API_KEY,
   BMS_SENDER_ID,
@@ -348,6 +375,7 @@ module.exports = {
   sendBmsSms,
   requestOtp,
   verifyOtp,
+  createTeamMemberSession,
   validateSession,
   revokeSession,
   checkBmsAccount

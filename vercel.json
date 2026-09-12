@@ -33,6 +33,14 @@
     {
       "source": "/apply",
       "destination": "/apply.html"
+    },
+    {
+      "source": "/join",
+      "destination": "/join.html"
+    },
+    {
+      "source": "/join/(.*)",
+      "destination": "/join.html"
     }
   ]
 }
