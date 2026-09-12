@@ -1,6 +1,6 @@
 // public/js/dashboard.js - Founder Dashboard Controller for The ADABAH Startup Challenge 2026
 
-document.addEventListener('DOMContentLoaded', () => {
+function startDashboardApp() {
   let currentApp = null;
 
   // DOM Elements
@@ -277,24 +277,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setupSidebarNavigation() {
-    // Navigation Menu Buttons / Links in Stationary Sidebar
-    document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    // Delegated click listener on document for ANY link/button with data-page or data-page-target or .sidebar-nav-btn
+    document.addEventListener('click', (e) => {
+      const targetEl = e.target.closest('[data-page-target], [data-page], .sidebar-nav-btn');
+      if (!targetEl) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return; // Allow opening in new tab if modifier pressed
+
+      const pageId = targetEl.getAttribute('data-page-target') || targetEl.getAttribute('data-page');
+      if (pageId) {
         e.preventDefault();
-        const pageId = btn.getAttribute('data-page');
-        if (pageId) switchPage(pageId, true);
-      });
+        e.stopPropagation();
+        switchPage(pageId, true);
+      }
     });
 
-    // Cross-page shortcut links with data-page-target (Event delegation for dynamic elements)
-    document.addEventListener('click', (e) => {
-      const targetEl = e.target.closest('[data-page-target]');
-      if (!targetEl) return;
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-      e.preventDefault();
-      const pageId = targetEl.getAttribute('data-page-target');
-      if (pageId) switchPage(pageId, true);
+    // Direct click listeners on sidebar navigation buttons as immediate fallback
+    document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const pageId = btn.getAttribute('data-page') || btn.getAttribute('data-page-target');
+        if (pageId) switchPage(pageId, true);
+      });
     });
 
     // Browser back/forward navigation support
@@ -310,9 +315,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const validPages = ['overview', 'progress', 'deliverables', 'team', 'profile'];
     if (!validPages.includes(pageId)) pageId = 'overview';
 
-    // Hide all pages
+    // Hide all pages (guaranteed with both class and inline style)
     const pages = document.querySelectorAll('.dashboard-page');
-    pages.forEach(page => page.classList.add('hidden'));
+    pages.forEach(page => {
+      page.classList.add('hidden');
+      page.style.display = 'none';
+    });
 
     // Show target page
     let target = document.getElementById(`page-${pageId}`);
@@ -322,11 +330,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (target) {
       target.classList.remove('hidden');
+      target.style.display = 'block';
     }
 
     // Highlight active nav link in stationary sidebar
     document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
-      const p = btn.getAttribute('data-page');
+      const p = btn.getAttribute('data-page') || btn.getAttribute('data-page-target');
       if (p === pageId) {
         btn.className = 'sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer';
         btn.setAttribute('aria-current', 'page');
@@ -355,16 +364,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync clean URL with history state
     if (currentApp) {
       const targetUrl = `/dashboard/${pageId}?id=${encodeURIComponent(currentApp.id)}`;
-      if (pushState) {
-        window.history.pushState({ page: pageId }, '', targetUrl);
-      } else {
-        window.history.replaceState({ page: pageId }, '', targetUrl);
+      try {
+        if (pushState) {
+          window.history.pushState({ page: pageId }, '', targetUrl);
+        } else {
+          window.history.replaceState({ page: pageId }, '', targetUrl);
+        }
+      } catch (err) {
+        try {
+          window.location.hash = `page-${pageId}`;
+        } catch (_) {}
       }
     }
 
     // Close mobile drawer if open
     closeMobileSidebar();
   }
+
+  // Expose switchPage on window so inline onclick handlers work universally
+  window.switchDashboardPage = switchPage;
 
   // Show Auth / Lookup View
   function showAuthView() {
@@ -999,4 +1017,11 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => toast.remove(), 350);
     }, 4000);
   }
-});
+}
+
+// Start immediately if DOM is ready, or wait for DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startDashboardApp);
+} else {
+  startDashboardApp();
+}

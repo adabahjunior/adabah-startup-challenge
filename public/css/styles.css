@@ -628,3 +628,12 @@ html.dark .status-rejected {
     padding: 20px !important;
   }
 }
+
+/* Founder Dashboard Multipage Display Guarantees */
+.dashboard-page.hidden {
+  display: none !important;
+}
+.dashboard-page:not(.hidden) {
+  display: block !important;
+}
+

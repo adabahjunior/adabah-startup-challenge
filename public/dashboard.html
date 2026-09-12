@@ -55,7 +55,7 @@
   </script>
   
   <!-- Custom Brand CSS -->
-  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/styles.css?v=20260912-3" />
 </head>
 <body class="bg-[#FAF7F2] text-[#1A0F09] dark:bg-[#180e08] dark:text-[#fbf1e6] font-sans antialiased selection:bg-[#dfa04e] selection:text-[#180e08] min-h-screen relative w-full max-w-full overflow-x-hidden transition-colors duration-200">
 
@@ -221,6 +221,8 @@
           <a
             href="/dashboard/overview"
             data-page="overview"
+            data-page-target="overview"
+            onclick="if(window.switchDashboardPage){window.switchDashboardPage('overview', true); return false;}"
             class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📊</span>
@@ -230,6 +232,8 @@
           <a
             href="/dashboard/progress"
             data-page="progress"
+            data-page-target="progress"
+            onclick="if(window.switchDashboardPage){window.switchDashboardPage('progress', true); return false;}"
             class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📈</span>
@@ -239,6 +243,8 @@
           <a
             href="/dashboard/deliverables"
             data-page="deliverables"
+            data-page-target="deliverables"
+            onclick="if(window.switchDashboardPage){window.switchDashboardPage('deliverables', true); return false;}"
             class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📤</span>
@@ -248,6 +254,8 @@
           <a
             href="/dashboard/team"
             data-page="team"
+            data-page-target="team"
+            onclick="if(window.switchDashboardPage){window.switchDashboardPage('team', true); return false;}"
             class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">👥</span>
@@ -257,6 +265,8 @@
           <a
             href="/dashboard/profile"
             data-page="profile"
+            data-page-target="profile"
+            onclick="if(window.switchDashboardPage){window.switchDashboardPage('profile', true); return false;}"
             class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
             <span class="text-base flex-shrink-0">📝</span>
@@ -362,6 +372,7 @@
             <a
               href="/dashboard/team"
               data-page-target="team"
+              onclick="if(window.switchDashboardPage){window.switchDashboardPage('team', true); return false;}"
               class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
               <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Team Size →</span>
@@ -370,6 +381,7 @@
             <a
               href="/dashboard/deliverables"
               data-page-target="deliverables"
+              onclick="if(window.switchDashboardPage){window.switchDashboardPage('deliverables', true); return false;}"
               class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
               <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Submissions →</span>
@@ -378,6 +390,7 @@
             <a
               href="/dashboard/deliverables"
               data-page-target="deliverables"
+              onclick="if(window.switchDashboardPage){window.switchDashboardPage('deliverables', true); return false;}"
               class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
               <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Pitch Deck →</span>
@@ -402,6 +415,7 @@
             <a
               href="/dashboard/progress"
               data-page-target="progress"
+              onclick="if(window.switchDashboardPage){window.switchDashboardPage('progress', true); return false;}"
               class="px-3 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer flex items-center gap-1"
             >
               <span>View Evaluation Page</span> →
@@ -434,6 +448,7 @@
               <a
                 href="/dashboard/team"
                 data-page-target="team"
+                onclick="if(window.switchDashboardPage){window.switchDashboardPage('team', true); return false;}"
                 class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
               >
                 Manage Team →
@@ -461,6 +476,7 @@
               <a
                 href="/dashboard/deliverables"
                 data-page-target="deliverables"
+                onclick="if(window.switchDashboardPage){window.switchDashboardPage('deliverables', true); return false;}"
                 class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
               >
                 Open Submissions →
@@ -488,6 +504,7 @@
               <a
                 href="/dashboard/profile"
                 data-page-target="profile"
+                onclick="if(window.switchDashboardPage){window.switchDashboardPage('profile', true); return false;}"
                 class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
               >
                 View Profile →
@@ -502,7 +519,7 @@
       <!-- ======================================================== -->
       <div id="page-progress" class="dashboard-page hidden space-y-6">
         <div class="flex items-center gap-2 text-xs">
-          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+          <a href="/dashboard/overview" data-page-target="overview" onclick="if(window.switchDashboardPage){window.switchDashboardPage('overview', true); return false;}" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
             <span>←</span> Overview
           </a>
           <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
@@ -611,7 +628,7 @@
       <!-- ======================================================== -->
       <div id="page-deliverables" class="dashboard-page hidden space-y-6">
         <div class="flex items-center gap-2 text-xs">
-          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+          <a href="/dashboard/overview" data-page-target="overview" onclick="if(window.switchDashboardPage){window.switchDashboardPage('overview', true); return false;}" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
             <span>←</span> Overview
           </a>
           <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
@@ -732,7 +749,7 @@
       <!-- ======================================================== -->
       <div id="page-team" class="dashboard-page hidden space-y-6">
         <div class="flex items-center gap-2 text-xs">
-          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+          <a href="/dashboard/overview" data-page-target="overview" onclick="if(window.switchDashboardPage){window.switchDashboardPage('overview', true); return false;}" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
             <span>←</span> Overview
           </a>
           <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
@@ -800,7 +817,7 @@
       <!-- ======================================================== -->
       <div id="page-profile" class="dashboard-page hidden space-y-6">
         <div class="flex items-center gap-2 text-xs">
-          <a href="/dashboard/overview" data-page-target="overview" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
+          <a href="/dashboard/overview" data-page-target="overview" onclick="if(window.switchDashboardPage){window.switchDashboardPage('overview', true); return false;}" class="inline-flex items-center gap-1 font-bold text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer">
             <span>←</span> Overview
           </a>
           <span class="text-[#5C3D2E]/40 dark:text-[#f5d6b4]/40">/</span>
@@ -1119,6 +1136,6 @@
 
   <!-- Scripts -->
   <script src="/js/app.js"></script>
-  <script src="/js/dashboard.js"></script>
+  <script src="/js/dashboard.js?v=20260912-3"></script>
 </body>
 </html>
