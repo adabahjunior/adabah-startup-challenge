@@ -2436,24 +2436,94 @@ function startAdminDashboard() {
         return;
       }
 
-      // Validate size: 50MB
-      const maxSize = 50 * 1024 * 1024;
+      // Validate size: 100MB max
+      const maxSize = 100 * 1024 * 1024;
       if (file.size > maxSize) {
-        showToast(`Video file too large (${(file.size / (1024 * 1024)).toFixed(1)}MB). Limit is 50MB.`, 'error');
+        showToast(`Video file too large (${(file.size / (1024 * 1024)).toFixed(1)}MB). Limit is 100MB.`, 'error');
         return;
       }
 
       if (progressContainer) progressContainer.classList.remove('hidden');
-      if (progressBar) progressBar.style.width = '15%';
-      if (progressPct) progressPct.textContent = '15%';
-      if (progressStatus) progressStatus.textContent = 'Reading video file...';
+      if (progressBar) progressBar.style.width = '5%';
+      if (progressPct) progressPct.textContent = '5%';
+      if (progressStatus) progressStatus.textContent = 'Initializing secure cloud upload...';
 
+      // Strategy 1: Direct Cloud Stream to Supabase Storage (Bypasses Vercel 4.5MB Serverless Payload Limits)
       try {
-        // Read file as base64 DataURL
+        const initRes = await adminFetch('/api/admin/create-video-upload-url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: file.name,
+            contentType: file.type || 'video/mp4'
+          })
+        });
+
+        const initData = await initRes.json();
+        if (initRes.ok && initData.success && initData.signedUrl) {
+          // Direct Stream to Cloud via XMLHttpRequest for real-time progress
+          await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', initData.signedUrl, true);
+            xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
+
+            xhr.upload.onprogress = (evt) => {
+              if (evt.lengthComputable) {
+                const pct = Math.min(99, Math.round((evt.loaded / evt.total) * 100));
+                if (progressBar) progressBar.style.width = pct + '%';
+                if (progressPct) progressPct.textContent = pct + '%';
+                if (progressStatus) {
+                  const uploadedMb = (evt.loaded / (1024 * 1024)).toFixed(1);
+                  const totalMb = (evt.total / (1024 * 1024)).toFixed(1);
+                  progressStatus.textContent = `Uploading video... (${uploadedMb}MB / ${totalMb}MB)`;
+                }
+              }
+            };
+
+            xhr.onload = () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                resolve(initData.publicUrl);
+              } else {
+                reject(new Error(`Cloud storage upload failed with HTTP ${xhr.status}`));
+              }
+            };
+
+            xhr.onerror = () => {
+              reject(new Error('Network error streaming video to cloud storage.'));
+            };
+
+            xhr.send(file);
+          });
+
+          // Upload complete!
+          if (progressBar) progressBar.style.width = '100%';
+          if (progressPct) progressPct.textContent = '100%';
+          if (progressStatus) progressStatus.textContent = 'Upload complete!';
+
+          heroVideoSettings.videoUrl = initData.publicUrl;
+          heroVideoSettings.videoEnabled = true;
+          if (urlInput) urlInput.value = initData.publicUrl;
+          if (enabledCb) enabledCb.checked = true;
+
+          renderHeroVideoUI();
+          showToast(`Video successfully uploaded! (${(file.size / (1024 * 1024)).toFixed(1)}MB)`, 'success');
+
+          setTimeout(() => {
+            if (progressContainer) progressContainer.classList.add('hidden');
+          }, 2500);
+          return;
+        }
+      } catch (directErr) {
+        console.warn('Direct upload error, attempting fallback server stream:', directErr.message);
+      }
+
+      // Strategy 2: Server Upload Fallback (For local development or if direct upload URL is unavailable)
+      try {
+        if (progressStatus) progressStatus.textContent = 'Streaming via server fallback...';
         const reader = new FileReader();
         reader.onprogress = (evt) => {
           if (evt.lengthComputable) {
-            const pct = Math.round((evt.loaded / evt.total) * 35);
+            const pct = Math.round((evt.loaded / evt.total) * 40);
             if (progressBar) progressBar.style.width = pct + '%';
             if (progressPct) progressPct.textContent = pct + '%';
           }
@@ -2461,13 +2531,9 @@ function startAdminDashboard() {
 
         const base64Data = await new Promise((resolve, reject) => {
           reader.onload = () => resolve(reader.result);
-          reader.onerror = () => reject(new Error('Failed to read file'));
+          reader.onerror = () => reject(new Error('Failed to read file from disk'));
           reader.readAsDataURL(file);
         });
-
-        if (progressBar) progressBar.style.width = '50%';
-        if (progressPct) progressPct.textContent = '50%';
-        if (progressStatus) progressStatus.textContent = 'Streaming to cloud bucket...';
 
         const res = await adminFetch('/api/admin/upload-video', {
           method: 'POST',
@@ -2493,7 +2559,7 @@ function startAdminDashboard() {
           if (enabledCb) enabledCb.checked = true;
 
           renderHeroVideoUI();
-          showToast(`Video successfully uploaded to cloud storage! (${(file.size / (1024 * 1024)).toFixed(1)}MB)`, 'success');
+          showToast(`Video successfully uploaded! (${(file.size / (1024 * 1024)).toFixed(1)}MB)`, 'success');
 
           setTimeout(() => {
             if (progressContainer) progressContainer.classList.add('hidden');
@@ -2504,7 +2570,7 @@ function startAdminDashboard() {
         }
       } catch (err) {
         console.error('Video upload error:', err);
-        showToast('Network error while uploading video.', 'error');
+        showToast(err.message || 'Error while uploading video.', 'error');
         if (progressContainer) progressContainer.classList.add('hidden');
       } finally {
         if (fileInput) fileInput.value = '';

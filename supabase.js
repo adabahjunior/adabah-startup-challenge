@@ -1,6 +1,8 @@
 // supabase.js - Supabase Database Client for The ADABAH Startup Challenge 2026
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
+const crypto = require('crypto');
+const path = require('path');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://shvnajqmpwnppnvvienx.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 
@@ -456,6 +458,38 @@ async function uploadMedia(filename, buffer, contentType = 'image/jpeg') {
   }
 }
 
+async function createSignedVideoUploadUrl(filename) {
+  if (!supabase) return null;
+  try {
+    const bucket = 'adabah-media';
+    const ext = path.extname(filename || '').toLowerCase() || '.mp4';
+    const cleanName = (filename || 'hero_video')
+      .replace(/\.[^/.]+$/, '')
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
+      .substring(0, 30);
+    const uniqueFilename = `${Date.now()}_${crypto.randomBytes(4).toString('hex')}_${cleanName}${ext}`;
+
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .createSignedUploadUrl(uniqueFilename);
+
+    if (error || !data) throw (error || new Error('Failed to create upload URL'));
+
+    const { data: pubData } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(uniqueFilename);
+
+    return {
+      signedUrl: data.signedUrl,
+      publicUrl: pubData.publicUrl,
+      filename: uniqueFilename
+    };
+  } catch (err) {
+    console.error('Supabase createSignedVideoUploadUrl error:', err.message);
+    return null;
+  }
+}
+
 // --- Site Settings (Hero Video, Media & Preferences) ---
 async function getSiteSettings() {
   if (!supabase) return null;
@@ -518,6 +552,7 @@ module.exports = {
   updatePartner,
   deletePartner,
   uploadMedia,
+  createSignedVideoUploadUrl,
   getSiteSettings,
   updateSiteSettings
 };

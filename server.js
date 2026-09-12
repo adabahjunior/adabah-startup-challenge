@@ -2029,6 +2029,35 @@ async function requestHandler(req, res) {
         }
       }
 
+      // 15c-1. POST /api/admin/create-video-upload-url - Generate Direct Cloud Upload URL (Bypasses Vercel 4.5MB Payload Limit)
+      if (pathname === '/api/admin/create-video-upload-url' && method === 'POST') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const body = await parseBody(req);
+          const filename = (body.filename || 'hero_video.mp4').trim();
+          const uploadInfo = await supabaseDb.createSignedVideoUploadUrl(filename);
+          if (uploadInfo && uploadInfo.signedUrl) {
+            return sendJson(res, 200, {
+              success: true,
+              signedUrl: uploadInfo.signedUrl,
+              publicUrl: uploadInfo.publicUrl,
+              filename: uploadInfo.filename
+            });
+          } else {
+            return sendJson(res, 200, {
+              success: false,
+              fallback: true,
+              message: 'Direct cloud upload URL unavailable; fallback to server upload.'
+            });
+          }
+        } catch (err) {
+          console.error('Error generating signed video upload URL:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to generate upload URL: ' + err.message });
+        }
+      }
+
       // 15c. POST /api/admin/upload-video - Upload Video File (Admin Only)
       if (pathname === '/api/admin/upload-video' && method === 'POST') {
         if (!validateAdminToken(req)) {
