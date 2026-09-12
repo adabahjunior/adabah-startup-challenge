@@ -1998,7 +1998,7 @@
     </div>
   </div>
 
-  <!-- MASTER ADMIN PASSCODE LOCK SCREEN (Default passcode: sirmyk26) -->
+  <!-- MASTER ADMIN PASSCODE LOCK SCREEN -->
   <div
     id="admin-lock-screen"
     class="fixed inset-0 z-[100] bg-[#120904]/90 backdrop-blur-2xl flex items-center justify-center p-4 transition-opacity duration-300"
@@ -2024,19 +2024,16 @@
       </div>
 
       <!-- Passcode Input Form -->
-      <form id="admin-login-form" class="space-y-4 text-left">
+      <form id="admin-login-form" onsubmit="return false;" class="space-y-4 text-left">
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="block text-xs font-bold text-[#1A0F09] dark:text-[#f5d6b4]">
-              Admin Master Passcode
-            </label>
-            <span class="text-[11px] font-mono text-[#865237] dark:text-[#dfa04e]">Default: <strong>sirmyk26</strong></span>
-          </div>
+          <label class="block text-xs font-bold text-[#1A0F09] dark:text-[#f5d6b4] mb-1.5">
+            Admin Master Passcode
+          </label>
           <div class="relative">
             <input
               type="password"
               id="admin-pass-input"
-              placeholder="Enter sirmyk26 or adabah2026..."
+              placeholder="Enter passcode..."
               autocomplete="current-password"
               autocapitalize="none"
               autocorrect="off"

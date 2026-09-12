@@ -2235,6 +2235,9 @@ function startAdminDashboard() {
       } else {
         showToast(data.message || 'Failed to delete partner', 'error');
       }
+    } catch (err) {
+      showToast('Network error deleting partner.', 'error');
+    }
   }
 
   // ==========================================
