@@ -86,6 +86,15 @@
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           Live
         </span>
+        <button
+          type="button"
+          id="admin-mobile-lock-btn"
+          class="p-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 text-xs font-bold transition-colors cursor-pointer"
+          title="Lock Portal / Sign Out"
+          aria-label="Lock Admin Portal"
+        >
+          🔒
+        </button>
       </div>
     </header>
 
@@ -215,6 +224,16 @@
 
       <!-- Sidebar Footer -->
       <div class="pt-4 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 space-y-2">
+        <button
+          type="button"
+          id="admin-lock-btn"
+          class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 dark:text-red-400 bg-red-500/10 hover:bg-red-500/20 transition-colors cursor-pointer"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          <span>Lock Portal / Sign Out</span>
+        </button>
         <a
           href="/"
           class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/5 text-[#5C3D2E] dark:text-[#f5d6b4] hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
@@ -999,6 +1018,84 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MASTER ADMIN PASSCODE LOCK SCREEN (Default passcode: sirmyk26) -->
+  <div
+    id="admin-lock-screen"
+    class="fixed inset-0 z-[100] bg-[#120904]/90 backdrop-blur-2xl flex items-center justify-center p-4 transition-opacity duration-300"
+  >
+    <div
+      id="admin-lock-card"
+      class="relative w-full max-w-md bg-white dark:bg-[#24140b] rounded-3xl border border-[#865237]/25 dark:border-[#dfa04e]/30 shadow-2xl p-6 sm:p-8 space-y-6 text-center transition-transform"
+    >
+      <!-- Glowing Shield/Lock Icon -->
+      <div class="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#865237] via-[#dfa04e] to-[#f5d6b4] p-[2px] shadow-xl flex items-center justify-center">
+        <div class="w-full h-full bg-[#120904] rounded-[14px] flex items-center justify-center text-2xl text-[#dfa04e]">
+          🔒
+        </div>
+      </div>
+
+      <!-- Title & Context -->
+      <div class="space-y-1.5">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-[#865237] dark:text-[#dfa04e]">Restricted Security Gate</span>
+        <h2 class="font-display font-black text-2xl text-[#1A0F09] dark:text-white">Admin Operations Portal</h2>
+        <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/75 leading-relaxed">
+          The ADABAH Startup Challenge Reviewer & Editorial Console is locked. Enter your administrator passcode to access.
+        </p>
+      </div>
+
+      <!-- Passcode Input Form -->
+      <form id="admin-login-form" class="space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-bold text-[#1A0F09] dark:text-[#f5d6b4] mb-1.5">
+            Admin Master Passcode
+          </label>
+          <div class="relative">
+            <input
+              type="password"
+              id="admin-pass-input"
+              placeholder="Enter passcode..."
+              autocomplete="current-password"
+              required
+              class="w-full px-4 py-3 pr-11 rounded-xl bg-[#FAF7F2] dark:bg-black/50 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white placeholder-[#865237]/40 dark:placeholder-[#f5d6b4]/30 text-sm focus:outline-none focus:border-[#865237] dark:focus:border-[#dfa04e] font-mono tracking-wider"
+            />
+            <button
+              type="button"
+              id="toggle-admin-pass-btn"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/60 hover:text-[#1A0F09] dark:hover:text-white p-1 cursor-pointer"
+              title="Show/Hide Passcode"
+            >
+              👁
+            </button>
+          </div>
+        </div>
+
+        <!-- Error Alert -->
+        <div
+          id="admin-login-error"
+          class="hidden p-3 rounded-xl bg-red-50 dark:bg-red-950/70 border border-red-300 dark:border-red-500/40 text-red-800 dark:text-red-300 text-xs font-semibold flex items-center gap-2"
+        >
+          <span>⚠</span>
+          <span id="admin-login-error-text">Invalid admin passcode. Access denied.</span>
+        </div>
+
+        <button
+          type="submit"
+          id="admin-login-submit-btn"
+          class="w-full py-3.5 rounded-xl btn-adabah-primary font-display font-black text-xs sm:text-sm tracking-wide shadow-lg hover:scale-[1.01] transition-transform cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>Unlock Admin Portal</span> →
+        </button>
+      </form>
+
+      <div class="pt-2 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 flex items-center justify-between text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+        <a href="/" class="hover:underline flex items-center gap-1">
+          ← Back to Website
+        </a>
+        <span class="font-mono text-[10px] text-[#865237] dark:text-[#dfa04e]">Passcode Protected</span>
+      </div>
     </div>
   </div>
 

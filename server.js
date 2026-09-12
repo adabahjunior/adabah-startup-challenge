@@ -18,6 +18,27 @@ const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
 const BLOGS_FILE = path.join(DATA_DIR, 'blogs.json');
 const BROADCASTS_FILE = path.join(DATA_DIR, 'broadcasts.json');
 
+// Admin Password Gate (Default: sirmyk26)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sirmyk26';
+const adminSessions = new Map(); // token -> { createdAt, expiresAt }
+
+function generateAdminToken() {
+  return 'adm_' + crypto.randomBytes(24).toString('hex');
+}
+
+function validateAdminToken(req) {
+  const authHeader = req.headers['authorization'] || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim() || req.headers['x-admin-token'];
+  if (!token) return false;
+  const session = adminSessions.get(token);
+  if (!session) return false;
+  if (Date.now() > session.expiresAt) {
+    adminSessions.delete(token);
+    return false;
+  }
+  return true;
+}
+
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -568,6 +589,9 @@ const server = http.createServer(async (req, res) => {
 
       // 5. PATCH /api/applications/:id/status - Update application status (Reviewer/Admin)
       if (pathname.startsWith('/api/applications/') && pathname.endsWith('/status') && method === 'PATCH') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         const id = pathname.replace('/api/applications/', '').replace('/status', '').trim();
         const body = await parseBody(req);
 
@@ -865,6 +889,9 @@ const server = http.createServer(async (req, res) => {
 
       // 8. GET /api/export - Export applications as CSV or JSON
       if (pathname === '/api/export' && method === 'GET') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required to export applicant data.' });
+        }
         let apps = await supabaseDb.getApplications();
         if (!apps) {
           apps = readJsonFile(APPLICATIONS_FILE, []);
@@ -889,6 +916,55 @@ const server = http.createServer(async (req, res) => {
       }
 
       // ========================================================
+      // 9. ADMIN AUTHENTICATION GATEWAY
+      // ========================================================
+
+      // 9a. POST /api/admin/login - Authenticate with passcode
+      if (pathname === '/api/admin/login' && method === 'POST') {
+        const body = await parseBody(req);
+        const password = body.password ? String(body.password).trim() : '';
+
+        if (!password) {
+          return sendJson(res, 400, { success: false, message: 'Passcode is required.' });
+        }
+
+        if (password !== ADMIN_PASSWORD) {
+          return sendJson(res, 401, { success: false, message: 'Invalid admin passcode. Access denied.' });
+        }
+
+        const token = generateAdminToken();
+        adminSessions.set(token, {
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 7 * 24 * 3600 * 1000 // 7 days
+        });
+
+        return sendJson(res, 200, {
+          success: true,
+          message: 'Admin access granted.',
+          token
+        });
+      }
+
+      // 9b. GET /api/admin/auth-check - Validate current admin session token
+      if (pathname === '/api/admin/auth-check' && method === 'GET') {
+        const isValid = validateAdminToken(req);
+        if (!isValid) {
+          return sendJson(res, 401, { success: false, authenticated: false, message: 'Admin authentication required.' });
+        }
+        return sendJson(res, 200, { success: true, authenticated: true });
+      }
+
+      // 9c. POST /api/admin/logout - Invalidate admin session token
+      if (pathname === '/api/admin/logout' && method === 'POST') {
+        const authHeader = req.headers['authorization'] || '';
+        const token = authHeader.replace(/^Bearer\s+/i, '').trim() || req.headers['x-admin-token'];
+        if (token) {
+          adminSessions.delete(token);
+        }
+        return sendJson(res, 200, { success: true, message: 'Admin session terminated.' });
+      }
+
+      // ========================================================
       // 10. BLOGS & NEWS CMS ENDPOINTS
       // ========================================================
 
@@ -896,6 +972,10 @@ const server = http.createServer(async (req, res) => {
       if (pathname === '/api/blogs' && method === 'GET') {
         const blogs = readJsonFile(BLOGS_FILE, []);
         const { all, category, search } = parsedUrl.query;
+
+        if (all === 'true' && !validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required to view draft articles.' });
+        }
 
         let filtered = [...blogs];
         if (all !== 'true') {
@@ -940,6 +1020,9 @@ const server = http.createServer(async (req, res) => {
 
       // 10c. POST /api/blogs - Create new blog article
       if (pathname === '/api/blogs' && method === 'POST') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         const body = await parseBody(req);
         if (!body.title || !body.title.trim()) {
           return sendJson(res, 400, { success: false, message: 'Article title is required.' });
@@ -983,6 +1066,9 @@ const server = http.createServer(async (req, res) => {
 
       // 10d. PUT/PATCH /api/blogs/:id - Update existing blog article
       if (blogMatch && (method === 'PUT' || method === 'PATCH')) {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         const id = blogMatch[1].trim();
         const body = await parseBody(req);
         const blogs = readJsonFile(BLOGS_FILE, []);
@@ -1017,6 +1103,9 @@ const server = http.createServer(async (req, res) => {
 
       // 10e. DELETE /api/blogs/:id - Delete blog article
       if (blogMatch && method === 'DELETE') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         const id = blogMatch[1].trim();
         const blogs = readJsonFile(BLOGS_FILE, []);
         const filtered = blogs.filter(b => b.id.toLowerCase() !== id.toLowerCase() && b.slug.toLowerCase() !== id.toLowerCase());
@@ -1035,6 +1124,9 @@ const server = http.createServer(async (req, res) => {
 
       // 11a. GET /api/admin/teams - Directory of all teams & members
       if (pathname === '/api/admin/teams' && method === 'GET') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         let apps = await supabaseDb.getApplications();
         if (!apps) {
           apps = readJsonFile(APPLICATIONS_FILE, []);
@@ -1084,6 +1176,9 @@ const server = http.createServer(async (req, res) => {
 
       // 12a. POST /api/admin/broadcast-sms - Dispatch Broadcast Campaign
       if (pathname === '/api/admin/broadcast-sms' && method === 'POST') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         const body = await parseBody(req);
         const { targetType, targetValue, message, customRecipients } = body;
 
@@ -1180,6 +1275,9 @@ const server = http.createServer(async (req, res) => {
 
       // 12b. GET /api/admin/broadcasts - Broadcast Campaign History
       if (pathname === '/api/admin/broadcasts' && method === 'GET') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         const broadcasts = readJsonFile(BROADCASTS_FILE, []);
         return sendJson(res, 200, { success: true, count: broadcasts.length, data: broadcasts });
       }
@@ -1190,6 +1288,9 @@ const server = http.createServer(async (req, res) => {
 
       // 13a. GET /api/admin/summary - Central Metrics
       if (pathname === '/api/admin/summary' && method === 'GET') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
         let apps = await supabaseDb.getApplications();
         if (!apps) {
           apps = readJsonFile(APPLICATIONS_FILE, []);

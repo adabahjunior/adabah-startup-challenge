@@ -8,6 +8,7 @@ function startAdminDashboard() {
   let allBroadcasts = [];
   let summaryData = null;
   let activeModalApp = null;
+  let isInitialized = false;
 
   // DOM Elements
   const sidebar = document.getElementById('admin-sidebar');
@@ -15,6 +16,18 @@ function startAdminDashboard() {
   const mobileToggleBtn = document.getElementById('admin-mobile-toggle');
   const mobileCloseBtn = document.getElementById('admin-sidebar-close');
   const mobilePageTitle = document.getElementById('mobile-page-title');
+
+  // Lock Screen Gate Elements
+  const lockScreen = document.getElementById('admin-lock-screen');
+  const lockCard = document.getElementById('admin-lock-card');
+  const loginForm = document.getElementById('admin-login-form');
+  const passInput = document.getElementById('admin-pass-input');
+  const togglePassBtn = document.getElementById('toggle-admin-pass-btn');
+  const loginError = document.getElementById('admin-login-error');
+  const loginErrorText = document.getElementById('admin-login-error-text');
+  const loginSubmitBtn = document.getElementById('admin-login-submit-btn');
+  const lockBtn = document.getElementById('admin-lock-btn');
+  const mobileLockBtn = document.getElementById('admin-mobile-lock-btn');
 
   // Modals
   const submissionModal = document.getElementById('submission-detail-modal');
@@ -41,10 +54,152 @@ function startAdminDashboard() {
   const phonePreviewText = document.getElementById('phone-preview-text');
   const estimatedRecipientCount = document.getElementById('estimated-recipient-count');
 
+  // Token & Lock Screen Controller
+  function getAdminToken() {
+    return localStorage.getItem('adabah_admin_token') || '';
+  }
+
+  function setAdminToken(token) {
+    localStorage.setItem('adabah_admin_token', token);
+  }
+
+  function clearAdminToken() {
+    localStorage.removeItem('adabah_admin_token');
+  }
+
+  function showLockScreen(errorMessage = '') {
+    if (lockScreen) {
+      lockScreen.classList.remove('hidden');
+      lockScreen.style.display = 'flex';
+    }
+    if (errorMessage && loginError && loginErrorText) {
+      loginErrorText.textContent = errorMessage;
+      loginError.classList.remove('hidden');
+    } else if (loginError) {
+      loginError.classList.add('hidden');
+    }
+    if (passInput) {
+      passInput.value = '';
+      setTimeout(() => passInput.focus(), 150);
+    }
+  }
+
+  function hideLockScreen() {
+    if (lockScreen) {
+      lockScreen.classList.add('hidden');
+      lockScreen.style.display = 'none';
+    }
+    if (loginError) {
+      loginError.classList.add('hidden');
+    }
+  }
+
+  async function adminFetch(url, options = {}) {
+    const token = getAdminToken();
+    const headers = {
+      ...(options.headers || {}),
+      'Authorization': `Bearer ${token}`
+    };
+    const res = await fetch(url, { ...options, headers });
+    if (res.status === 401) {
+      clearAdminToken();
+      showLockScreen('Session expired or unauthorized. Please re-enter admin passcode.');
+    }
+    return res;
+  }
+
+  function setupLockGate() {
+    if (loginForm) {
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const password = passInput ? passInput.value.trim() : '';
+        if (!password) return;
+
+        if (loginSubmitBtn) {
+          loginSubmitBtn.disabled = true;
+          loginSubmitBtn.innerHTML = '<span>Verifying Passcode...</span>';
+        }
+
+        try {
+          const res = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+          });
+          const data = await res.json();
+
+          if (res.ok && data.success && data.token) {
+            setAdminToken(data.token);
+            hideLockScreen();
+            showToast('Admin Portal unlocked successfully!', 'success');
+
+            if (!isInitialized) {
+              await loadInitialData();
+              isInitialized = true;
+            }
+          } else {
+            if (loginError && loginErrorText) {
+              loginErrorText.textContent = data.message || 'Invalid admin passcode. Access denied.';
+              loginError.classList.remove('hidden');
+            }
+            if (lockCard) {
+              lockCard.classList.add('animate-bounce');
+              setTimeout(() => lockCard.classList.remove('animate-bounce'), 500);
+            }
+            if (passInput) {
+              passInput.select();
+            }
+          }
+        } catch (err) {
+          if (loginError && loginErrorText) {
+            loginErrorText.textContent = 'Network error while validating passcode.';
+            loginError.classList.remove('hidden');
+          }
+        } finally {
+          if (loginSubmitBtn) {
+            loginSubmitBtn.disabled = false;
+            loginSubmitBtn.innerHTML = '<span>Unlock Admin Portal</span> →';
+          }
+        }
+      });
+    }
+
+    if (togglePassBtn && passInput) {
+      togglePassBtn.addEventListener('click', () => {
+        if (passInput.type === 'password') {
+          passInput.type = 'text';
+          togglePassBtn.textContent = '🔒';
+        } else {
+          passInput.type = 'password';
+          togglePassBtn.textContent = '👁';
+        }
+      });
+    }
+
+    async function handleLock() {
+      const token = getAdminToken();
+      if (token) {
+        try {
+          await fetch('/api/admin/logout', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        } catch(e) {}
+      }
+      clearAdminToken();
+      showLockScreen();
+      showToast('Admin Portal locked.', 'info');
+    }
+
+    if (lockBtn) lockBtn.addEventListener('click', handleLock);
+    if (mobileLockBtn) mobileLockBtn.addEventListener('click', handleLock);
+  }
+
   // Initialize
   init();
 
   async function init() {
+    setupLockGate();
     setupNavigation();
     setupModals();
     setupBroadcastInteractions();
@@ -52,13 +207,35 @@ function startAdminDashboard() {
     setupSubmissionsFilters();
     setupTeamsFilters();
 
-    // Load initial data
-    await loadInitialData();
-
     // Check URL hash or query for initial tab
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab') || (window.location.hash ? window.location.hash.replace('#', '') : 'overview');
     switchAdminPage(tabParam, false);
+
+    // Verify authentication
+    const token = getAdminToken();
+    if (!token) {
+      showLockScreen();
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/admin/auth-check', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success || !data.authenticated) {
+        clearAdminToken();
+        showLockScreen('Session expired. Please enter admin passcode.');
+        return;
+      }
+
+      hideLockScreen();
+      await loadInitialData();
+      isInitialized = true;
+    } catch (err) {
+      showLockScreen('Authentication check error. Please enter passcode.');
+    }
   }
 
   // Load All Core Data from APIs
@@ -167,7 +344,7 @@ function startAdminDashboard() {
   // 1. OVERVIEW DATA
   async function loadSummaryData() {
     try {
-      const res = await fetch('/api/admin/summary');
+      const res = await adminFetch('/api/admin/summary');
       const data = await res.json();
       if (res.ok && data.success && data.data) {
         summaryData = data.data;
@@ -204,7 +381,7 @@ function startAdminDashboard() {
   // 2. SUBMISSIONS MANAGEMENT
   async function loadApplicationsData() {
     try {
-      const res = await fetch('/api/applications');
+      const res = await adminFetch('/api/applications');
       const data = await res.json();
       if (res.ok && data.success && Array.isArray(data.data)) {
         allApplications = data.data;
@@ -405,7 +582,7 @@ function startAdminDashboard() {
   // 3. STARTUP TEAMS DIRECTORY
   async function loadTeamsData() {
     try {
-      const res = await fetch('/api/admin/teams');
+      const res = await adminFetch('/api/admin/teams');
       const data = await res.json();
       if (res.ok && data.success && Array.isArray(data.data)) {
         allTeams = data.data;
@@ -427,9 +604,8 @@ function startAdminDashboard() {
         }
         const filtered = allTeams.filter(t =>
           (t.startupName && t.startupName.toLowerCase().includes(q)) ||
-          (t.leadFounder && t.leadFounder.name && t.leadFounder.name.toLowerCase().includes(q)) ||
-          (t.appId && t.appId.toLowerCase().includes(q)) ||
-          (t.members && t.members.some(m => m.name && m.name.toLowerCase().includes(q)))
+          (t.leadFounder?.name && t.leadFounder.name.toLowerCase().includes(q)) ||
+          (t.appId && t.appId.toLowerCase().includes(q))
         );
         renderTeamsCards(filtered);
       });
@@ -438,15 +614,17 @@ function startAdminDashboard() {
 
   function renderTeamsCards(teams) {
     const grid = document.getElementById('teams-cards-grid');
+    const countEl = document.getElementById('teams-total-count');
+    if (countEl) countEl.textContent = `${teams.length} Team${teams.length === 1 ? '' : 's'}`;
     if (!grid) return;
 
     if (teams.length === 0) {
-      grid.innerHTML = `<div class="col-span-full py-8 text-center text-[#5C3D2E]/60">No teams found.</div>`;
+      grid.innerHTML = `<div class="col-span-full text-center py-12 text-[#5C3D2E]/60">No teams found matching your query.</div>`;
       return;
     }
 
     grid.innerHTML = teams.map(team => {
-      const statusConfig = getStatusConfig(team.status);
+      const statusConfig = getStatusBadge(team.status);
       const members = Array.isArray(team.members) ? team.members : [];
 
       let membersHtml = '';
@@ -512,7 +690,7 @@ function startAdminDashboard() {
   // 4. BLOG & NEWS CMS
   async function loadBlogsData() {
     try {
-      const res = await fetch('/api/blogs?all=true');
+      const res = await adminFetch('/api/blogs?all=true');
       const data = await res.json();
       if (res.ok && data.success && Array.isArray(data.data)) {
         allBlogs = data.data;
@@ -645,7 +823,7 @@ function startAdminDashboard() {
       const url = editId ? `/api/blogs/${encodeURIComponent(editId)}` : '/api/blogs';
       const method = editId ? 'PUT' : 'POST';
 
-      const res = await fetch(url, {
+      const res = await adminFetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -693,7 +871,7 @@ function startAdminDashboard() {
     if (!confirm('Are you sure you want to permanently delete this article?')) return;
 
     try {
-      const res = await fetch(`/api/blogs/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      const res = await adminFetch(`/api/blogs/${encodeURIComponent(id)}`, { method: 'DELETE' });
       const data = await res.json();
       if (res.ok && data.success) {
         showToast('Article deleted.', 'info');
@@ -828,7 +1006,7 @@ function startAdminDashboard() {
     }
 
     try {
-      const res = await fetch('/api/admin/broadcast-sms', {
+      const res = await adminFetch('/api/admin/broadcast-sms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -862,7 +1040,7 @@ function startAdminDashboard() {
 
   async function loadBroadcastsData() {
     try {
-      const res = await fetch('/api/admin/broadcasts');
+      const res = await adminFetch('/api/admin/broadcasts');
       const data = await res.json();
       if (res.ok && data.success && Array.isArray(data.data)) {
         allBroadcasts = data.data;
@@ -949,7 +1127,7 @@ function startAdminDashboard() {
     saveEvalBtn.textContent = 'Saving...';
 
     try {
-      const res = await fetch(`/api/applications/${encodeURIComponent(activeModalApp.id)}/status`, {
+      const res = await adminFetch(`/api/applications/${encodeURIComponent(activeModalApp.id)}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
