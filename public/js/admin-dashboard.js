@@ -209,6 +209,7 @@ function startAdminDashboard() {
     setupFounderControls();
     setupPartnerControls();
     setupHeroVideoControls();
+    setupWhatsappControls();
 
     // Check URL hash or query for initial tab
     const urlParams = new URLSearchParams(window.location.search);
@@ -252,7 +253,8 @@ function startAdminDashboard() {
         loadBroadcastsData(),
         loadFounderData(),
         loadPartnersData(),
-        loadHeroVideoData()
+        loadHeroVideoData(),
+        loadWhatsAppData()
       ]);
     } catch (err) {
       console.error('Error initializing admin data:', err);
@@ -278,15 +280,12 @@ function startAdminDashboard() {
     // Nav button clicks
     document.querySelectorAll('.admin-nav-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const pageId = btn.getAttribute('data-page');
-        if (pageId) switchAdminPage(pageId, true);
+        const page = btn.getAttribute('data-page');
+        if (page) {
+          switchAdminPage(page);
+          closeMobileSidebar();
+        }
       });
-    });
-
-    window.addEventListener('popstate', (e) => {
-      const pageId = (e.state && e.state.page) || 'overview';
-      switchAdminPage(pageId, false);
     });
   }
 
@@ -296,7 +295,7 @@ function startAdminDashboard() {
   }
 
   function switchAdminPage(pageId, pushState = true) {
-    const validPages = ['overview', 'submissions', 'teams', 'blogs', 'broadcast', 'founder', 'partners', 'hero-video'];
+    const validPages = ['overview', 'submissions', 'teams', 'blogs', 'broadcast', 'founder', 'partners', 'hero-video', 'whatsapp'];
     if (!validPages.includes(pageId)) pageId = 'overview';
 
     // Toggle pages
@@ -332,7 +331,8 @@ function startAdminDashboard() {
       broadcast: 'SMS Broadcast',
       founder: 'Founder Profile',
       partners: 'Partners & Sponsors',
-      'hero-video': 'Hero Background Video'
+      'hero-video': 'Hero Background Video',
+      whatsapp: 'WhatsApp Community'
     };
     if (mobilePageTitle) {
       mobilePageTitle.textContent = titles[pageId] || 'Overview';
@@ -345,6 +345,8 @@ function startAdminDashboard() {
       loadPartnersData();
     } else if (pageId === 'hero-video') {
       loadHeroVideoData();
+    } else if (pageId === 'whatsapp') {
+      loadWhatsAppData();
     }
 
     // Reset scroll
@@ -2636,6 +2638,226 @@ function startAdminDashboard() {
           const m = Math.floor(previewVideo.duration / 60);
           const s = Math.floor(previewVideo.duration % 60);
           durSpan.textContent = `${m}:${s < 10 ? '0' : ''}${s} (${previewVideo.videoWidth}x${previewVideo.videoHeight})`;
+        }
+      });
+    }
+  }
+
+  // ========================================================
+  // WHATSAPP COMMUNITY & SUPPORT CONTROLLER
+  // ========================================================
+
+  let whatsappSettings = {
+    whatsappGroupLink: '',
+    whatsappEnabled: false,
+    whatsappButtonLabel: 'Join WhatsApp Group'
+  };
+
+  async function loadWhatsAppData() {
+    try {
+      const res = await fetch('/api/content/whatsapp');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.success) {
+        whatsappSettings = {
+          whatsappGroupLink: data.whatsappGroupLink || '',
+          whatsappEnabled: data.whatsappEnabled !== undefined ? !!data.whatsappEnabled : !!data.whatsappGroupLink,
+          whatsappButtonLabel: data.whatsappButtonLabel || 'Join WhatsApp Group'
+        };
+        renderWhatsAppUI();
+      }
+    } catch (err) {
+      console.error('Error loading WhatsApp settings:', err);
+    }
+  }
+
+  function renderWhatsAppUI() {
+    const linkInput = document.getElementById('admin-whatsapp-link-input');
+    const labelInput = document.getElementById('admin-whatsapp-label-input');
+    const enabledCb = document.getElementById('admin-whatsapp-enabled-cb');
+    const statStatus = document.getElementById('stat-whatsapp-status');
+    const statLink = document.getElementById('stat-whatsapp-link');
+    const previewBadge = document.getElementById('admin-whatsapp-preview-badge');
+    const livePreviewBtn = document.getElementById('admin-whatsapp-live-preview-btn');
+    const livePreviewText = document.getElementById('admin-whatsapp-live-preview-text');
+    const navIndicator = document.getElementById('badge-whatsapp-indicator');
+
+    if (linkInput) linkInput.value = whatsappSettings.whatsappGroupLink;
+    if (labelInput) labelInput.value = whatsappSettings.whatsappButtonLabel || 'Join WhatsApp Group';
+    if (enabledCb) enabledCb.checked = !!whatsappSettings.whatsappEnabled;
+
+    if (statLink) {
+      statLink.textContent = whatsappSettings.whatsappGroupLink || 'None set';
+      statLink.title = whatsappSettings.whatsappGroupLink || '';
+    }
+
+    const isActive = !!(whatsappSettings.whatsappEnabled && whatsappSettings.whatsappGroupLink);
+
+    if (statStatus) {
+      if (isActive) {
+        statStatus.innerHTML = `
+          <span class="w-2.5 h-2.5 rounded-full bg-[#25D366] animate-pulse"></span>
+          <span class="font-display font-bold text-base text-emerald-600 dark:text-emerald-400">Live Active</span>
+        `;
+      } else if (whatsappSettings.whatsappGroupLink) {
+        statStatus.innerHTML = `
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+          <span class="font-display font-bold text-base text-amber-600 dark:text-amber-400">Disabled (Toggled Off)</span>
+        `;
+      } else {
+        statStatus.innerHTML = `
+          <span class="w-2.5 h-2.5 rounded-full bg-neutral-400"></span>
+          <span class="font-display font-bold text-base text-[#1A0F09] dark:text-white">No Link Configured</span>
+        `;
+      }
+    }
+
+    if (previewBadge) {
+      if (isActive) {
+        previewBadge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+        previewBadge.textContent = 'Active on Dashboard';
+      } else {
+        previewBadge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-white/10 text-[#5C3D2E] dark:text-[#f5d6b4]/80';
+        previewBadge.textContent = whatsappSettings.whatsappGroupLink ? 'Inactive (Toggled Off)' : 'Awaiting Link';
+      }
+    }
+
+    if (navIndicator) {
+      navIndicator.className = isActive ? 'w-2 h-2 rounded-full bg-[#25D366]' : 'w-2 h-2 rounded-full bg-gray-400';
+    }
+
+    if (livePreviewBtn) {
+      if (isActive) {
+        livePreviewBtn.classList.remove('opacity-40');
+      } else {
+        livePreviewBtn.classList.add('opacity-40');
+      }
+    }
+
+    if (livePreviewText) {
+      livePreviewText.textContent = whatsappSettings.whatsappButtonLabel || 'Join WhatsApp Group';
+    }
+  }
+
+  function setupWhatsappControls() {
+    const linkInput = document.getElementById('admin-whatsapp-link-input');
+    const labelInput = document.getElementById('admin-whatsapp-label-input');
+    const enabledCb = document.getElementById('admin-whatsapp-enabled-cb');
+    const saveBtn = document.getElementById('admin-whatsapp-save-btn');
+    const saveText = document.getElementById('admin-whatsapp-save-text');
+    const testBtn = document.getElementById('admin-whatsapp-test-btn');
+    const clearBtn = document.getElementById('admin-whatsapp-clear-btn');
+    const livePreviewBtn = document.getElementById('admin-whatsapp-live-preview-btn');
+
+    if (linkInput) {
+      linkInput.addEventListener('input', (e) => {
+        whatsappSettings.whatsappGroupLink = e.target.value.trim();
+        renderWhatsAppUI();
+      });
+    }
+
+    if (labelInput) {
+      labelInput.addEventListener('input', (e) => {
+        whatsappSettings.whatsappButtonLabel = e.target.value.trim() || 'Join WhatsApp Group';
+        renderWhatsAppUI();
+      });
+    }
+
+    if (enabledCb) {
+      enabledCb.addEventListener('change', (e) => {
+        whatsappSettings.whatsappEnabled = e.target.checked;
+        renderWhatsAppUI();
+      });
+    }
+
+    if (testBtn) {
+      testBtn.addEventListener('click', () => {
+        let url = (linkInput ? linkInput.value : whatsappSettings.whatsappGroupLink).trim();
+        if (!url) {
+          showToast('Please enter a WhatsApp group link first.', 'warning');
+          return;
+        }
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          url = 'https://' + url;
+        }
+        window.open(url, '_blank', 'noopener,noreferrer');
+      });
+    }
+
+    if (livePreviewBtn) {
+      livePreviewBtn.addEventListener('click', () => {
+        let url = (linkInput ? linkInput.value : whatsappSettings.whatsappGroupLink).trim();
+        if (url) {
+          if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+          window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+          showToast('Enter and save a WhatsApp invite link to test.', 'info');
+        }
+      });
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', async () => {
+        if (!confirm('Are you sure you want to remove the WhatsApp group link from the user dashboard?')) return;
+        whatsappSettings.whatsappGroupLink = '';
+        whatsappSettings.whatsappEnabled = false;
+        renderWhatsAppUI();
+
+        try {
+          const res = await adminFetch('/api/admin/whatsapp', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(whatsappSettings)
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            showToast('WhatsApp group link removed.', 'info');
+          } else {
+            showToast(data.message || 'Failed to update WhatsApp settings.', 'error');
+          }
+        } catch (err) {
+          showToast('Network error updating WhatsApp settings.', 'error');
+        }
+      });
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', async () => {
+        let link = (linkInput ? linkInput.value : whatsappSettings.whatsappGroupLink).trim();
+        if (link && !link.startsWith('http://') && !link.startsWith('https://')) {
+          link = 'https://' + link;
+          if (linkInput) linkInput.value = link;
+        }
+        whatsappSettings.whatsappGroupLink = link;
+        whatsappSettings.whatsappButtonLabel = (labelInput ? labelInput.value : whatsappSettings.whatsappButtonLabel).trim() || 'Join WhatsApp Group';
+        whatsappSettings.whatsappEnabled = enabledCb ? enabledCb.checked : true;
+
+        if (whatsappSettings.whatsappEnabled && !whatsappSettings.whatsappGroupLink) {
+          showToast('Please enter a WhatsApp invite link, or uncheck the toggle to save as disabled.', 'warning');
+          return;
+        }
+
+        saveBtn.disabled = true;
+        if (saveText) saveText.textContent = 'Saving...';
+
+        try {
+          const res = await adminFetch('/api/admin/whatsapp', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(whatsappSettings)
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            showToast('WhatsApp community settings saved successfully!', 'success');
+            renderWhatsAppUI();
+          } else {
+            showToast(data.message || 'Error saving WhatsApp settings.', 'error');
+          }
+        } catch (err) {
+          showToast('Network error saving WhatsApp settings.', 'error');
+        } finally {
+          saveBtn.disabled = false;
+          if (saveText) saveText.textContent = 'Save WhatsApp Settings';
         }
       });
     }

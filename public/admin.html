@@ -261,6 +261,21 @@
             </div>
             <span id="badge-hero-video-indicator" class="w-2 h-2 rounded-full bg-gray-400"></span>
           </button>
+
+          <!-- 9. WhatsApp Group / Community -->
+          <button
+            type="button"
+            data-page="whatsapp"
+            class="admin-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left text-[#5C3D2E] dark:text-[#f5d6b4]/80 hover:bg-[#865237]/10 dark:hover:bg-white/5 cursor-pointer"
+          >
+            <div class="flex items-center gap-2.5">
+              <svg class="w-4 h-4 flex-shrink-0 text-[#25D366] fill-current" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
+              <span>WhatsApp Group</span>
+            </div>
+            <span id="badge-whatsapp-indicator" class="w-2 h-2 rounded-full bg-gray-400"></span>
+          </button>
         </nav>
       </div>
 
@@ -1327,6 +1342,219 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 9. PAGE: WHATSAPP COMMUNITY & SUPPORT -->
+      <!-- ======================================================== -->
+      <div id="page-whatsapp" class="admin-page hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#865237]/15 dark:border-[#f5d6b4]/10">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#865237] dark:text-[#dfa04e]">Founder Communication</span>
+            <h2 class="font-display font-black text-2xl text-[#1A0F09] dark:text-white flex items-center gap-2.5">
+              <span>WhatsApp Group & Community</span>
+            </h2>
+            <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">
+              Configure the official WhatsApp group invite link. A floating action button will be displayed on the Founder Dashboard for admitted teams.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <a
+              href="/dashboard"
+              target="_blank"
+              class="px-4 py-2 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-xs font-bold text-[#865237] dark:text-[#dfa04e] hover:bg-[#865237]/10 flex items-center gap-1.5"
+            >
+              <span>View Founder Dashboard</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Metrics / Fast Status Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm">
+            <span class="text-[10px] uppercase font-bold text-[#5C3D2E] dark:text-[#f5d6b4]/70">Floating Button Status</span>
+            <div id="stat-whatsapp-status" class="flex items-center gap-2 mt-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-neutral-400"></span>
+              <span class="font-display font-bold text-base text-[#1A0F09] dark:text-white">Disabled</span>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm">
+            <span class="text-[10px] uppercase font-bold text-[#5C3D2E] dark:text-[#f5d6b4]/70">Destination</span>
+            <div class="font-display font-black text-sm text-[#865237] dark:text-[#dfa04e] mt-1 flex items-center gap-1.5">
+              <span>Founder Workspace</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-md bg-[#865237]/10 dark:bg-white/10 text-[#5C3D2E] dark:text-[#f5d6b4]">/dashboard</span>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm">
+            <span class="text-[10px] uppercase font-bold text-[#5C3D2E] dark:text-[#f5d6b4]/70">Configured Link</span>
+            <div id="stat-whatsapp-link" class="font-display font-bold text-xs text-[#1A0F09] dark:text-white mt-1 truncate">
+              None set
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Configuration & Interactive Preview Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <!-- Left Column: Settings Form (7 cols) -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="p-6 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-5">
+              <h3 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white flex items-center gap-2">
+                <svg class="w-4 h-4 text-[#25D366] fill-current" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                <span>WhatsApp Community Configuration</span>
+              </h3>
+
+              <!-- Group Link Input -->
+              <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-[#1A0F09] dark:text-white">
+                  WhatsApp Group Invite Link <span class="text-red-500">*</span>
+                </label>
+                <div class="flex gap-2">
+                  <input
+                    type="url"
+                    id="admin-whatsapp-link-input"
+                    placeholder="https://chat.whatsapp.com/..."
+                    class="flex-1 px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs font-mono focus:outline-none focus:border-[#865237] dark:focus:border-[#dfa04e]"
+                  />
+                  <button
+                    type="button"
+                    id="admin-whatsapp-test-btn"
+                    class="px-3.5 py-2.5 rounded-xl bg-[#865237]/10 hover:bg-[#865237]/20 dark:bg-white/10 dark:hover:bg-white/15 text-[#865237] dark:text-[#dfa04e] text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                    title="Test link in new tab"
+                  >
+                    <span>Test</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/60">
+                  Paste the full WhatsApp group link (e.g., <span class="font-mono">https://chat.whatsapp.com/ABC123xyz</span>).
+                </p>
+              </div>
+
+              <!-- Button Label Input -->
+              <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-[#1A0F09] dark:text-white">
+                  Floating Button Label (Desktop)
+                </label>
+                <input
+                  type="text"
+                  id="admin-whatsapp-label-input"
+                  placeholder="Join WhatsApp Group"
+                  value="Join WhatsApp Group"
+                  maxlength="30"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/25 dark:border-[#f5d6b4]/20 text-[#1A0F09] dark:text-white text-xs focus:outline-none focus:border-[#865237] dark:focus:border-[#dfa04e]"
+                />
+                <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/60">
+                  Label shown next to the WhatsApp icon on desktop screens. Default: "Join WhatsApp Group".
+                </p>
+              </div>
+
+              <!-- Toggle: Enable on User Dashboard -->
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/15">
+                <div>
+                  <div class="font-display font-bold text-xs text-[#1A0F09] dark:text-white">
+                    Show Floating WhatsApp Button on Dashboard
+                  </div>
+                  <div class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">
+                    When active, a floating action button appears at the bottom-right of the Founder Workspace.
+                  </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-4">
+                  <input type="checkbox" id="admin-whatsapp-enabled-cb" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer dark:bg-neutral-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#25D366]"></div>
+                </label>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pt-3 border-t border-[#865237]/15 dark:border-[#f5d6b4]/15 flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  id="admin-whatsapp-clear-btn"
+                  class="px-4 py-2.5 rounded-xl border border-red-500/20 text-red-600 dark:text-red-400 hover:bg-red-500/10 text-xs font-bold transition-colors cursor-pointer"
+                >
+                  Clear Link
+                </button>
+                <button
+                  type="button"
+                  id="admin-whatsapp-save-btn"
+                  class="px-6 py-2.5 rounded-xl btn-adabah-primary font-display font-black text-xs shadow-lg hover:scale-[1.02] transition-transform cursor-pointer flex items-center gap-2"
+                >
+                  <span id="admin-whatsapp-save-text">Save WhatsApp Settings</span> →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Live Preview (5 cols) -->
+          <div class="lg:col-span-5 space-y-4">
+            <div class="p-6 rounded-3xl bg-white dark:bg-[#24140b] border border-[#865237]/15 dark:border-[#f5d6b4]/15 shadow-sm space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white flex items-center gap-2">
+                  <span>📱</span>
+                  <span>Dashboard Preview</span>
+                </h3>
+                <span id="admin-whatsapp-preview-badge" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                  Active
+                </span>
+              </div>
+
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+                This preview simulates the floating button exactly as founders will see and interact with it in their workspace:
+              </p>
+
+              <!-- Mock Dashboard Screen Container -->
+              <div class="relative h-64 rounded-2xl bg-[#FAF7F2] dark:bg-[#180e08] border-2 border-dashed border-[#865237]/20 dark:border-[#f5d6b4]/20 p-4 overflow-hidden flex flex-col justify-between">
+                <div class="flex items-center justify-between text-[11px] text-[#5C3D2E]/60 dark:text-[#f5d6b4]/50 font-mono">
+                  <span>Founder Dashboard</span>
+                  <span>bottom-right corner</span>
+                </div>
+
+                <div class="space-y-2 opacity-30 pointer-events-none">
+                  <div class="h-3 bg-[#865237]/20 dark:bg-white/10 rounded w-3/4"></div>
+                  <div class="h-3 bg-[#865237]/20 dark:bg-white/10 rounded w-1/2"></div>
+                </div>
+
+                <!-- Live Preview Floating Button -->
+                <div class="flex justify-end">
+                  <div
+                    id="admin-whatsapp-live-preview-btn"
+                    class="group relative inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#25D366] text-white font-display font-bold text-xs shadow-[0_10px_25px_-5px_rgba(37,211,102,0.45)] cursor-pointer transition-all duration-200"
+                  >
+                    <!-- Pulse ping animation -->
+                    <span class="absolute -inset-0.5 rounded-full bg-[#25D366]/40 animate-ping pointer-events-none opacity-75"></span>
+
+                    <!-- Icon -->
+                    <svg class="w-5 h-5 flex-shrink-0 fill-current" viewBox="0 0 24 24">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                    </svg>
+
+                    <!-- Text -->
+                    <span id="admin-whatsapp-live-preview-text" class="tracking-wide whitespace-nowrap">
+                      Join WhatsApp Group
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-[11px] text-[#5C3D2E]/80 dark:text-[#f5d6b4]/70 space-y-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-emerald-500 font-bold">✓</span> Opens directly in the WhatsApp app or WhatsApp Web
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-emerald-500 font-bold">✓</span> Safe external link (<span class="font-mono">target="_blank" rel="noopener noreferrer"</span>)
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </main>

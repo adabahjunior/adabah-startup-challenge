@@ -2133,6 +2133,69 @@ async function requestHandler(req, res) {
         }
       }
 
+      // ========================================================
+      // 16. WHATSAPP COMMUNITY & SUPPORT CONFIGURATION
+      // ========================================================
+
+      // 16a. GET /api/content/whatsapp - Public WhatsApp Community Settings
+      if (pathname === '/api/content/whatsapp' && method === 'GET') {
+        let settings = await supabaseDb.getSiteSettings();
+        if (!settings) {
+          settings = readJsonFile(SETTINGS_FILE, {});
+        }
+        return sendJson(res, 200, {
+          success: true,
+          whatsappGroupLink: settings.whatsappGroupLink || '',
+          whatsappEnabled: settings.whatsappEnabled !== undefined ? !!settings.whatsappEnabled : !!settings.whatsappGroupLink,
+          whatsappButtonLabel: settings.whatsappButtonLabel || 'Join WhatsApp Group',
+          updatedAt: settings.updatedAt || null
+        });
+      }
+
+      // 16b. PUT /api/admin/whatsapp - Update WhatsApp Community Settings (Admin Only)
+      if (pathname === '/api/admin/whatsapp' && method === 'PUT') {
+        if (!validateAdminToken(req)) {
+          return sendJson(res, 401, { success: false, message: 'Unauthorized. Admin authentication required.' });
+        }
+        try {
+          const body = await parseBody(req);
+          let link = (body.whatsappGroupLink !== undefined ? String(body.whatsappGroupLink) : '').trim();
+          if (link && !link.startsWith('http://') && !link.startsWith('https://')) {
+            link = 'https://' + link;
+          }
+
+          let currentSettings = await supabaseDb.getSiteSettings();
+          if (!currentSettings) {
+            currentSettings = readJsonFile(SETTINGS_FILE, {});
+          }
+
+          const updated = {
+            ...currentSettings,
+            whatsappGroupLink: link,
+            whatsappEnabled: body.whatsappEnabled !== undefined ? !!body.whatsappEnabled : (link.length > 0),
+            whatsappButtonLabel: (body.whatsappButtonLabel !== undefined ? String(body.whatsappButtonLabel) : 'Join WhatsApp Group').trim() || 'Join WhatsApp Group',
+            updatedAt: new Date().toISOString()
+          };
+
+          writeJsonFile(SETTINGS_FILE, updated);
+          await supabaseDb.updateSiteSettings(updated);
+
+          return sendJson(res, 200, {
+            success: true,
+            message: 'WhatsApp community group link saved successfully.',
+            data: {
+              whatsappGroupLink: updated.whatsappGroupLink,
+              whatsappEnabled: updated.whatsappEnabled,
+              whatsappButtonLabel: updated.whatsappButtonLabel,
+              updatedAt: updated.updatedAt
+            }
+          });
+        } catch (err) {
+          console.error('Error saving WhatsApp settings:', err);
+          return sendJson(res, 500, { success: false, message: 'Failed to save WhatsApp settings: ' + err.message });
+        }
+      }
+
       // Unhandled API Route
       return sendJson(res, 404, { success: false, message: 'API Endpoint not found' });
     } catch (apiError) {

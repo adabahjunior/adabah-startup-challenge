@@ -51,6 +51,7 @@ function startDashboardApp() {
   async function init() {
     setupEventListeners();
     setupOtpControls();
+    initFloatingWhatsApp();
 
     const urlParams = new URLSearchParams(window.location.search);
     const idFromUrl = urlParams.get('id') || urlParams.get('app');
@@ -1441,6 +1442,32 @@ function startDashboardApp() {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
+
+  // Floating WhatsApp Community Action Button Controller
+  async function initFloatingWhatsApp() {
+    const container = document.getElementById('floating-whatsapp-container');
+    const linkBtn = document.getElementById('floating-whatsapp-btn');
+    const labelEl = document.getElementById('floating-whatsapp-label');
+    if (!container || !linkBtn) return;
+
+    try {
+      const res = await fetch('/api/content/whatsapp');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.success && data.whatsappEnabled && data.whatsappGroupLink) {
+        linkBtn.href = data.whatsappGroupLink;
+        if (labelEl && data.whatsappButtonLabel) {
+          labelEl.textContent = data.whatsappButtonLabel;
+        }
+        linkBtn.title = data.whatsappButtonLabel || 'Join WhatsApp Group';
+        container.classList.remove('hidden');
+      } else {
+        container.classList.add('hidden');
+      }
+    } catch (err) {
+      console.warn('Failed to load WhatsApp community link:', err);
+    }
   }
 
   function showToast(message, type = 'info') {
