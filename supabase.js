@@ -49,6 +49,7 @@ function toAppModel(row) {
     deckUrl: row.deck_url,
     videoUrl: row.video_url,
     heardFrom: row.heard_from,
+    inviteCode: row.invite_code || null,
     team: Array.isArray(row.team) ? row.team : (typeof row.team === 'string' ? JSON.parse(row.team || '[]') : []),
     deliverables: Array.isArray(row.deliverables) ? row.deliverables : (typeof row.deliverables === 'string' ? JSON.parse(row.deliverables || '[]') : []),
     createdAt: row.created_at,
@@ -86,6 +87,7 @@ function toDbRow(data) {
     deck_url: data.deckUrl || '',
     video_url: data.videoUrl || '',
     heard_from: data.heardFrom || 'Direct Website',
+    invite_code: data.inviteCode || null,
     team: data.team || [],
     deliverables: data.deliverables || [],
     updated_at: new Date().toISOString()
@@ -142,7 +144,7 @@ async function getApplications({ track, status, search } = {}) {
   }
 }
 
-// Get single application by ID or email
+// Get single application by ID, email, or invite_code
 async function getApplicationById(identifier) {
   if (!supabase || !identifier) return null;
   const idTrimmed = identifier.trim().toLowerCase();
@@ -150,7 +152,7 @@ async function getApplicationById(identifier) {
     const { data, error } = await supabase
       .from('applications')
       .select('*')
-      .or(`id.ilike.${idTrimmed},founder_email.ilike.${idTrimmed}`)
+      .or(`id.ilike.${idTrimmed},founder_email.ilike.${idTrimmed},invite_code.eq.${idTrimmed}`)
       .limit(1)
       .maybeSingle();
 
@@ -197,6 +199,7 @@ async function updateApplication(id, updates) {
     if (updates.tagline !== undefined) dbUpdates.tagline = updates.tagline;
     if (updates.website !== undefined) dbUpdates.website = updates.website;
     if (updates.primaryGoal !== undefined) dbUpdates.primary_goal = updates.primaryGoal;
+    if (updates.inviteCode !== undefined) dbUpdates.invite_code = updates.inviteCode;
 
     const { data, error } = await supabase
       .from('applications')

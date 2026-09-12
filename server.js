@@ -231,6 +231,19 @@ async function findApplicationByIdentifier(identifier) {
     );
   }
 
+  // 4. Smart fallback: If identifier is an invite code (INV-2026-XXXX or INV-2026-XXXX-YYYY), extract base application ID
+  if (!app && id.toUpperCase().startsWith('INV-')) {
+    const parts = id.toUpperCase().split('-');
+    if (parts.length >= 3) {
+      const reconstructedId = `ADB-${parts[1]}-${parts[2]}`;
+      app = await supabaseDb.getApplicationById(reconstructedId);
+      if (!app) {
+        const localApps = readJsonFile(APPLICATIONS_FILE, []);
+        app = localApps.find(a => a.id && a.id.toUpperCase() === reconstructedId);
+      }
+    }
+  }
+
   return app || null;
 }
 
@@ -884,6 +897,11 @@ async function requestHandler(req, res) {
           return sendJson(res, 404, { success: false, message: 'Invalid or expired team invite link.' });
         }
 
+        // Invalidate if application has an active inviteCode and submitted code does not match
+        if (app.inviteCode && code.toUpperCase() !== app.inviteCode.toUpperCase()) {
+          return sendJson(res, 404, { success: false, message: 'This team invite link has expired or been replaced by the founder.' });
+        }
+
         const teammates = Array.isArray(app.team) ? app.team : [];
         const currentTeamSize = teammates.length + 1;
         const maxTeamSize = 5;
@@ -940,6 +958,10 @@ async function requestHandler(req, res) {
         let app = await findApplicationByIdentifier(inviteCode);
         if (!app) {
           return sendJson(res, 404, { success: false, message: 'Invalid or expired team invite code.' });
+        }
+
+        if (app.inviteCode && inviteCode.toUpperCase() !== app.inviteCode.toUpperCase()) {
+          return sendJson(res, 404, { success: false, message: 'This team invite link has expired or been replaced by the founder.' });
         }
 
         const currentTeam = Array.isArray(app.team) ? [...app.team] : [];
