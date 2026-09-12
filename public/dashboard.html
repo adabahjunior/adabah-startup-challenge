@@ -117,10 +117,10 @@
   <!-- ======================================================== -->
   <!-- VIEW 2: ACTIVE FOUNDER DASHBOARD (STICKY SIDEBAR LAYOUT) -->
   <!-- ======================================================== -->
-  <div id="dashboard-main-view" class="hidden relative z-10 min-h-screen flex flex-col md:flex-row w-full max-w-full">
+  <div id="dashboard-main-view" class="hidden relative z-10 md:h-screen md:overflow-hidden flex flex-col md:flex-row w-full max-w-full">
 
     <!-- MOBILE TOP BAR (md:hidden) -->
-    <header class="md:hidden sticky top-0 z-40 w-full border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2]/95 dark:bg-[#180e08]/95 backdrop-blur-md px-4 py-3 flex items-center justify-between">
+    <header class="md:hidden sticky top-0 z-40 w-full border-b border-[#865237]/15 dark:border-[#f5d6b4]/10 bg-[#FAF7F2]/95 dark:bg-[#180e08]/95 backdrop-blur-md px-4 py-3 flex items-center justify-between flex-shrink-0">
       <div class="flex items-center gap-2.5 min-w-0">
         <button
           type="button"
@@ -133,12 +133,14 @@
           </svg>
         </button>
         
-        <a href="/" class="flex items-center gap-2 min-w-0">
-          <div class="w-7 h-7 rounded-lg bg-[#120904] text-[#f5d6b4] font-display font-black text-sm flex items-center justify-center flex-shrink-0">
-            A
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="font-display font-black text-xs text-[#1A0F09] dark:text-white truncate">ADABAH 2026</span>
+            <span class="text-[10px] text-[#865237] dark:text-[#dfa04e]">•</span>
+            <span id="mobile-page-title" class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] truncate">Overview</span>
           </div>
-          <span class="font-display font-black text-sm text-[#1A0F09] dark:text-white truncate">ADABAH 2026</span>
-        </a>
+          <span id="mobile-startup-name" class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 truncate">—</span>
+        </div>
       </div>
 
       <div class="flex items-center gap-2 flex-shrink-0">
@@ -154,13 +156,13 @@
     <!-- MOBILE SIDEBAR BACKDROP OVERLAY -->
     <div id="dashboard-sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
 
-    <!-- STICKY SIDEBAR (Desktop Fixed, Mobile Drawer) -->
+    <!-- STATIONARY SIDEBAR (Fixed Non-Scrolling Column on Desktop, Off-Canvas Drawer on Mobile) -->
     <aside
       id="dashboard-sidebar"
-      class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] transform -translate-x-full md:translate-x-0 md:static md:sticky md:top-0 md:h-screen md:w-64 lg:w-72 bg-[#FAF7F2] dark:bg-[#140b06] border-r border-[#865237]/15 dark:border-[#f5d6b4]/10 flex flex-col justify-between transition-transform duration-300 ease-in-out overflow-y-auto select-none"
+      class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] transform -translate-x-full md:translate-x-0 md:static md:w-64 lg:w-72 md:h-full md:flex-shrink-0 bg-[#FAF7F2] dark:bg-[#140b06] border-r border-[#865237]/15 dark:border-[#f5d6b4]/10 flex flex-col justify-between transition-transform duration-300 ease-in-out overflow-y-auto select-none"
     >
       <!-- Sidebar Top & Nav -->
-      <div class="p-4 sm:p-5 space-y-5">
+      <div class="p-4 sm:p-5 space-y-4">
         
         <!-- Logo & Mobile Close -->
         <div class="flex items-center justify-between">
@@ -214,53 +216,58 @@
           </div>
         </div>
 
-        <!-- Navigation Menu -->
-        <nav class="space-y-1 text-xs font-bold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
-          <a
-            href="#sec-overview"
-            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+        <!-- Navigation Menu (Multipage Selectors) -->
+        <nav class="space-y-1 text-xs font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80">
+          <button
+            type="button"
+            data-page="overview"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer"
           >
-            <span class="text-base">📊</span>
-            <span>Overview</span>
-          </a>
+            <span class="text-base flex-shrink-0">📊</span>
+            <span class="truncate">Overview</span>
+          </button>
 
-          <a
-            href="#sec-progress"
-            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          <button
+            type="button"
+            data-page="progress"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
-            <span class="text-base">📈</span>
-            <span>Evaluation Stage</span>
-          </a>
+            <span class="text-base flex-shrink-0">📈</span>
+            <span class="truncate">Evaluation Stage</span>
+          </button>
 
-          <a
-            href="#sec-deliverables"
-            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          <button
+            type="button"
+            data-page="deliverables"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
-            <span class="text-base">📤</span>
-            <span>Submissions &amp; Pitch</span>
-          </a>
+            <span class="text-base flex-shrink-0">📤</span>
+            <span class="truncate">Submissions &amp; Pitch</span>
+          </button>
 
-          <a
-            href="#sec-team"
-            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          <button
+            type="button"
+            data-page="team"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
-            <span class="text-base">👥</span>
-            <span>Startup Team</span>
-          </a>
+            <span class="text-base flex-shrink-0">👥</span>
+            <span class="truncate">Startup Team</span>
+          </button>
 
-          <a
-            href="#sec-profile"
-            class="sidebar-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          <button
+            type="button"
+            data-page="profile"
+            class="sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
           >
-            <span class="text-base">📝</span>
-            <span>Venture Profile</span>
-          </a>
+            <span class="text-base flex-shrink-0">📝</span>
+            <span class="truncate">Venture Profile</span>
+          </button>
         </nav>
 
       </div>
 
       <!-- Sidebar Footer Controls -->
-      <div class="p-4 sm:p-5 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 space-y-2 text-xs">
+      <div class="p-4 sm:p-5 border-t border-[#865237]/15 dark:border-[#f5d6b4]/10 space-y-2 text-xs flex-shrink-0">
         <div class="flex items-center justify-between gap-2">
           <button
             type="button"
@@ -291,336 +298,536 @@
     </aside>
 
     <!-- ======================================================== -->
-    <!-- MAIN WORKSPACE CONTENT CANVAS -->
+    <!-- MAIN WORKSPACE CONTENT CANVAS (Scrolls Independently) -->
     <!-- ======================================================== -->
-    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 space-y-6 max-w-full">
+    <main id="dashboard-content-area" class="flex-1 min-w-0 md:h-full md:overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 max-w-full">
 
-      <!-- 1. OVERVIEW HERO BANNER -->
-      <section id="sec-overview" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="space-y-1 min-w-0">
-            <div class="flex flex-wrap items-center gap-2">
-              <span id="dash-app-id" class="px-2.5 py-0.5 rounded-lg bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/20 font-mono font-bold text-xs text-[#865237] dark:text-[#dfa04e]">
-                ADB-2026-XXXX
-              </span>
-              <span id="dash-track-pill" class="px-2.5 py-0.5 rounded-lg bg-[#865237]/10 dark:bg-white/10 text-xs font-bold text-[#1A0F09] dark:text-white capitalize">
-                Track
-              </span>
-              <span id="dash-stage-pill" class="px-2.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/5 text-[10px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80 uppercase">
-                Stage
-              </span>
+      <!-- ======================================================== -->
+      <!-- PAGE 1: OVERVIEW -->
+      <!-- ======================================================== -->
+      <div id="page-overview" class="dashboard-page space-y-6">
+        <!-- Startup Hero Banner -->
+        <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="dash-app-id" class="px-2.5 py-0.5 rounded-lg bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/20 font-mono font-bold text-xs text-[#865237] dark:text-[#dfa04e]">
+                  ADB-2026-XXXX
+                </span>
+                <span id="dash-track-pill" class="px-2.5 py-0.5 rounded-lg bg-[#865237]/10 dark:bg-white/10 text-xs font-bold text-[#1A0F09] dark:text-white capitalize">
+                  Track
+                </span>
+                <span id="dash-stage-pill" class="px-2.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/5 text-[10px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]/80 uppercase">
+                  Stage
+                </span>
+              </div>
+
+              <h1 id="dash-startup-name" class="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-[#1A0F09] dark:text-white tracking-tight break-words">
+                —
+              </h1>
+
+              <p id="dash-tagline" class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-2xl leading-relaxed">
+              </p>
+
+              <div class="flex flex-wrap items-center gap-3 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 pt-1">
+                <span>📍 <strong id="dash-location" class="text-[#1A0F09] dark:text-white">—</strong></span>
+                <span>👤 Founder: <strong id="dash-founder-name" class="text-[#1A0F09] dark:text-white">—</strong></span>
+                <span id="dash-website-wrapper" class="hidden">
+                  🌐 <a id="dash-website-link" href="#" target="_blank" rel="noopener noreferrer" class="text-[#865237] dark:text-[#dfa04e] hover:underline font-bold">Website ↗</a>
+                </span>
+              </div>
             </div>
 
-            <h1 id="dash-startup-name" class="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-[#1A0F09] dark:text-white tracking-tight break-words">
-              —
-            </h1>
-
-            <p id="dash-tagline" class="text-xs sm:text-sm text-[#5C3D2E] dark:text-[#f5d6b4]/80 max-w-2xl leading-relaxed">
-            </p>
-
-            <div class="flex flex-wrap items-center gap-3 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 pt-1">
-              <span>📍 <strong id="dash-location" class="text-[#1A0F09] dark:text-white">—</strong></span>
-              <span>👤 Founder: <strong id="dash-founder-name" class="text-[#1A0F09] dark:text-white">—</strong></span>
-              <span id="dash-website-wrapper" class="hidden">
-                🌐 <a id="dash-website-link" href="#" target="_blank" rel="noopener noreferrer" class="text-[#865237] dark:text-[#dfa04e] hover:underline font-bold">Website ↗</a>
-              </span>
+            <!-- Quick Actions -->
+            <div class="flex flex-wrap items-center gap-2 self-start sm:self-center flex-shrink-0">
+              <button
+                type="button"
+                id="edit-profile-btn"
+                class="px-3.5 py-2 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              >
+                ✏️ <span>Edit Profile</span>
+              </button>
+              <button
+                type="button"
+                id="share-dashboard-btn"
+                class="px-3.5 py-2 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              >
+                🔗 <span>Copy Link</span>
+              </button>
             </div>
           </div>
 
-          <!-- Quick Action Buttons -->
-          <div class="flex flex-wrap items-center gap-2 self-start sm:self-center flex-shrink-0">
+          <!-- Fast Stats Strip (Clickable to switch pages) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 text-xs">
             <button
               type="button"
-              id="edit-profile-btn"
-              class="px-3.5 py-2 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              data-page-target="team"
+              class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
-              ✏️ <span>Edit Profile</span>
+              <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Team Size →</span>
+              <span id="stat-team-size" class="font-bold text-[#1A0F09] dark:text-white text-sm">1 Member</span>
             </button>
             <button
               type="button"
-              id="share-dashboard-btn"
-              class="px-3.5 py-2 rounded-xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#1A0F09] dark:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              data-page-target="deliverables"
+              class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
             >
-              🔗 <span>Copy Link</span>
+              <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Submissions →</span>
+              <span id="stat-submissions-count" class="font-bold text-[#1A0F09] dark:text-white text-sm">0 Items</span>
             </button>
-          </div>
-        </div>
-
-        <!-- Fast Stats Strip -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 text-xs">
-          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Team Size</span>
-            <span id="stat-team-size" class="font-bold text-[#1A0F09] dark:text-white text-sm">1 Member</span>
-          </div>
-          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Submissions</span>
-            <span id="stat-submissions-count" class="font-bold text-[#1A0F09] dark:text-white text-sm">0 Items</span>
-          </div>
-          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Pitch Deck</span>
-            <span id="stat-deck-status" class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Attached</span>
-          </div>
-          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Cohort Starts</span>
-            <span class="font-bold text-[#865237] dark:text-[#dfa04e] text-sm">2 Nov 2026</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- 2. EVALUATION PROGRESS TRACKER -->
-      <section id="sec-progress" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
-        <div class="flex items-center justify-between">
-          <h3 class="font-display font-bold text-base sm:text-lg text-[#1A0F09] dark:text-white">
-            Evaluation &amp; Selection Stage
-          </h3>
-          <div id="dash-score-badge" class="px-3 py-1 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/20 text-xs flex items-center gap-1.5">
-            <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold text-[11px]">Score:</span>
-            <span id="dash-score-text" class="font-display font-black text-[#865237] dark:text-[#dfa04e]">Pending</span>
-          </div>
-        </div>
-
-        <!-- 5-Stage Step Circles -->
-        <div class="py-1">
-          <div class="grid grid-cols-5 gap-1 sm:gap-2 text-center items-center">
-            
-            <div class="flex flex-col items-center gap-1" id="stage-node-submitted">
-              <div class="w-8 h-8 rounded-full border-2 border-[#865237] dark:border-[#dfa04e] bg-[#865237] dark:bg-[#dfa04e] text-white dark:text-[#180e08] flex items-center justify-center font-bold text-xs shadow-sm">
-                ✓
-              </div>
-              <span class="font-bold text-[10px] sm:text-xs text-[#1A0F09] dark:text-white">Submitted</span>
+            <button
+              type="button"
+              data-page-target="deliverables"
+              class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30 text-left hover:border-[#865237] transition-all cursor-pointer group"
+            >
+              <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold group-hover:text-[#865237]">Pitch Deck →</span>
+              <span id="stat-deck-status" class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Attached</span>
+            </button>
+            <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
+              <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Cohort Starts</span>
+              <span class="font-bold text-[#865237] dark:text-[#dfa04e] text-sm">2 Nov 2026</span>
             </div>
-
-            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-under_review">
-              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
-                2
-              </div>
-              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Screening</span>
-            </div>
-
-            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-shortlisted">
-              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
-                3
-              </div>
-              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Shortlisted</span>
-            </div>
-
-            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-finalist">
-              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
-                4
-              </div>
-              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Finalist</span>
-            </div>
-
-            <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-winner">
-              <div class="w-8 h-8 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs">
-                🏆
-              </div>
-              <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Winner</span>
-            </div>
-
           </div>
+        </section>
 
-          <!-- Progress Bar -->
-          <div class="relative w-full bg-[#E5DACD] dark:bg-[#120904] h-1.5 rounded-full overflow-hidden mt-3 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
-            <div id="stage-progress-bar" class="h-full bg-gradient-to-r from-[#865237] via-[#dfa04e] to-[#f5d6b4] transition-all duration-500 w-[20%]"></div>
-          </div>
-        </div>
-
-        <!-- Status Notes Feedback Box -->
-        <div class="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1 text-xs">
+        <!-- Evaluation Stage Mini-Summary -->
+        <section class="p-5 sm:p-6 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4">
           <div class="flex items-center justify-between">
-            <span class="font-bold text-[#865237] dark:text-[#dfa04e]">Committee Notes</span>
-            <span id="dash-updated-at" class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 font-mono">Recently</span>
-          </div>
-          <p id="dash-status-notes" class="text-[#1A0F09] dark:text-[#fbf1e6] leading-relaxed">
-            Application submitted successfully. Under preliminary compliance and eligibility screening.
-          </p>
-        </div>
-      </section>
-
-      <!-- 3. SUBMISSIONS & MILESTONES -->
-      <section id="sec-deliverables" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h3 class="font-display font-bold text-base sm:text-lg text-[#1A0F09] dark:text-white">
-            Pitch Materials &amp; Milestones
-          </h3>
-          <button
-            type="button"
-            id="open-submit-modal-btn"
-            class="px-3.5 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm flex items-center gap-1.5 self-start sm:self-auto"
-          >
-            <span>+ Make Submission</span>
-          </button>
-        </div>
-
-        <!-- Pitch Deck & Video Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-between gap-2">
-            <div class="min-w-0">
-              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Primary Deck</span>
-              <span id="deck-status-label" class="font-bold text-xs text-[#1A0F09] dark:text-white truncate block">Pitch Deck</span>
-            </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
-              <a id="view-deck-link" href="#" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg btn-adabah-primary text-[11px] font-bold">Open ↗</a>
-              <button type="button" id="update-deck-btn" class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]">Update</button>
-            </div>
-          </div>
-
-          <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-between gap-2">
-            <div class="min-w-0">
-              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Demo Video</span>
-              <span id="video-status-label" class="font-semibold text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 truncate block">Optional Video</span>
-            </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
-              <a id="view-video-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden px-2.5 py-1 rounded-lg btn-adabah-primary text-[11px] font-bold">Watch ↗</a>
-              <button type="button" id="update-video-btn" class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4]">Add / Update</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3-Week Cohort Milestones Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
-          <div class="p-3 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
             <div>
-              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 1</span>
-              <span class="font-bold text-[#1A0F09] dark:text-white block">Customer Discovery</span>
+              <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">
+                Evaluation Status
+              </h3>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">Current stage in the selection process</p>
             </div>
             <button
               type="button"
-              class="quick-submit-milestone-btn w-full py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
-              data-milestone="milestone_1"
-              data-title="Week 1: Customer Discovery & Validation"
+              data-page-target="progress"
+              class="px-3 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer flex items-center gap-1"
             >
-              Submit Deliverable →
+              <span>View Evaluation Page</span> →
             </button>
           </div>
 
-          <div class="p-3 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
+          <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-[#865237] dark:text-[#dfa04e]">Committee Feedback</span>
+              <span id="dash-updated-at" class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 font-mono">Recently</span>
+            </div>
+            <p id="dash-status-notes" class="text-[#1A0F09] dark:text-[#fbf1e6] leading-relaxed">
+              Application submitted successfully. Under preliminary compliance and eligibility screening.
+            </p>
+          </div>
+        </section>
+
+        <!-- Quick Access Multipage Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Card 1: Team -->
+          <div class="p-5 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm flex flex-col justify-between space-y-3">
             <div>
-              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 2</span>
-              <span class="font-bold text-[#1A0F09] dark:text-white block">Business Model</span>
+              <span class="text-2xl block mb-1">👥</span>
+              <h4 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white">Startup Team</h4>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1">
+                Collaborate with up to 5 student co-founders across campuses.
+              </p>
+            </div>
+            <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 flex items-center justify-between">
+              <button
+                type="button"
+                data-page-target="team"
+                class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
+              >
+                Manage Team →
+              </button>
+              <button
+                type="button"
+                onclick="document.getElementById('add-team-modal').classList.remove('hidden')"
+                class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-xs font-semibold text-[#1A0F09] dark:text-white cursor-pointer"
+              >
+                + Add
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Pitch Materials -->
+          <div class="p-5 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-2xl block mb-1">📤</span>
+              <h4 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white">Pitch &amp; Deliverables</h4>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1">
+                Submit weekly deliverables and keep your pitch deck updated.
+              </p>
+            </div>
+            <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 flex items-center justify-between">
+              <button
+                type="button"
+                data-page-target="deliverables"
+                class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
+              >
+                Open Submissions →
+              </button>
+              <button
+                type="button"
+                onclick="document.getElementById('submit-deliverable-modal').classList.remove('hidden')"
+                class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-xs font-semibold text-[#1A0F09] dark:text-white cursor-pointer"
+              >
+                + Submit
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: Venture Profile -->
+          <div class="p-5 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-2xl block mb-1">📝</span>
+              <h4 class="font-display font-bold text-sm text-[#1A0F09] dark:text-white">Venture Profile</h4>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1">
+                Review your problem statement, market traction, and solution.
+              </p>
+            </div>
+            <div class="pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10 flex items-center justify-between">
+              <button
+                type="button"
+                data-page-target="profile"
+                class="font-bold text-xs text-[#865237] dark:text-[#dfa04e] hover:underline cursor-pointer"
+              >
+                View Profile →
+              </button>
+              <button
+                type="button"
+                class="open-profile-modal-btn px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-xs font-semibold text-[#1A0F09] dark:text-white cursor-pointer"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PAGE 2: EVALUATION STAGE -->
+      <!-- ======================================================== -->
+      <div id="page-progress" class="dashboard-page hidden space-y-6">
+        <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/10 dark:border-[#f5d6b4]/10 pb-4">
+            <div>
+              <h2 class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white">
+                Evaluation &amp; Selection Stage
+              </h2>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">
+                Multi-round screening process evaluated by startup founders and venture investors.
+              </p>
+            </div>
+            <div id="dash-score-badge" class="px-3.5 py-1.5 rounded-xl bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/20 dark:border-[#f5d6b4]/20 text-xs flex items-center gap-1.5 self-start sm:self-auto">
+              <span class="text-[#5C3D2E] dark:text-[#f5d6b4]/70 font-semibold text-[11px]">Jury Score:</span>
+              <span id="dash-score-text" class="font-display font-black text-[#865237] dark:text-[#dfa04e]">Pending</span>
+            </div>
+          </div>
+
+          <!-- 5-Stage Stepper -->
+          <div class="py-2">
+            <div class="grid grid-cols-5 gap-1 sm:gap-2 text-center items-center">
+              <div class="flex flex-col items-center gap-1" id="stage-node-submitted">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237] dark:border-[#dfa04e] bg-[#865237] dark:bg-[#dfa04e] text-white dark:text-[#180e08] flex items-center justify-center font-bold text-xs sm:text-sm shadow-sm">
+                  ✓
+                </div>
+                <span class="font-bold text-[10px] sm:text-xs text-[#1A0F09] dark:text-white">Submitted</span>
+              </div>
+
+              <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-under_review">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm">
+                  2
+                </div>
+                <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Screening</span>
+              </div>
+
+              <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-shortlisted">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm">
+                  3
+                </div>
+                <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Shortlisted</span>
+              </div>
+
+              <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-finalist">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm">
+                  4
+                </div>
+                <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Finalist</span>
+              </div>
+
+              <div class="flex flex-col items-center gap-1 opacity-40" id="stage-node-winner">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#865237]/40 dark:border-[#f5d6b4]/30 bg-[#FAF7F2] dark:bg-black/40 text-[#5C3D2E] dark:text-[#f5d6b4]/60 flex items-center justify-center font-bold text-xs sm:text-sm">
+                  🏆
+                </div>
+                <span class="font-semibold text-[10px] sm:text-xs text-[#5C3D2E] dark:text-[#f5d6b4]">Winner</span>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="relative w-full bg-[#E5DACD] dark:bg-[#120904] h-1.5 rounded-full overflow-hidden mt-3 border border-[#865237]/15 dark:border-[#f5d6b4]/10">
+              <div id="stage-progress-bar" class="h-full bg-gradient-to-r from-[#865237] via-[#dfa04e] to-[#f5d6b4] transition-all duration-500 w-[20%]"></div>
+            </div>
+          </div>
+
+          <!-- Status Notes Feedback Box -->
+          <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1.5 text-xs">
+            <span class="font-bold text-[#865237] dark:text-[#dfa04e]">Official Committee Notes</span>
+            <p class="text-[#1A0F09] dark:text-[#fbf1e6] leading-relaxed">
+              Your application has been received and logged in the evaluation system. All candidates undergo blinded reviews by the ADABAH investment screening committee.
+            </p>
+          </div>
+
+          <!-- 4-Phase Timeline Roadmap -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2 text-xs">
+            <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1">
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase">Stage 1</span>
+              <h5 class="font-bold text-[#1A0F09] dark:text-white">Application Window</h5>
+              <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">Closes 10 Oct 2026</p>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1">
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase">Stage 2</span>
+              <h5 class="font-bold text-[#1A0F09] dark:text-white">Shortlist Announcement</h5>
+              <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">20 Oct 2026</p>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1">
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase">Stage 3</span>
+              <h5 class="font-bold text-[#1A0F09] dark:text-white">Accelerator Bootcamp</h5>
+              <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">2 Nov – 20 Nov 2026</p>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-black/30 border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1">
+              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase">Stage 4</span>
+              <h5 class="font-bold text-[#1A0F09] dark:text-white">Grand Demo Day</h5>
+              <p class="text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70">27 Nov 2026</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PAGE 3: SUBMISSIONS & PITCH -->
+      <!-- ======================================================== -->
+      <div id="page-deliverables" class="dashboard-page hidden space-y-6">
+        <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/10 dark:border-[#f5d6b4]/10 pb-4">
+            <div>
+              <h2 class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white">
+                Pitch Materials &amp; Milestones
+              </h2>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">
+                Submit and review your primary pitch deck, product demo, and weekly sprint deliverables.
+              </p>
             </div>
             <button
               type="button"
-              class="quick-submit-milestone-btn w-full py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
-              data-milestone="milestone_2"
-              data-title="Week 2: Business Model & Unit Economics"
+              id="open-submit-modal-btn"
+              class="px-4 py-2 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm flex items-center gap-1.5 self-start sm:self-auto"
             >
-              Submit Deliverable →
+              <span>+ Make Submission</span>
             </button>
           </div>
 
-          <div class="p-3 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
-            <div>
-              <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 3</span>
-              <span class="font-bold text-[#1A0F09] dark:text-white block">Final Pitch Slides</span>
+          <!-- Pitch Deck & Video Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Primary Pitch Deck</span>
+                <span id="deck-status-label" class="font-bold text-xs text-[#1A0F09] dark:text-white truncate block">Pitch Deck</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                <a id="view-deck-link" href="#" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg btn-adabah-primary text-[11px] font-bold">Open ↗</a>
+                <button type="button" id="update-deck-btn" class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4] cursor-pointer">Update</button>
+              </div>
             </div>
-            <button
-              type="button"
-              class="quick-submit-milestone-btn w-full py-1.5 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-[11px] font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
-              data-milestone="milestone_3"
-              data-title="Week 3: Final Pitch Deck"
-            >
-              Submit Deliverable →
-            </button>
-          </div>
-        </div>
 
-        <!-- History Log -->
-        <div class="space-y-2 pt-2">
-          <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-[#1A0F09] dark:text-white">Submission History</span>
-            <span id="submissions-count-badge" class="text-[10px] font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70">0 submissions</span>
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#f5d6b4]/20 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Demo Video / Walkthrough</span>
+                <span id="video-status-label" class="font-semibold text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/80 truncate block">Optional Video</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                <a id="view-video-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden px-2.5 py-1 rounded-lg btn-adabah-primary text-[11px] font-bold">Watch ↗</a>
+                <button type="button" id="update-video-btn" class="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-[11px] font-semibold text-[#5C3D2E] dark:text-[#f5d6b4] cursor-pointer">Add / Update</button>
+              </div>
+            </div>
           </div>
 
-          <div id="submissions-list-container" class="space-y-2">
-            <!-- Injected via JavaScript -->
+          <!-- 3-Week Cohort Deliverables Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
+              <div>
+                <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 1 Milestone</span>
+                <span class="font-bold text-[#1A0F09] dark:text-white block">Customer Discovery</span>
+              </div>
+              <button
+                type="button"
+                class="quick-submit-milestone-btn w-full py-2 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
+                data-milestone="milestone_1"
+                data-title="Week 1: Customer Discovery & Validation"
+              >
+                Submit Deliverable →
+              </button>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
+              <div>
+                <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 2 Milestone</span>
+                <span class="font-bold text-[#1A0F09] dark:text-white block">Business Model</span>
+              </div>
+              <button
+                type="button"
+                class="quick-submit-milestone-btn w-full py-2 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
+                data-milestone="milestone_2"
+                data-title="Week 2: Business Model & Unit Economics"
+              >
+                Submit Deliverable →
+              </button>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-2">
+              <div>
+                <span class="text-[10px] font-bold text-[#865237] dark:text-[#dfa04e] uppercase block">Week 3 Milestone</span>
+                <span class="font-bold text-[#1A0F09] dark:text-white block">Final Pitch Deck</span>
+              </div>
+              <button
+                type="button"
+                class="quick-submit-milestone-btn w-full py-2 rounded-xl border border-[#865237]/25 dark:border-[#f5d6b4]/25 hover:border-[#865237] text-xs font-bold text-[#865237] dark:text-[#dfa04e] cursor-pointer"
+                data-milestone="milestone_3"
+                data-title="Week 3: Final Pitch Deck"
+              >
+                Submit Deliverable →
+              </button>
+            </div>
           </div>
 
-          <div id="submissions-empty-state" class="p-4 rounded-xl border border-dashed border-[#865237]/30 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
-            No milestone submissions recorded yet.
+          <!-- Submission History Log -->
+          <div class="space-y-3 pt-3 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-[#1A0F09] dark:text-white">Submission History</span>
+              <span id="submissions-count-badge" class="text-[11px] font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70">0 submissions</span>
+            </div>
+
+            <div id="submissions-list-container" class="space-y-2">
+              <!-- Injected via JavaScript -->
+            </div>
+
+            <div id="submissions-empty-state" class="p-6 rounded-2xl border border-dashed border-[#865237]/30 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+              No milestone submissions recorded yet. Tap "+ Make Submission" to add links.
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
-      <!-- 4. TEAM MANAGEMENT -->
-      <section id="sec-team" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <h3 class="font-display font-bold text-base sm:text-lg text-[#1A0F09] dark:text-white">
-              Startup Team
-            </h3>
-            <span id="dash-team-count-badge" class="px-2 py-0.5 rounded-full bg-[#865237]/10 dark:bg-white/10 text-[11px] font-bold text-[#865237] dark:text-[#dfa04e]">
-              1 Member
-            </span>
-          </div>
-
-          <button
-            type="button"
-            id="open-add-team-modal-btn"
-            class="px-3.5 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm"
-          >
-            + Add Teammate
-          </button>
-        </div>
-
-        <!-- Lead Founder Card -->
-        <div class="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#dfa04e]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-          <div>
+      <!-- ======================================================== -->
+      <!-- PAGE 4: STARTUP TEAM -->
+      <!-- ======================================================== -->
+      <div id="page-team" class="dashboard-page hidden space-y-6">
+        <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/10 dark:border-[#f5d6b4]/10 pb-4">
             <div class="flex items-center gap-2">
-              <h4 id="team-lead-name" class="font-bold text-sm text-[#1A0F09] dark:text-white">—</h4>
-              <span id="team-lead-role" class="px-2 py-0.5 rounded bg-[#865237]/10 dark:bg-white/10 text-[10px] font-bold text-[#865237] dark:text-[#dfa04e]">Lead Founder</span>
+              <div>
+                <h2 class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white">
+                  Startup Team
+                </h2>
+                <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">
+                  Teams can include up to 5 members enrolled in recognized tertiary institutions.
+                </p>
+              </div>
             </div>
-            <div class="flex flex-wrap items-center gap-3 text-[11px] text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1">
-              <span>📧 <span id="team-lead-email" class="font-mono">—</span></span>
-              <span id="team-lead-phone-row">📞 <span id="team-lead-phone" class="font-mono">—</span></span>
-              <span id="team-lead-academic-row">🎓 <span id="team-lead-academic">—</span></span>
+
+            <div class="flex items-center gap-2 self-start sm:self-auto">
+              <span id="dash-team-count-badge" class="px-3 py-1 rounded-xl bg-[#865237]/10 dark:bg-white/10 text-xs font-bold text-[#865237] dark:text-[#dfa04e]">
+                1 Member
+              </span>
+              <button
+                type="button"
+                id="open-add-team-modal-btn"
+                class="px-4 py-2 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm"
+              >
+                + Add Teammate
+              </button>
             </div>
           </div>
-          <span class="text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e] self-start sm:self-center">Primary Applicant</span>
-        </div>
 
-        <!-- Additional Teammates Container -->
-        <div id="teammates-container" class="space-y-2">
-          <!-- Injected via JavaScript -->
-        </div>
-
-        <div id="teammates-empty-state" class="p-4 rounded-xl border border-dashed border-[#865237]/30 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
-          No additional teammates added. Tap "+ Add Teammate" to invite co-founders.
-        </div>
-      </section>
-
-      <!-- 5. VENTURE PROFILE -->
-      <section id="sec-profile" class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-4 text-xs">
-        <div class="flex items-center justify-between border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-3">
-          <h3 class="font-display font-bold text-base text-[#1A0F09] dark:text-white">
-            Venture Information
-          </h3>
-          <span id="dash-founded-year" class="font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-[11px]">—</span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-1">
-            <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Problem Statement</span>
-            <p id="dash-problem" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed">—</p>
+          <!-- Lead Founder Card -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/20 dark:border-[#dfa04e]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 id="team-lead-name" class="font-bold text-base text-[#1A0F09] dark:text-white">—</h4>
+                <span id="team-lead-role" class="px-2 py-0.5 rounded bg-[#865237]/10 dark:bg-white/10 text-[10px] font-bold text-[#865237] dark:text-[#dfa04e]">Lead Founder</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-3 text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-1.5">
+                <span>📧 <span id="team-lead-email" class="font-mono">—</span></span>
+                <span id="team-lead-phone-row">📞 <span id="team-lead-phone" class="font-mono">—</span></span>
+                <span id="team-lead-academic-row">🎓 <span id="team-lead-academic">—</span></span>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold uppercase text-[#865237] dark:text-[#dfa04e] self-start sm:self-center px-2.5 py-1 rounded-lg bg-[#865237]/10 dark:bg-[#dfa04e]/10">Primary Applicant</span>
           </div>
-          <div class="space-y-1">
-            <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-[11px]">Proposed Solution</span>
-            <p id="dash-solution" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed">—</p>
-          </div>
-        </div>
 
-        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10">
-          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Traction</span>
-            <span id="dash-traction" class="font-bold text-[#1A0F09] dark:text-white block">—</span>
+          <!-- Additional Teammates Container -->
+          <div class="space-y-2">
+            <h4 class="font-bold text-xs text-[#1A0F09] dark:text-white pt-1">Co-Founders &amp; Team Members</h4>
+            <div id="teammates-container" class="space-y-2">
+              <!-- Injected via JavaScript -->
+            </div>
           </div>
-          <div class="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-black/30">
-            <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Capital</span>
-            <span id="dash-funding" class="font-bold text-[#1A0F09] dark:text-white block">—</span>
+
+          <div id="teammates-empty-state" class="p-6 rounded-2xl border border-dashed border-[#865237]/30 text-center text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70">
+            No additional teammates added yet. Tap "+ Add Teammate" to invite student co-founders.
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PAGE 5: VENTURE PROFILE -->
+      <!-- ======================================================== -->
+      <div id="page-profile" class="dashboard-page hidden space-y-6">
+        <section class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-[#201108] border border-[#865237]/20 dark:border-[#f5d6b4]/20 shadow-sm space-y-5 text-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#865237]/15 dark:border-[#f5d6b4]/15 pb-4">
+            <div>
+              <h2 class="font-display font-black text-xl sm:text-2xl text-[#1A0F09] dark:text-white">
+                Venture Profile
+              </h2>
+              <p class="text-xs text-[#5C3D2E] dark:text-[#f5d6b4]/70 mt-0.5">
+                Core commercial concept, problem statement, and traction summary.
+              </p>
+            </div>
+            <div class="flex items-center gap-2 self-start sm:self-auto">
+              <span id="dash-founded-year" class="font-mono text-[#5C3D2E] dark:text-[#f5d6b4]/70 text-xs px-2.5 py-1 rounded-lg bg-[#FAF7F2] dark:bg-black/40 border border-[#865237]/15">—</span>
+              <button
+                type="button"
+                class="open-profile-modal-btn px-3.5 py-1.5 rounded-xl btn-adabah-primary font-bold text-xs cursor-pointer shadow-sm flex items-center gap-1"
+              >
+                ✏️ <span>Edit Profile</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1.5">
+              <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-xs">Problem Statement</span>
+              <p id="dash-problem" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed text-xs sm:text-sm">—</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#120904] border border-[#865237]/15 dark:border-[#f5d6b4]/15 space-y-1.5">
+              <span class="font-bold text-[#865237] dark:text-[#dfa04e] block text-xs">Proposed Solution</span>
+              <p id="dash-solution" class="text-[#5C3D2E] dark:text-[#f5d6b4]/80 leading-relaxed text-xs sm:text-sm">—</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 pt-2 border-t border-[#865237]/10 dark:border-[#f5d6b4]/10">
+            <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-black/30">
+              <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Traction Status</span>
+              <span id="dash-traction" class="font-bold text-[#1A0F09] dark:text-white text-sm block">—</span>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-black/30">
+              <span class="text-[10px] text-[#5C3D2E] dark:text-[#f5d6b4]/60 block font-semibold">Capital Raised</span>
+              <span id="dash-funding" class="font-bold text-[#1A0F09] dark:text-white text-sm block">—</span>
+            </div>
+          </div>
+        </section>
+      </div>
 
     </main>
 

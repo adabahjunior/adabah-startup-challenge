@@ -188,16 +188,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Edit Profile Modal
-    if (editProfileBtn) {
-      editProfileBtn.addEventListener('click', () => {
-        if (!currentApp) return;
-        document.getElementById('prof-tagline').value = currentApp.tagline || '';
-        document.getElementById('prof-website').value = currentApp.website || '';
-        document.getElementById('prof-deck-url').value = currentApp.deckUrl || '';
-        document.getElementById('prof-video-url').value = currentApp.videoUrl || '';
-        editProfileModal.classList.remove('hidden');
-      });
+    function openProfileModal() {
+      if (!currentApp) return;
+      document.getElementById('prof-tagline').value = currentApp.tagline || '';
+      document.getElementById('prof-website').value = currentApp.website || '';
+      document.getElementById('prof-deck-url').value = currentApp.deckUrl || '';
+      document.getElementById('prof-video-url').value = currentApp.videoUrl || '';
+      editProfileModal.classList.remove('hidden');
     }
+
+    if (editProfileBtn) {
+      editProfileBtn.addEventListener('click', openProfileModal);
+    }
+    document.querySelectorAll('.open-profile-modal-btn').forEach(btn => {
+      btn.addEventListener('click', openProfileModal);
+    });
+
     if (closeProfileBtn) {
       closeProfileBtn.addEventListener('click', () => editProfileModal.classList.add('hidden'));
     }
@@ -247,53 +253,96 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setupSidebarNavigation() {
-    const navLinks = document.querySelectorAll('.sidebar-nav-link');
-    if (!navLinks || navLinks.length === 0) return;
-
-    function setActiveLink(activeHref) {
-      navLinks.forEach(link => {
-        const isMatch = link.getAttribute('href') === activeHref;
-        if (isMatch) {
-          link.classList.add('bg-[#865237]/15', 'text-[#865237]', 'dark:text-[#dfa04e]', 'dark:bg-white/10');
-          link.classList.remove('text-[#5C3D2E]', 'dark:text-[#f5d6b4]/80');
-        } else {
-          link.classList.remove('bg-[#865237]/15', 'text-[#865237]', 'dark:text-[#dfa04e]', 'dark:bg-white/10');
-          link.classList.add('text-[#5C3D2E]', 'dark:text-[#f5d6b4]/80');
-        }
-      });
-    }
-
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        const href = link.getAttribute('href');
-        setActiveLink(href);
-        if (window.innerWidth < 768) {
-          closeMobileSidebar();
-        }
+    // Navigation Menu Buttons
+    document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pageId = btn.getAttribute('data-page');
+        if (pageId) switchPage(pageId);
       });
     });
 
-    if ('IntersectionObserver' in window) {
-      const sectionIds = ['sec-overview', 'sec-progress', 'sec-deliverables', 'sec-team', 'sec-profile'];
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveLink(`#${entry.target.id}`);
-          }
-        });
-      }, { rootMargin: '-20% 0px -65% 0px' });
-
-      sectionIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) observer.observe(el);
+    // Cross-page shortcut buttons with data-page-target
+    document.querySelectorAll('[data-page-target]').forEach(el => {
+      el.addEventListener('click', () => {
+        const pageId = el.getAttribute('data-page-target');
+        if (pageId) switchPage(pageId);
       });
+    });
+
+    // Browser back/forward navigation support
+    window.addEventListener('popstate', () => {
+      if (!currentApp) return;
+      const urlParams = new URLSearchParams(window.location.search);
+      const subpath = window.location.pathname.replace(/^\/dashboard\/?/, '').replace(/\/.*$/, '').toLowerCase();
+      const pageId = urlParams.get('page') || (['overview', 'progress', 'deliverables', 'team', 'profile'].includes(subpath) ? subpath : 'overview');
+      switchPage(pageId);
+    });
+  }
+
+  // Switch Between Dashboard Pages (Multipage architecture)
+  function switchPage(pageId) {
+    if (!pageId) pageId = 'overview';
+
+    // Hide all pages
+    const pages = document.querySelectorAll('.dashboard-page');
+    pages.forEach(page => page.classList.add('hidden'));
+
+    // Show target page
+    let target = document.getElementById(`page-${pageId}`);
+    if (!target) {
+      target = document.getElementById('page-overview');
+      pageId = 'overview';
     }
+    if (target) {
+      target.classList.remove('hidden');
+    }
+
+    // Highlight active nav button in stationary sidebar
+    document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+      const p = btn.getAttribute('data-page');
+      if (p === pageId) {
+        btn.className = 'sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left bg-[#865237]/15 text-[#865237] dark:text-[#dfa04e] dark:bg-white/10 font-bold cursor-pointer';
+      } else {
+        btn.className = 'sidebar-nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all text-left hover:bg-black/5 dark:hover:bg-white/5 text-[#5C3D2E] dark:text-[#f5d6b4]/80 font-semibold cursor-pointer';
+      }
+    });
+
+    // Update mobile top bar page title
+    const pageTitles = {
+      overview: 'Overview',
+      progress: 'Evaluation Stage',
+      deliverables: 'Submissions & Pitch',
+      team: 'Startup Team',
+      profile: 'Venture Profile'
+    };
+    setText('mobile-page-title', pageTitles[pageId] || 'Overview');
+
+    // Scroll main content area to top (independent of stationary sidebar)
+    const contentArea = document.getElementById('dashboard-content-area');
+    if (contentArea) {
+      contentArea.scrollTop = 0;
+    }
+
+    // Sync URL without full page reload
+    if (currentApp) {
+      const url = new URL(window.location.href);
+      if (window.location.pathname.startsWith('/dashboard/')) {
+        window.history.replaceState(null, '', `/dashboard/${pageId}?id=${encodeURIComponent(currentApp.id)}`);
+      } else {
+        url.searchParams.set('page', pageId);
+        window.history.replaceState(null, '', url.toString());
+      }
+    }
+
+    // Close mobile drawer if open
+    closeMobileSidebar();
   }
 
   // Show Auth / Lookup View
   function showAuthView() {
     currentApp = null;
     closeMobileSidebar();
+    document.body.classList.remove('md:overflow-hidden');
     if (authView) authView.classList.remove('hidden');
     if (mainView) mainView.classList.add('hidden');
     if (headerAppBadge) headerAppBadge.classList.add('hidden');
@@ -318,7 +367,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Persist session
         localStorage.setItem('adabah_founder_app_id', currentApp.id);
-        window.history.replaceState(null, '', `/dashboard?id=${encodeURIComponent(currentApp.id)}`);
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageParam = urlParams.get('page');
+        const pageQuery = pageParam ? `&page=${encodeURIComponent(pageParam)}` : '';
+        window.history.replaceState(null, '', `/dashboard?id=${encodeURIComponent(currentApp.id)}${pageQuery}`);
 
         renderDashboard(currentApp);
         showToast(`Welcome back, ${currentApp.founderName.split(' ')[0]}!`, 'success');
@@ -342,6 +394,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderDashboard(app) {
     if (!app) return;
 
+    // Stationary Desktop Layout Lock
+    document.body.classList.add('md:overflow-hidden');
+
     // Header & Sidebar Badges
     if (headerAppBadge) {
       headerAppBadge.classList.remove('hidden');
@@ -350,6 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setText('header-app-id', app.id);
     setText('sidebar-startup-name', app.startupName || '—');
     setText('sidebar-track-text', `${app.track || 'General'} Track`);
+    setText('mobile-startup-name', app.startupName || '—');
 
     // 1. Startup Banner
     setText('dash-app-id', app.id);
@@ -412,6 +468,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Deliverables & Milestones
     renderDeliverables(app.deliverables || []);
+
+    // Switch to active page (Multipage routing)
+    const urlParams = new URLSearchParams(window.location.search);
+    const hashPage = window.location.hash ? window.location.hash.replace(/^#\/?/, '').replace(/^page-/, '') : null;
+    let pathPage = null;
+    const subpath = window.location.pathname.replace(/^\/dashboard\/?/, '').replace(/\/.*$/, '').toLowerCase();
+    if (['overview', 'progress', 'deliverables', 'team', 'profile'].includes(subpath)) {
+      pathPage = subpath;
+    }
+    const initialPage = urlParams.get('page') || pathPage || hashPage || 'overview';
+    switchPage(initialPage);
 
     // Switch Views
     if (authView) authView.classList.add('hidden');

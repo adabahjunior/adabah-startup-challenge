@@ -684,6 +684,11 @@ const server = http.createServer(async (req, res) => {
     return res.end('Access Denied');
   }
 
+  // Route /dashboard or /dashboard/* to public/dashboard.html
+  if (parsedUrl.pathname === '/dashboard' || parsedUrl.pathname.startsWith('/dashboard/')) {
+    filePath = path.join(PUBLIC_DIR, 'dashboard.html');
+  }
+
   // Clean URL support: e.g. /apply -> apply.html
   if (!path.extname(filePath) && fs.existsSync(filePath + '.html')) {
     filePath = filePath + '.html';
